@@ -325,11 +325,6 @@ function renderKPIs(container, data, isCombined) {
       <div class="kpi-value ${costColor(data.food_cost_pct || data.food_pct || 0)}">${pct(data.food_cost_pct || data.food_pct || 0)}</div>
       <div class="kpi-sub">${fmt(data.food_cost_net || 0)}</div>
     </div>
-    <div class="kpi">
-      <div class="kpi-label">כיסויים</div>
-      <div class="kpi-value accent">${(data.covers || 0).toLocaleString()}</div>
-      <div class="kpi-sub">ממוצע: ${fmt(data.avg_per_cover || (data.covers > 0 ? Math.round((data.sales_gross || 0) / data.covers) : 0))}</div>
-    </div>
   `;
 }
 
@@ -455,7 +450,7 @@ function renderStoresCompare(container, stores) {
       <div class="store-compare-row"><span style="color:var(--muted)">עבודה</span><span style="color:var(--${costColor(s.labor_pct)})">${pct(s.labor_pct)}</span></div>
       <div class="store-compare-row"><span style="color:var(--muted)">מזון</span><span style="color:var(--${costColor(s.food_cost_pct)})">${pct(s.food_cost_pct)}</span></div>
       <div class="store-compare-row"><span style="color:var(--muted)">סה״כ</span><span style="color:var(--${pctColor(s.total_pct)})">${pct(s.total_pct)}</span></div>
-      <div class="store-compare-row"><span style="color:var(--muted)">כיסויים</span><span>${(s.covers || 0).toLocaleString()}</span></div>
+
     </div>
   `).join('');
 }
