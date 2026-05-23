@@ -393,44 +393,42 @@ function renderVendors(container, vendors) {
 // RENDER CHART — daily sales cards
 function renderChart(container, dailySales, title) {
   if (!dailySales || dailySales.length === 0) { container.innerHTML = ''; return; }
-  const max = Math.max(...dailySales.map(d => d.sales));
-  const avg = dailySales.reduce((s,d) => s+d.sales, 0) / dailySales.length;
-  const total = dailySales.reduce((s,d) => s+d.sales, 0);
+  var max = Math.max.apply(null, dailySales.map(function(d){ return d.sales; }));
+  var total = dailySales.reduce(function(s,d){ return s+d.sales; }, 0);
+  var avg = total / dailySales.length;
+  var dayNames = ['א','ב','ג','ד','ה','ו','ש'];
+  var monthNames = ['','ינו','פבר','מרץ','אפר','מאי','יוני','יולי','אוג','ספט','אוק','נוב','דצמ'];
 
-  const dayNames = ['א','ב','ג','ד','ה','ו','ש'];
-  const monthNames = ['','ינו','פבר','מרץ','אפר','מאי','יוני','יולי','אוג','ספט','אוק','נוב','דצמ'];
-
-  const cards = dailySales.map(d => {
-    const dateObj = new Date(d.date + 'T12:00:00');
-    const dayNum = d.date ? d.date.split('-')[2] : '';
-    const monthNum = d.date ? parseInt(d.date.split('-')[1]) : 0;
-    const dow = dayNames[dateObj.getDay()];
-    const isWeekend = dateObj.getDay() === 5 || dateObj.getDay() === 6;
-    const isTop = d.sales >= max * 0.9;
-    const isLow = d.sales < avg * 0.6;
-    const barPct = max > 0 ? Math.round((d.sales / max) * 100) : 0;
-    const color = isTop ? 'var(--green)' : isLow ? 'var(--red)' : 'var(--accent)';
-    return \`<div class="day-card \${isWeekend ? 'weekend' : ''} \${isTop ? 'top-day' : ''}">
-      <div class="day-header">
-        <span class="day-dow">\${dow}'</span>
-        <span class="day-num">\${parseInt(dayNum)}.\${monthNames[monthNum]}</span>
-      </div>
-      <div class="day-bar-wrap"><div class="day-bar" style="width:\${barPct}%;background:\${color}"></div></div>
-      <div class="day-sales" style="color:\${color}">\${fmt(d.sales)}</div>
-    </div>\`;
+  var cards = dailySales.map(function(d) {
+    var dateObj = new Date(d.date + 'T12:00:00');
+    var dayNum = parseInt(d.date.split('-')[2]);
+    var monthNum = parseInt(d.date.split('-')[1]);
+    var dow = dayNames[dateObj.getDay()];
+    var isWeekend = dateObj.getDay() === 5 || dateObj.getDay() === 6;
+    var isTop = d.sales >= max * 0.9;
+    var isLow = d.sales < avg * 0.6;
+    var barPct = max > 0 ? Math.round((d.sales / max) * 100) : 0;
+    var color = isTop ? 'var(--green)' : (isLow ? 'var(--red)' : 'var(--accent)');
+    var cls = 'day-card' + (isWeekend ? ' weekend' : '') + (isTop ? ' top-day' : '');
+    return '<div class="' + cls + '">' +
+      '<div class="day-header">' +
+        '<span class="day-dow">' + dow + "'</span>" +
+        '<span class="day-num">' + dayNum + '.' + monthNames[monthNum] + '</span>' +
+      '</div>' +
+      '<div class="day-bar-wrap"><div class="day-bar" style="width:' + barPct + '%;background:' + color + '"></div></div>' +
+      '<div class="day-sales" style="color:' + color + '">' + fmt(d.sales) + '</div>' +
+    '</div>';
   }).join('');
 
-  container.innerHTML = \`
-    <div class="daily-section">
-      <div class="daily-header">
-        <span class="daily-title">\${title || 'מכירות יומיות'}</span>
-        <span class="daily-summary">סה"כ \${fmt(total)} | ממוצע \${fmt(Math.round(avg))}/יום</span>
-      </div>
-      <div class="days-grid">\${cards}</div>
-    </div>
-  \`;
+  container.innerHTML =
+    '<div class="daily-section">' +
+      '<div class="daily-header">' +
+        '<span class="daily-title">' + (title || 'מכירות יומיות') + '</span>' +
+        '<span class="daily-summary">סה"כ ' + fmt(total) + ' | ממוצע ' + fmt(Math.round(avg)) + '/יום</span>' +
+      '</div>' +
+      '<div class="days-grid">' + cards + '</div>' +
+    '</div>';
 }
-
 // RENDER WORKERS
 function renderWorkers(container, workers) {
   if (!workers || workers.length === 0) { container.innerHTML = '<div style="color:var(--muted);font-size:0.85rem">אין נתוני עובדים</div>'; return; }
