@@ -246,10 +246,14 @@ function checkPW() {
   if (val.toUpperCase() === VALID_CODE.toUpperCase()) {
     localStorage.setItem(ACCESS_KEY, '1');
     document.getElementById('paywall').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
+    const appEl = document.getElementById('app');
+    appEl.style.display = 'block';
+    appEl.style.visibility = 'visible';
+    appEl.style.opacity = '1';
     loadData();
   } else {
     document.getElementById('pw-err').style.display = 'block';
+    document.getElementById('pw-err').textContent = 'קוד שגוי. נסה שנית.';
   }
 }
 document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPW(); });
@@ -272,7 +276,9 @@ function sendReq() {
 
 if (localStorage.getItem(ACCESS_KEY) === '1') {
   document.getElementById('paywall').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+  const appEl = document.getElementById('app');
+  appEl.style.display = 'block';
+  appEl.style.visibility = 'visible';
 }
 
 // TABS
