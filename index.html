@@ -164,6 +164,7 @@
   /* ERROR */
   .error-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 16px; text-align: center; color: var(--red); font-size: 0.85rem; }
 </style>
+<!-- cache-bust-60pct -->
 </head>
 <body>
 
@@ -295,7 +296,7 @@ function switchTab(name, el) {
 function fmt(n) { return '₪' + Math.round(n).toLocaleString('he-IL'); }
 function pct(n) { return (n || 0).toFixed(1) + '%'; }
 function pctColor(n) {
-  if (n <= 45) return 'green';
+  if (n <= 55) return 'green';
   if (n <= 50) return 'yellow';
   return 'red';
 }
