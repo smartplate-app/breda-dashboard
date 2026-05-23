@@ -307,25 +307,27 @@ function costColor(n) {
 
 // RENDER KPIs
 function renderKPIs(container, data, isCombined) {
-  const salesLabel = isCombined ? 'סה״כ מכירות (כולל מע״מ)' : 'מכירות (כולל מע״מ)';
-  const tc = pctColor(data.total_pct || data['total_pct'] || 0);
-  container.innerHTML = `
-    <div class="kpi">
-      <div class="kpi-label">${salesLabel}</div>
-      <div class="kpi-value accent">${fmt(data.sales_gross || 0)}</div>
-      <div class="kpi-sub">נטו: ${fmt(data.sales_net || 0)}</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">עלות עבודה</div>
-      <div class="kpi-value ${costColor(data.labor_pct || 0)}">${pct(data.labor_pct)}</div>
-      <div class="kpi-sub">${fmt(data.labor_cost || 0)}</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">עלות מזון</div>
-      <div class="kpi-value ${costColor(data.food_cost_pct || data.food_pct || 0)}">${pct(data.food_cost_pct || data.food_pct || 0)}</div>
-      <div class="kpi-sub">${fmt(data.food_cost_net || 0)}</div>
-    </div>
-  `;
+  const salesLabel = isCombined ? 'סה׳׳כ מכירות (כולל מע׳׳מ)' : 'מכירות (כולל מע׳׳מ)';
+  const woltHtml = (data.wolt_sales > 0)
+    ? '<div class="kpi"><div class="kpi-label">&#x1F6F5; וולט</div><div class="kpi-value accent">' + pct(data.wolt_pct || 0) + '</div><div class="kpi-sub">' + fmt(data.wolt_sales || 0) + '</div></div>'
+    : '';
+  container.innerHTML =
+    '<div class="kpi">' +
+      '<div class="kpi-label">' + salesLabel + '</div>' +
+      '<div class="kpi-value accent">' + fmt(data.sales_gross || 0) + '</div>' +
+      '<div class="kpi-sub">נטו: ' + fmt(data.sales_net || 0) + '</div>' +
+    '</div>' +
+    '<div class="kpi">' +
+      '<div class="kpi-label">עלות עבודה</div>' +
+      '<div class="kpi-value ' + costColor(data.labor_pct || 0) + '">' + pct(data.labor_pct) + '</div>' +
+      '<div class="kpi-sub">' + fmt(data.labor_cost || 0) + '</div>' +
+    '</div>' +
+    '<div class="kpi">' +
+      '<div class="kpi-label">עלות מזון</div>' +
+      '<div class="kpi-value ' + costColor(data.food_cost_pct || data.food_pct || 0) + '">' + pct(data.food_cost_pct || data.food_pct || 0) + '</div>' +
+      '<div class="kpi-sub">' + fmt(data.food_cost_net || 0) + '</div>' +
+    '</div>' +
+    woltHtml;
 }
 
 // RENDER COSTS
