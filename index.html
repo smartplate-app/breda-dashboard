@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Breada Bakery — דשבורד תפעולי</title>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --card: #1a1a1a;
+    --card2: #222;
+    --border: #2a2a2a;
+    --text: #f0f0f0;
+    --muted: #888;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --orange: #f97316;
+    --accent: #c8a87a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  /* PAYWALL */
+  #paywall { position: fixed; inset: 0; background: rgba(0,0,0,0.97); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .pw-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; max-width: 380px; width: 100%; text-align: center; }
+  .pw-logo { font-size: 2.2rem; font-weight: 800; color: var(--accent); letter-spacing: -1px; margin-bottom: 6px; }
+  .pw-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+  .pw-input { width: 100%; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; color: var(--text); font-size: 1rem; text-align: center; outline: none; margin-bottom: 12px; }
+  .pw-input:focus { border-color: var(--accent); }
+  .pw-btn { width: 100%; background: var(--accent); color: #000; font-weight: 700; font-size: 1rem; border: none; border-radius: 10px; padding: 13px; cursor: pointer; transition: opacity .2s; }
+  .pw-btn:hover { opacity: .85; }
+  .pw-err { color: var(--red); font-size: 0.82rem; margin-top: 8px; display: none; }
+  .pw-req { margin-top: 16px; }
+  .pw-req-link { color: var(--muted); font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
+  .pw-req-form { display: none; margin-top: 14px; }
+  .pw-req-form input { width: 100%; background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); font-size: 0.88rem; margin-bottom: 8px; outline: none; }
+  .pw-req-form input:focus { border-color: var(--accent); }
+  .pw-req-btn { width: 100%; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 10px; font-size: 0.88rem; cursor: pointer; }
+  .pw-sent { color: var(--green); font-size: 0.82rem; margin-top: 8px; display: none; }
+
+  /* LAYOUT */
+  #app { display: none; }
+  header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .logo { font-size: 1.5rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+  .header-meta { display: flex; align-items: center; gap: 12px; }
+  .month-badge { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; font-size: 0.8rem; color: var(--muted); }
+  .sync-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 6px 14px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .2s; }
+  .sync-btn:hover { background: var(--accent); color: #000; }
+  .sync-btn.loading { opacity: .5; pointer-events: none; }
+
+  /* TABS */
+  .tabs { display: flex; background: var(--card2); border-bottom: 1px solid var(--border); padding: 0 16px; overflow-x: auto; gap: 4px; }
+  .tab { padding: 12px 20px; font-size: 0.9rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--muted); white-space: nowrap; transition: all .2s; flex-shrink: 0; }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  .tab:hover:not(.active) { color: var(--text); }
+
+  /* PANELS */
+  .panel { display: none; padding: 16px; }
+  .panel.active { display: block; }
+
+  /* LOADING */
+  #loading { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* KPI GRID */
+  .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+  @media (min-width: 600px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .kpi-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .kpi-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+  .kpi-sub { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.yellow { color: var(--yellow); }
+  .kpi-value.red { color: var(--red); }
+  .kpi-value.accent { color: var(--accent); }
+
+  /* COST BAR */
+  .cost-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .cost-title { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cost-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .cost-label { font-size: 0.85rem; font-weight: 500; min-width: 80px; }
+  .cost-bar-wrap { flex: 1; margin: 0 12px; background: var(--border); border-radius: 4px; height: 8px; overflow: hidden; }
+  .cost-bar { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .cost-bar.labor { background: var(--blue); }
+  .cost-bar.food { background: var(--orange); }
+  .cost-bar.total { background: linear-gradient(90deg, var(--blue), var(--orange)); }
+  .cost-pct { font-size: 0.9rem; font-weight: 700; min-width: 48px; text-align: left; }
+  .cost-amt { font-size: 0.75rem; color: var(--muted); }
+
+  /* TOTAL PCT BADGE */
+  .total-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; margin-bottom: 16px; font-size: 0.88rem; }
+  .total-badge .pct-num { font-size: 1.4rem; font-weight: 800; }
+
+  /* LAST INVOICE BANNER */
+  .inv-banner { background: linear-gradient(135deg, #1e1a14, #252015); border: 1px solid #3d3520; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: border-color .2s; }
+  .inv-banner:hover { border-color: var(--accent); }
+  .inv-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .inv-info { flex: 1; min-width: 0; }
+  .inv-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .inv-name { font-size: 0.95rem; font-weight: 600; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .inv-detail { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .inv-amount { font-size: 1.1rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+
+  /* VENDORS GRID */
+  .vendors-title { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .vendors-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+  @media (min-width: 500px) { .vendors-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 768px) { .vendors-grid { grid-template-columns: repeat(4, 1fr); } }
+  .vendor-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: center; }
+  .vendor-name { font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .vendor-amount { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+  .vendor-count { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+
+  /* COMBINED STORES COMPARISON */
+  .stores-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .store-compare-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+  .store-compare-name { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .store-compare-sales { font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+  .store-compare-row { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 3px; }
+  .store-compare-row span:last-child { font-weight: 600; }
+
+  /* DAILY CHART */
+  .chart-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
+  .chart-title { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 80px; overflow-x: auto; padding-bottom: 4px; }
+  .chart-bar-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; min-width: 22px; }
+  .chart-bar { width: 18px; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 4px; transition: height 0.4s; opacity: 0.8; }
+  .chart-bar:hover { opacity: 1; }
+  .chart-date { font-size: 0.55rem; color: var(--muted); margin-top: 3px; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); height: 22px; }
+
+  /* WORKERS */
+  .workers-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .worker-row { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .worker-name { font-size: 0.85rem; font-weight: 500; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .worker-role { font-size: 0.7rem; color: var(--muted); }
+  .worker-info { text-align: left; flex-shrink: 0; }
+  .worker-cost { font-size: 0.9rem; font-weight: 600; }
+  .worker-hours { font-size: 0.7rem; color: var(--muted); }
+
+  /* SECTION TITLE */
+  .section-title { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 10px; margin-top: 4px; }
+
+  /* LIVE BADGE */
+  .live-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.7rem; color: var(--green); background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 20px; padding: 3px 9px; }
+  .live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* SECTION DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* ERROR */
+  .error-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 16px; text-align: center; color: var(--red); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<!-- PAYWALL -->
+<div id="paywall">
+  <div class="pw-box">
+    <div class="pw-logo">Breada Bakery</div>
+    <div class="pw-sub">דשבורד תפעולי</div>
+    <input id="pw-input" class="pw-input" type="password" placeholder="קוד גישה" autocomplete="off">
+    <button class="pw-btn" onclick="checkPW()">כניסה</button>
+    <div id="pw-err" class="pw-err">קוד שגוי. נסה שנית.</div>
+    <div class="pw-req">
+      <span class="pw-req-link" onclick="toggleReqForm()">אין לי קוד — בקש גישה</span>
+      <div class="pw-req-form" id="req-form">
+        <input id="req-name" placeholder="שם מלא" type="text">
+        <input id="req-email" placeholder="אימייל" type="email">
+        <button class="pw-req-btn" onclick="sendReq()">שלח בקשת גישה</button>
+        <div id="pw-sent" class="pw-sent">✓ הבקשה נשלחה!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="logo">🥖 Breada</div>
+    <div class="header-meta">
+      <span class="live-badge"><span class="live-dot"></span>חי</span>
+      <span class="month-badge" id="month-label">טוען...</span>
+      <button class="sync-btn" id="sync-btn" onclick="syncNow()">
+        <span id="sync-icon">↻</span> סנכרן
+      </button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('combined', this)">כולל</div>
+    <div class="tab" onclick="switchTab('hanmal', this)">הנמל</div>
+    <div class="tab" onclick="switchTab('hatib', this)">חטיב</div>
+  </div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <div>טוען נתונים חיים...</div>
+  </div>
+
+  <!-- COMBINED PANEL -->
+  <div id="panel-combined" class="panel" style="display:none;">
+    <div class="kpi-grid" id="comb-kpis"></div>
+    <div id="comb-costs"></div>
+    <div class="stores-compare" id="comb-stores"></div>
+    <div class="divider"></div>
+    <div class="vendors-title">עלות מזון — ספקים</div>
+    <div id="comb-inv-banner"></div>
+    <div class="vendors-grid" id="comb-vendors"></div>
+  </div>
+
+  <!-- HANMAL PANEL -->
+  <div id="panel-hanmal" class="panel" style="display:none;">
+    <div class="kpi-grid" id="hanmal-kpis"></div>
+    <div id="hanmal-costs"></div>
+    <div id="hanmal-chart"></div>
+    <div class="section-title">עובדים</div>
+    <div id="hanmal-workers" class="workers-list"></div>
+  </div>
+
+  <!-- HATIB PANEL -->
+  <div id="panel-hatib" class="panel" style="display:none;">
+    <div class="kpi-grid" id="hatib-kpis"></div>
+    <div id="hatib-costs"></div>
+    <div id="hatib-chart"></div>
+    <div class="section-title">עובדים</div>
+    <div id="hatib-workers" class="workers-list"></div>
+  </div>
+</div>
+
+<script>
+const ACCESS_KEY = 'breda_access_v1';
+const VALID_CODE = 'Breda2026';
+const API_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/breadaSync';
+
+// PAYWALL
+function checkPW() {
+  const val = document.getElementById('pw-input').value.trim();
+  if (val.toUpperCase() === VALID_CODE.toUpperCase()) {
+    localStorage.setItem(ACCESS_KEY, '1');
+    document.getElementById('paywall').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('pw-err').style.display = 'block';
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPW(); });
+
+function toggleReqForm() {
+  const f = document.getElementById('req-form');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function sendReq() {
+  const name = document.getElementById('req-name').value.trim();
+  const email = document.getElementById('req-email').value.trim();
+  if (!name || !email) return;
+  fetch('https://rosa-6d8ebb9e.base44.app/api/functions/requestInvoice', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, dashboard: 'Breda' })
+  }).catch(() => {});
+  document.getElementById('pw-sent').style.display = 'block';
+}
+
+if (localStorage.getItem(ACCESS_KEY) === '1') {
+  document.getElementById('paywall').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+// TABS
+let currentTab = 'combined';
+function switchTab(name, el) {
+  currentTab = name;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+  document.getElementById('panel-' + name).style.display = 'block';
+}
+
+// FORMAT
+function fmt(n) { return '₪' + Math.round(n).toLocaleString('he-IL'); }
+function pct(n) { return (n || 0).toFixed(1) + '%'; }
+function pctColor(n) {
+  if (n <= 45) return 'green';
+  if (n <= 50) return 'yellow';
+  return 'red';
+}
+function costColor(n) {
+  if (n <= 20) return 'green';
+  if (n <= 25) return 'yellow';
+  return 'red';
+}
+
+// RENDER KPIs
+function renderKPIs(container, data, isCombined) {
+  const salesLabel = isCombined ? 'סה״כ מכירות (כולל מע״מ)' : 'מכירות (כולל מע״מ)';
+  const tc = pctColor(data.total_pct || data['total_pct'] || 0);
+  container.innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">${salesLabel}</div>
+      <div class="kpi-value accent">${fmt(data.sales_gross || 0)}</div>
+      <div class="kpi-sub">נטו: ${fmt(data.sales_net || 0)}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">עלות עבודה</div>
+      <div class="kpi-value ${costColor(data.labor_pct || 0)}">${pct(data.labor_pct)}</div>
+      <div class="kpi-sub">${fmt(data.labor_cost || 0)}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">עלות מזון</div>
+      <div class="kpi-value ${costColor(data.food_cost_pct || data.food_pct || 0)}">${pct(data.food_cost_pct || data.food_pct || 0)}</div>
+      <div class="kpi-sub">${fmt(data.food_cost_net || 0)}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">כיסויים</div>
+      <div class="kpi-value accent">${(data.covers || 0).toLocaleString()}</div>
+      <div class="kpi-sub">ממוצע: ${fmt(data.avg_per_cover || (data.covers > 0 ? Math.round((data.sales_gross || 0) / data.covers) : 0))}</div>
+    </div>
+  `;
+}
+
+// RENDER COSTS
+function renderCosts(container, data) {
+  const lp = data.labor_pct || 0;
+  const fp = data.food_cost_pct || data.food_pct || 0;
+  const tp = data.total_pct || 0;
+  const tc = pctColor(tp);
+  container.innerHTML = `
+    <div class="cost-section">
+      <div class="cost-title">פירוט עלויות (מנטו)</div>
+      <div class="cost-row">
+        <span class="cost-label">עבודה</span>
+        <div class="cost-bar-wrap"><div class="cost-bar labor" style="width:${Math.min(lp*2,100)}%"></div></div>
+        <span class="cost-pct" style="color:var(--blue)">${pct(lp)}</span>
+      </div>
+      <div class="cost-row">
+        <span class="cost-label">מזון</span>
+        <div class="cost-bar-wrap"><div class="cost-bar food" style="width:${Math.min(fp*2,100)}%"></div></div>
+        <span class="cost-pct" style="color:var(--orange)">${pct(fp)}</span>
+      </div>
+      <div class="cost-row" style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
+        <span class="cost-label" style="font-weight:700">סה״כ</span>
+        <div class="cost-bar-wrap"><div class="cost-bar total" style="width:${Math.min(tp*2,100)}%"></div></div>
+        <span class="cost-pct" style="color:var(--${tc});font-size:1rem;font-weight:800">${pct(tp)}</span>
+      </div>
+      <div style="margin-top:10px;font-size:0.75rem;color:var(--muted)">יעד: ≤45% | מצב: <span style="color:var(--${tc});font-weight:600">${tp <= 45 ? '✓ תקין' : tp <= 50 ? '⚠ קרוב' : '✗ חריגה'}</span></div>
+    </div>
+  `;
+}
+
+// RENDER LAST INVOICE BANNER
+function renderInvBanner(container, inv) {
+  if (!inv) { container.innerHTML = ''; return; }
+  container.innerHTML = `
+    <a class="inv-banner" href="https://www.foodcostapp.com/Welcome" target="_blank" style="text-decoration:none">
+      <div class="inv-icon">🧾</div>
+      <div class="inv-info">
+        <div class="inv-label">חשבונית אחרונה</div>
+        <div class="inv-name">${inv.supplier || '—'}</div>
+        <div class="inv-detail">#${inv.invoice_number || '—'} | ${inv.date || ''}</div>
+      </div>
+      ${inv.amount ? `<div class="inv-amount">${fmt(inv.amount)}</div>` : ''}
+    </a>
+  `;
+}
+
+// RENDER VENDORS
+function renderVendors(container, vendors) {
+  if (!vendors || vendors.length === 0) { container.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;text-align:center;padding:20px">אין נתוני ספקים</div>'; return; }
+  container.innerHTML = vendors.map(v => `
+    <div class="vendor-box">
+      <div class="vendor-name">${v.name}</div>
+      <div class="vendor-amount">${fmt(v.amount)}</div>
+      <div class="vendor-count">${v.count || ''} חש'</div>
+    </div>
+  `).join('');
+}
+
+// RENDER CHART
+function renderChart(container, dailySales, title) {
+  if (!dailySales || dailySales.length === 0) { container.innerHTML = ''; return; }
+  const max = Math.max(...dailySales.map(d => d.sales));
+  const bars = dailySales.map(d => {
+    const h = max > 0 ? Math.max(4, Math.round((d.sales / max) * 76)) : 4;
+    const day = d.date ? d.date.split('-')[2] : '';
+    return `<div class="chart-bar-wrap"><div class="chart-bar" style="height:${h}px" title="${d.date}: ${fmt(d.sales)}"></div><div class="chart-date">${day}</div></div>`;
+  }).join('');
+  container.innerHTML = `
+    <div class="chart-wrap">
+      <div class="chart-title">${title || 'מכירות יומיות'}</div>
+      <div class="chart-bars">${bars}</div>
+    </div>
+  `;
+}
+
+// RENDER WORKERS
+function renderWorkers(container, workers) {
+  if (!workers || workers.length === 0) { container.innerHTML = '<div style="color:var(--muted);font-size:0.85rem">אין נתוני עובדים</div>'; return; }
+  container.innerHTML = workers.map(w => `
+    <div class="worker-row">
+      <div>
+        <div class="worker-name">${w.name}</div>
+        <div class="worker-role">${w.role}</div>
+      </div>
+      <div class="worker-info">
+        <div class="worker-cost">${fmt(w.cost)}</div>
+        <div class="worker-hours">${w.hours} שעות</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// RENDER STORES COMPARE
+function renderStoresCompare(container, stores) {
+  container.innerHTML = stores.map(s => `
+    <div class="store-compare-box">
+      <div class="store-compare-name">סניף ${s.store}</div>
+      <div class="store-compare-sales">${fmt(s.sales_gross)}</div>
+      <div class="store-compare-row"><span style="color:var(--muted)">עבודה</span><span style="color:var(--${costColor(s.labor_pct)})">${pct(s.labor_pct)}</span></div>
+      <div class="store-compare-row"><span style="color:var(--muted)">מזון</span><span style="color:var(--${costColor(s.food_cost_pct)})">${pct(s.food_cost_pct)}</span></div>
+      <div class="store-compare-row"><span style="color:var(--muted)">סה״כ</span><span style="color:var(--${pctColor(s.total_pct)})">${pct(s.total_pct)}</span></div>
+      <div class="store-compare-row"><span style="color:var(--muted)">כיסויים</span><span>${(s.covers || 0).toLocaleString()}</span></div>
+    </div>
+  `).join('');
+}
+
+// MAIN LOAD
+let rawData = null;
+
+async function loadData() {
+  document.getElementById('loading').style.display = 'block';
+  document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'שגיאה');
+    rawData = data;
+    renderAll(data);
+  } catch (e) {
+    document.getElementById('loading').innerHTML = `<div class="error-box">שגיאה בטעינת נתונים: ${e.message}<br><br><button onclick="loadData()" style="margin-top:8px;padding:8px 16px;background:var(--accent);border:none;border-radius:6px;cursor:pointer;font-weight:600">נסה שנית</button></div>`;
+  }
+}
+
+function renderAll(data) {
+  document.getElementById('loading').style.display = 'none';
+
+  // Month label
+  const [yr, mo] = (data.month || '').split('-');
+  const months = ['','ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  document.getElementById('month-label').textContent = `${months[parseInt(mo)] || mo} ${yr} | עד ${data.to || ''}`;
+
+  const hanmal = data.stores.find(s => s.store === 'הנמל') || {};
+  const hatib = data.stores.find(s => s.store === 'חטיב') || {};
+  const combined = data.combined || {};
+  // Add food data to combined
+  combined.food_cost_net = data.food_vendors ? data.food_vendors.reduce((s,v) => s+v.amount, 0) : hanmal.food_cost_net || 0;
+  combined.food_cost_pct = combined.food_pct;
+
+  // COMBINED
+  renderKPIs(document.getElementById('comb-kpis'), combined, true);
+  renderCosts(document.getElementById('comb-costs'), combined);
+  renderStoresCompare(document.getElementById('comb-stores'), data.stores);
+  renderInvBanner(document.getElementById('comb-inv-banner'), data.last_invoice || hanmal.last_invoice);
+  renderVendors(document.getElementById('comb-vendors'), data.food_vendors || hanmal.vendors);
+
+  // HANMAL
+  renderKPIs(document.getElementById('hanmal-kpis'), hanmal, false);
+  renderCosts(document.getElementById('hanmal-costs'), hanmal);
+  renderChart(document.getElementById('hanmal-chart'), hanmal.daily_sales, 'מכירות יומיות — הנמל');
+  renderWorkers(document.getElementById('hanmal-workers'), hanmal.workers);
+
+  // HATIB
+  renderKPIs(document.getElementById('hatib-kpis'), hatib, false);
+  renderCosts(document.getElementById('hatib-costs'), hatib);
+  renderChart(document.getElementById('hatib-chart'), hatib.daily_sales, 'מכירות יומיות — חטיב');
+  renderWorkers(document.getElementById('hatib-workers'), hatib.workers);
+
+  // Show current tab
+  document.getElementById('panel-' + currentTab).style.display = 'block';
+}
+
+// SYNC
+async function syncNow() {
+  const btn = document.getElementById('sync-btn');
+  btn.classList.add('loading');
+  document.getElementById('sync-icon').textContent = '⟳';
+  await loadData();
+  btn.classList.remove('loading');
+  document.getElementById('sync-icon').textContent = '↻';
+}
+
+// AUTO LOAD
+if (localStorage.getItem(ACCESS_KEY) === '1') loadData();
+</script>
+</body>
+</html>
