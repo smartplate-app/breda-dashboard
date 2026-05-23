@@ -217,6 +217,9 @@
     <div class="kpi-grid" id="hanmal-kpis"></div>
     <div id="hanmal-costs"></div>
     <div id="hanmal-chart"></div>
+    <div class="vendors-title" style="margin-top:6px;">עלות מזון — ספקים</div>
+    <div id="hanmal-inv-banner"></div>
+    <div class="vendors-grid" id="hanmal-vendors"></div>
     <div class="section-title">עובדים</div>
     <div id="hanmal-workers" class="workers-list"></div>
   </div>
@@ -226,6 +229,9 @@
     <div class="kpi-grid" id="hatib-kpis"></div>
     <div id="hatib-costs"></div>
     <div id="hatib-chart"></div>
+    <div class="vendors-title" style="margin-top:6px;">עלות מזון — ספקים</div>
+    <div id="hatib-inv-banner"></div>
+    <div class="vendors-grid" id="hatib-vendors"></div>
     <div class="section-title">עובדים</div>
     <div id="hatib-workers" class="workers-list"></div>
   </div>
@@ -458,26 +464,40 @@ function renderAll(data) {
   const hatib = data.stores.find(s => s.store === 'חטיב') || {};
   const combined = data.combined || {};
   // Add food data to combined
-  combined.food_cost_net = data.food_vendors ? data.food_vendors.reduce((s,v) => s+v.amount, 0) : hanmal.food_cost_net || 0;
-  combined.food_cost_pct = combined.food_pct;
+  combined.food_cost_net = data.combined ? data.combined.food_cost_net : ((hanmal.food_cost_net||0)+(hatib.food_cost_net||0));
+  combined.food_cost_pct = combined.food_pct || (combined.sales_net > 0 ? Math.round(combined.food_cost_net / combined.sales_net * 1000)/10 : 0);
+
+  // מיזוג vendors משתי חנויות
+  const allVendorMap = {};
+  [...(hanmal.vendors||[]), ...(hatib.vendors||[])].forEach(v => {
+    if (!allVendorMap[v.name]) allVendorMap[v.name] = {name: v.name, amount: 0, orders: 0};
+    allVendorMap[v.name].amount += v.amount || 0;
+    allVendorMap[v.name].orders += v.orders || 0;
+  });
+  const combinedVendors = Object.values(allVendorMap).sort((a,b)=>b.amount-a.amount);
+  const lastInvoice = data.stores.flatMap(s=>s.vendors||[]).sort((a,b)=>b.amount-a.amount)[0];
 
   // COMBINED
   renderKPIs(document.getElementById('comb-kpis'), combined, true);
   renderCosts(document.getElementById('comb-costs'), combined);
   renderStoresCompare(document.getElementById('comb-stores'), data.stores);
-  renderInvBanner(document.getElementById('comb-inv-banner'), data.last_invoice || hanmal.last_invoice);
-  renderVendors(document.getElementById('comb-vendors'), data.food_vendors || hanmal.vendors);
+  renderInvBanner(document.getElementById('comb-inv-banner'), lastInvoice ? {supplier: lastInvoice.name, amount: lastInvoice.amount} : null);
+  renderVendors(document.getElementById('comb-vendors'), combinedVendors);
 
   // HANMAL
   renderKPIs(document.getElementById('hanmal-kpis'), hanmal, false);
   renderCosts(document.getElementById('hanmal-costs'), hanmal);
   renderChart(document.getElementById('hanmal-chart'), hanmal.daily_sales, 'מכירות יומיות — הנמל');
+  renderInvBanner(document.getElementById('hanmal-inv-banner'), hanmal.last_invoice);
+  renderVendors(document.getElementById('hanmal-vendors'), hanmal.vendors);
   renderWorkers(document.getElementById('hanmal-workers'), hanmal.workers);
 
   // HATIB
   renderKPIs(document.getElementById('hatib-kpis'), hatib, false);
   renderCosts(document.getElementById('hatib-costs'), hatib);
   renderChart(document.getElementById('hatib-chart'), hatib.daily_sales, 'מכירות יומיות — חטיב');
+  renderInvBanner(document.getElementById('hatib-inv-banner'), hatib.last_invoice);
+  renderVendors(document.getElementById('hatib-vendors'), hatib.vendors);
   renderWorkers(document.getElementById('hatib-workers'), hatib.workers);
 
   // Show current tab
