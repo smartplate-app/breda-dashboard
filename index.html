@@ -122,14 +122,24 @@
   .store-compare-row { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 3px; }
   .store-compare-row span:last-child { font-weight: 600; }
 
-  /* DAILY CHART */
-  .chart-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
-  .chart-title { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-  .chart-bars { display: flex; align-items: flex-end; gap: 3px; height: 80px; overflow-x: auto; padding-bottom: 4px; }
-  .chart-bar-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; min-width: 22px; }
-  .chart-bar { width: 18px; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 4px; transition: height 0.4s; opacity: 0.8; }
-  .chart-bar:hover { opacity: 1; }
-  .chart-date { font-size: 0.55rem; color: var(--muted); margin-top: 3px; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); height: 22px; }
+  /* DAILY CARDS */
+  .daily-section { margin-bottom: 16px; }
+  .daily-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; flex-wrap: wrap; gap: 4px; }
+  .daily-title { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .daily-summary { font-size: 0.75rem; color: var(--muted); }
+  .days-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  @media (min-width: 500px) { .days-grid { grid-template-columns: repeat(5, 1fr); } }
+  @media (min-width: 700px) { .days-grid { grid-template-columns: repeat(7, 1fr); } }
+  .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; display: flex; flex-direction: column; gap: 5px; transition: border-color .2s; }
+  .day-card:hover { border-color: var(--accent); }
+  .day-card.weekend { background: #1e1a14; border-color: #3a3020; }
+  .day-card.top-day { border-color: rgba(34,197,94,0.4); }
+  .day-header { display: flex; justify-content: space-between; align-items: center; }
+  .day-dow { font-size: 0.7rem; color: var(--muted); font-weight: 600; }
+  .day-num { font-size: 0.65rem; color: var(--muted); }
+  .day-bar-wrap { background: var(--border); border-radius: 3px; height: 4px; overflow: hidden; }
+  .day-bar { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+  .day-sales { font-size: 0.82rem; font-weight: 700; text-align: center; white-space: nowrap; }
 
   /* WORKERS */
   .workers-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
@@ -191,25 +201,13 @@
   </header>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('combined', this)">כולל</div>
-    <div class="tab" onclick="switchTab('hanmal', this)">הנמל</div>
+    <div class="tab active" onclick="switchTab('hanmal', this)">הנמל</div>
     <div class="tab" onclick="switchTab('hatib', this)">חטיב</div>
   </div>
 
   <div id="loading">
     <div class="spinner"></div>
     <div>טוען נתונים חיים...</div>
-  </div>
-
-  <!-- COMBINED PANEL -->
-  <div id="panel-combined" class="panel" style="display:none;">
-    <div class="kpi-grid" id="comb-kpis"></div>
-    <div id="comb-costs"></div>
-    <div class="stores-compare" id="comb-stores"></div>
-    <div class="divider"></div>
-    <div class="vendors-title">עלות מזון — ספקים</div>
-    <div id="comb-inv-banner"></div>
-    <div class="vendors-grid" id="comb-vendors"></div>
   </div>
 
   <!-- HANMAL PANEL -->
@@ -278,7 +276,7 @@ if (localStorage.getItem(ACCESS_KEY) === '1') {
 }
 
 // TABS
-let currentTab = 'combined';
+let currentTab = 'hanmal';
 function switchTab(name, el) {
   currentTab = name;
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -386,21 +384,45 @@ function renderVendors(container, vendors) {
   `).join('');
 }
 
-// RENDER CHART
+// RENDER CHART — daily sales cards
 function renderChart(container, dailySales, title) {
   if (!dailySales || dailySales.length === 0) { container.innerHTML = ''; return; }
   const max = Math.max(...dailySales.map(d => d.sales));
-  const bars = dailySales.map(d => {
-    const h = max > 0 ? Math.max(4, Math.round((d.sales / max) * 76)) : 4;
-    const day = d.date ? d.date.split('-')[2] : '';
-    return `<div class="chart-bar-wrap"><div class="chart-bar" style="height:${h}px" title="${d.date}: ${fmt(d.sales)}"></div><div class="chart-date">${day}</div></div>`;
+  const avg = dailySales.reduce((s,d) => s+d.sales, 0) / dailySales.length;
+  const total = dailySales.reduce((s,d) => s+d.sales, 0);
+
+  const dayNames = ['א','ב','ג','ד','ה','ו','ש'];
+  const monthNames = ['','ינו','פבר','מרץ','אפר','מאי','יוני','יולי','אוג','ספט','אוק','נוב','דצמ'];
+
+  const cards = dailySales.map(d => {
+    const dateObj = new Date(d.date + 'T12:00:00');
+    const dayNum = d.date ? d.date.split('-')[2] : '';
+    const monthNum = d.date ? parseInt(d.date.split('-')[1]) : 0;
+    const dow = dayNames[dateObj.getDay()];
+    const isWeekend = dateObj.getDay() === 5 || dateObj.getDay() === 6;
+    const isTop = d.sales >= max * 0.9;
+    const isLow = d.sales < avg * 0.6;
+    const barPct = max > 0 ? Math.round((d.sales / max) * 100) : 0;
+    const color = isTop ? 'var(--green)' : isLow ? 'var(--red)' : 'var(--accent)';
+    return \`<div class="day-card \${isWeekend ? 'weekend' : ''} \${isTop ? 'top-day' : ''}">
+      <div class="day-header">
+        <span class="day-dow">\${dow}'</span>
+        <span class="day-num">\${parseInt(dayNum)}.\${monthNames[monthNum]}</span>
+      </div>
+      <div class="day-bar-wrap"><div class="day-bar" style="width:\${barPct}%;background:\${color}"></div></div>
+      <div class="day-sales" style="color:\${color}">\${fmt(d.sales)}</div>
+    </div>\`;
   }).join('');
-  container.innerHTML = `
-    <div class="chart-wrap">
-      <div class="chart-title">${title || 'מכירות יומיות'}</div>
-      <div class="chart-bars">${bars}</div>
+
+  container.innerHTML = \`
+    <div class="daily-section">
+      <div class="daily-header">
+        <span class="daily-title">\${title || 'מכירות יומיות'}</span>
+        <span class="daily-summary">סה"כ \${fmt(total)} | ממוצע \${fmt(Math.round(avg))}/יום</span>
+      </div>
+      <div class="days-grid">\${cards}</div>
     </div>
-  `;
+  \`;
 }
 
 // RENDER WORKERS
@@ -462,27 +484,6 @@ function renderAll(data) {
 
   const hanmal = data.stores.find(s => s.store === 'הנמל') || {};
   const hatib = data.stores.find(s => s.store === 'חטיב') || {};
-  const combined = data.combined || {};
-  // Add food data to combined
-  combined.food_cost_net = data.combined ? data.combined.food_cost_net : ((hanmal.food_cost_net||0)+(hatib.food_cost_net||0));
-  combined.food_cost_pct = combined.food_pct || (combined.sales_net > 0 ? Math.round(combined.food_cost_net / combined.sales_net * 1000)/10 : 0);
-
-  // מיזוג vendors משתי חנויות
-  const allVendorMap = {};
-  [...(hanmal.vendors||[]), ...(hatib.vendors||[])].forEach(v => {
-    if (!allVendorMap[v.name]) allVendorMap[v.name] = {name: v.name, amount: 0, orders: 0};
-    allVendorMap[v.name].amount += v.amount || 0;
-    allVendorMap[v.name].orders += v.orders || 0;
-  });
-  const combinedVendors = Object.values(allVendorMap).sort((a,b)=>b.amount-a.amount);
-  const lastInvoice = data.stores.flatMap(s=>s.vendors||[]).sort((a,b)=>b.amount-a.amount)[0];
-
-  // COMBINED
-  renderKPIs(document.getElementById('comb-kpis'), combined, true);
-  renderCosts(document.getElementById('comb-costs'), combined);
-  renderStoresCompare(document.getElementById('comb-stores'), data.stores);
-  renderInvBanner(document.getElementById('comb-inv-banner'), lastInvoice ? {supplier: lastInvoice.name, amount: lastInvoice.amount} : null);
-  renderVendors(document.getElementById('comb-vendors'), combinedVendors);
 
   // HANMAL
   renderKPIs(document.getElementById('hanmal-kpis'), hanmal, false);
