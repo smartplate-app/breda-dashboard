@@ -41,7 +41,7 @@
   .pw-sent { color: var(--green); font-size: 0.82rem; margin-top: 8px; display: none; }
 
   /* LAYOUT */
-  #app { display: none; }
+  #app { display: block; }
   header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .logo { font-size: 1.5rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
   .header-meta { display: flex; align-items: center; gap: 12px; }
@@ -169,7 +169,7 @@
 <body>
 
 <!-- PAYWALL -->
-<div id="paywall">
+<div id="paywall" style="display:none">
   <div class="pw-box">
     <div class="pw-logo">Breada Bakery</div>
     <div class="pw-sub">דשבורד תפעולי</div>
@@ -246,7 +246,7 @@ function checkPW() {
   const val = document.getElementById('pw-input').value.trim();
   if (val.toUpperCase() === VALID_CODE.toUpperCase()) {
     localStorage.setItem(ACCESS_KEY, '1');
-    document.getElementById('paywall').style.display = 'none';
+    // paywall removed
     const appEl = document.getElementById('app');
     appEl.style.display = 'block';
     appEl.style.visibility = 'visible';
@@ -275,12 +275,7 @@ function sendReq() {
   document.getElementById('pw-sent').style.display = 'block';
 }
 
-if (localStorage.getItem(ACCESS_KEY) === '1') {
-  document.getElementById('paywall').style.display = 'none';
-  const appEl = document.getElementById('app');
-  appEl.style.display = 'block';
-  appEl.style.visibility = 'visible';
-}
+// no paywall
 
 // TABS
 let currentTab = 'hanmal';
@@ -529,7 +524,7 @@ async function syncNow() {
 }
 
 // AUTO LOAD
-if (localStorage.getItem(ACCESS_KEY) === '1') loadData();
+loadData();
 </script>
 </body>
 </html>
