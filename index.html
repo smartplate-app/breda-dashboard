@@ -134,31 +134,31 @@
 
 <!-- Tabs -->
 <div class="tabs" id="main-tabs" style="display:none">
-  <div class="tab active" onclick="switchTab('may')">מאי 2026 — חודש מלא</div>
-  <div class="tab" onclick="switchTab('jun')">יוני 2026 — MTD</div>
+  <div class="tab active" onclick="switchTab('jul')">יוני 2026 — חודש מלא</div>
+  <div class="tab" onclick="switchTab('jul')">יולי 2026 — MTD</div>
 </div>
 
 <!-- Main content -->
 <div class="main" id="main-content" style="display:none">
 
   <!-- MAY panel -->
-  <div class="month-panel active" id="panel-may">
+  <div class="month-panel active" id="panel-jul">
     <div class="store-tabs">
-      <div class="store-tab active" onclick="switchStore('may','combined')">🏢 שני הסניפים</div>
-      <div class="store-tab" onclick="switchStore('may','hanmal')">📍 הנמל</div>
-      <div class="store-tab" onclick="switchStore('may','hatib')">📍 חטיב</div>
+      <div class="store-tab active" onclick="switchStore('jul','combined')">🏢 שני הסניפים</div>
+      <div class="store-tab" onclick="switchStore('jul','hanmal')">📍 הנמל</div>
+      <div class="store-tab" onclick="switchStore('jul','hatib')">📍 חטיב</div>
     </div>
-    <div id="may-content"></div>
+    <div id="jun-content"></div>
   </div>
 
   <!-- JUN panel -->
-  <div class="month-panel" id="panel-jun">
+  <div class="month-panel" id="panel-jul">
     <div class="store-tabs">
-      <div class="store-tab active" onclick="switchStore('jun','combined')">🏢 שני הסניפים</div>
-      <div class="store-tab" onclick="switchStore('jun','hanmal')">📍 הנמל</div>
-      <div class="store-tab" onclick="switchStore('jun','hatib')">📍 חטיב</div>
+      <div class="store-tab active" onclick="switchStore('jul','combined')">🏢 שני הסניפים</div>
+      <div class="store-tab" onclick="switchStore('jul','hanmal')">📍 הנמל</div>
+      <div class="store-tab" onclick="switchStore('jul','hatib')">📍 חטיב</div>
     </div>
-    <div id="jun-content"></div>
+    <div id="jul-content"></div>
   </div>
 
 </div>
@@ -167,7 +167,684 @@
 const CODES = ['BREDA2026','BREADA2026','SMARTPLATE'];
 const SYNC_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/breadaSync';
 
-let DATA = null;
+let DATA = {
+  "months": {
+    "jun": {
+      "stores": [
+        {
+          "store": "הנמל",
+          "sales_gross": 739124,
+          "sales_net": 626376,
+          "tips": 0,
+          "tips_pct": 0,
+          "wolt_sales": 83981,
+          "wolt_pct": 11.4,
+          "labor_cost": 154429,
+          "labor_pct": 24.7,
+          "labor_hours": 2767,
+          "food_cost_net": 139412.24,
+          "food_cost_pct": 22.3,
+          "total_pct": 47.0,
+          "workers": [
+            {
+              "name": "43 דילארה איסמאילובה",
+              "role": "מנהל חנות",
+              "hours": 10,
+              "cost": 21600
+            },
+            {
+              "name": "Abraham 347",
+              "role": "שטיפה בוקר",
+              "hours": 187.8,
+              "cost": 10412
+            },
+            {
+              "name": "317 Anastasiya Kurnosov",
+              "role": "מטבח בוקר",
+              "hours": 181,
+              "cost": 8234
+            },
+            {
+              "name": "396 אמליה סריאן",
+              "role": "קופה",
+              "hours": 180,
+              "cost": 8115
+            },
+            {
+              "name": "312 יוליה סקורנינה",
+              "role": "מטבח בוקר",
+              "hours": 143.6,
+              "cost": 6684
+            },
+            {
+              "name": "90 נטליה קוסקובסקי",
+              "role": "משרד",
+              "hours": 139.1,
+              "cost": 6650
+            },
+            {
+              "name": "360 איוון פאוקמן",
+              "role": "שטיפה בוקר",
+              "hours": 111.6,
+              "cost": 6461
+            },
+            {
+              "name": "366 אנסטסיה אוסנייה",
+              "role": "בריסטה",
+              "hours": 127.4,
+              "cost": 6425
+            },
+            {
+              "name": "394 איתי ברכמן",
+              "role": "קופה",
+              "hours": 141.4,
+              "cost": 6040
+            },
+            {
+              "name": "406 איגור אנטיפייב",
+              "role": "מטבח בוקר",
+              "hours": 126.8,
+              "cost": 5836
+            },
+            {
+              "name": "403  מיאר מטר",
+              "role": "קופה",
+              "hours": 118.4,
+              "cost": 5425
+            },
+            {
+              "name": "272 מריה אברמוב",
+              "role": "קופה",
+              "hours": 102.5,
+              "cost": 4890
+            },
+            {
+              "name": "332 ראן כיאל",
+              "role": "בריסטה",
+              "hours": 91.8,
+              "cost": 4594
+            },
+            {
+              "name": "386 אנסטסיה קוזצנקו",
+              "role": "מטבח בוקר",
+              "hours": 101,
+              "cost": 4426
+            },
+            {
+              "name": "358 קארלא גובראן",
+              "role": "ראנר בוקר",
+              "hours": 90,
+              "cost": 4264
+            },
+            {
+              "name": "377 מוקדס איסלמוב",
+              "role": "קופה",
+              "hours": 89,
+              "cost": 4075
+            },
+            {
+              "name": "378 לובאנא סמארה",
+              "role": "קופה",
+              "hours": 86.2,
+              "cost": 3908
+            },
+            {
+              "name": "219 אנגי מורגן",
+              "role": "מטבח בוקר",
+              "hours": 66.5,
+              "cost": 3483
+            },
+            {
+              "name": "184 נרדין בשותי",
+              "role": "בריסטה",
+              "hours": 60.3,
+              "cost": 3415
+            },
+            {
+              "name": "395 דימה שיתי",
+              "role": "קופה",
+              "hours": 55.7,
+              "cost": 2631
+            }
+          ],
+          "vendors": [
+            {
+              "name": "הנמל 6",
+              "amount": 106554.24,
+              "orders": 16
+            },
+            {
+              "name": "גן המלך",
+              "amount": 7251.8,
+              "orders": 15
+            },
+            {
+              "name": "ישרקו",
+              "amount": 6424.41,
+              "orders": 2
+            }
+          ],
+          "daily_sales": [
+            {
+              "date": "2026-06-01",
+              "sales": 18683
+            },
+            {
+              "date": "2026-06-02",
+              "sales": 19356
+            },
+            {
+              "date": "2026-06-03",
+              "sales": 21344
+            },
+            {
+              "date": "2026-06-04",
+              "sales": 21605
+            },
+            {
+              "date": "2026-06-05",
+              "sales": 42958
+            },
+            {
+              "date": "2026-06-06",
+              "sales": 36072
+            },
+            {
+              "date": "2026-06-07",
+              "sales": 20181
+            },
+            {
+              "date": "2026-06-08",
+              "sales": 15758
+            },
+            {
+              "date": "2026-06-09",
+              "sales": 18684
+            },
+            {
+              "date": "2026-06-10",
+              "sales": 20179
+            },
+            {
+              "date": "2026-06-11",
+              "sales": 21879
+            },
+            {
+              "date": "2026-06-12",
+              "sales": 39871
+            },
+            {
+              "date": "2026-06-13",
+              "sales": 37660
+            },
+            {
+              "date": "2026-06-14",
+              "sales": 20927
+            },
+            {
+              "date": "2026-06-15",
+              "sales": 18518
+            },
+            {
+              "date": "2026-06-16",
+              "sales": 17372
+            },
+            {
+              "date": "2026-06-17",
+              "sales": 19656
+            },
+            {
+              "date": "2026-06-18",
+              "sales": 20744
+            },
+            {
+              "date": "2026-06-19",
+              "sales": 41691
+            },
+            {
+              "date": "2026-06-20",
+              "sales": 31700
+            },
+            {
+              "date": "2026-06-21",
+              "sales": 20201
+            },
+            {
+              "date": "2026-06-22",
+              "sales": 19819
+            },
+            {
+              "date": "2026-06-23",
+              "sales": 17933
+            },
+            {
+              "date": "2026-06-24",
+              "sales": 20892
+            },
+            {
+              "date": "2026-06-25",
+              "sales": 19383
+            },
+            {
+              "date": "2026-06-26",
+              "sales": 41437
+            },
+            {
+              "date": "2026-06-27",
+              "sales": 37072
+            },
+            {
+              "date": "2026-06-28",
+              "sales": 20339
+            },
+            {
+              "date": "2026-06-29",
+              "sales": 17844
+            },
+            {
+              "date": "2026-06-30",
+              "sales": 19366
+            }
+          ]
+        },
+        {
+          "store": "חטיב",
+          "sales_gross": 119055,
+          "sales_net": 100894,
+          "tips": 0,
+          "tips_pct": 0,
+          "wolt_sales": 0,
+          "wolt_pct": 0.0,
+          "labor_cost": 23936,
+          "labor_pct": 23.7,
+          "labor_hours": 538.3,
+          "food_cost_net": 10653.88,
+          "food_cost_pct": 10.6,
+          "total_pct": 34.3,
+          "workers": [
+            {
+              "name": "gilai tsorom 79",
+              "role": "בלת\"מ",
+              "hours": 247.3,
+              "cost": 11067
+            },
+            {
+              "name": "216 דן איגרא",
+              "role": "בלת\"מ",
+              "hours": 149.1,
+              "cost": 6566
+            },
+            {
+              "name": "400 עלא חורי",
+              "role": "בלת\"מ",
+              "hours": 111.5,
+              "cost": 4982
+            },
+            {
+              "name": "216 דן איגרא",
+              "role": "מטבח",
+              "hours": 21.5,
+              "cost": 922
+            },
+            {
+              "name": "400 עלא חורי",
+              "role": "מטבח",
+              "hours": 9,
+              "cost": 398
+            }
+          ],
+          "vendors": [
+            {
+              "name": "הנמל 6",
+              "amount": 8842.33,
+              "orders": 11
+            },
+            {
+              "name": "מחלבות גד",
+              "amount": 955.23,
+              "orders": 1
+            }
+          ],
+          "daily_sales": [
+            {
+              "date": "2026-06-01",
+              "sales": 3456
+            },
+            {
+              "date": "2026-06-02",
+              "sales": 4550
+            },
+            {
+              "date": "2026-06-03",
+              "sales": 2765
+            },
+            {
+              "date": "2026-06-04",
+              "sales": 3802
+            },
+            {
+              "date": "2026-06-05",
+              "sales": 8664
+            },
+            {
+              "date": "2026-06-07",
+              "sales": 4596
+            },
+            {
+              "date": "2026-06-08",
+              "sales": 2795
+            },
+            {
+              "date": "2026-06-09",
+              "sales": 3767
+            },
+            {
+              "date": "2026-06-10",
+              "sales": 3896
+            },
+            {
+              "date": "2026-06-11",
+              "sales": 3137
+            },
+            {
+              "date": "2026-06-12",
+              "sales": 10805
+            },
+            {
+              "date": "2026-06-14",
+              "sales": 3130
+            },
+            {
+              "date": "2026-06-15",
+              "sales": 3489
+            },
+            {
+              "date": "2026-06-16",
+              "sales": 3818
+            },
+            {
+              "date": "2026-06-17",
+              "sales": 4673
+            },
+            {
+              "date": "2026-06-18",
+              "sales": 5231
+            },
+            {
+              "date": "2026-06-19",
+              "sales": 9344
+            },
+            {
+              "date": "2026-06-21",
+              "sales": 3043
+            },
+            {
+              "date": "2026-06-22",
+              "sales": 3645
+            },
+            {
+              "date": "2026-06-23",
+              "sales": 4590
+            },
+            {
+              "date": "2026-06-24",
+              "sales": 3751
+            },
+            {
+              "date": "2026-06-25",
+              "sales": 4331
+            },
+            {
+              "date": "2026-06-26",
+              "sales": 8093
+            },
+            {
+              "date": "2026-06-28",
+              "sales": 3425
+            },
+            {
+              "date": "2026-06-29",
+              "sales": 3779
+            },
+            {
+              "date": "2026-06-30",
+              "sales": 2480
+            }
+          ]
+        }
+      ],
+      "combined": {
+        "sales_gross": 858179,
+        "sales_net": 727270,
+        "wolt_sales": 83981,
+        "wolt_pct": 9.8,
+        "labor_cost": 178365,
+        "labor_pct": 24.5,
+        "food_cost_net": 150066.12,
+        "food_pct": 20.6,
+        "total_pct": 45.1
+      }
+    },
+    "jul": {
+      "stores": [
+        {
+          "store": "הנמל",
+          "sales_gross": 84624,
+          "sales_net": 71715,
+          "tips": 0,
+          "tips_pct": 0,
+          "wolt_sales": 10911,
+          "wolt_pct": 12.9,
+          "labor_cost": 11585,
+          "labor_pct": 16.2,
+          "labor_hours": 271.9,
+          "food_cost_net": 0,
+          "food_cost_pct": 0.0,
+          "total_pct": 16.2,
+          "workers": [
+            {
+              "name": "Abraham 347",
+              "role": "שטיפה בוקר",
+              "hours": 21.8,
+              "cost": 1117
+            },
+            {
+              "name": "405 טומי פרל",
+              "role": "ראנר בוקר",
+              "hours": 22.3,
+              "cost": 941
+            },
+            {
+              "name": "366 אנסטסיה אוסנייה",
+              "role": "בריסטה",
+              "hours": 16.7,
+              "cost": 774
+            },
+            {
+              "name": "332 ראן כיאל",
+              "role": "בריסטה",
+              "hours": 15.9,
+              "cost": 737
+            },
+            {
+              "name": "403  מיאר מטר",
+              "role": "קופה",
+              "hours": 17,
+              "cost": 718
+            },
+            {
+              "name": "406 איגור אנטיפייב",
+              "role": "מטבח בוקר",
+              "hours": 16.4,
+              "cost": 696
+            },
+            {
+              "name": "386 אנסטסיה קוזצנקו",
+              "role": "מטבח בוקר",
+              "hours": 16,
+              "cost": 675
+            },
+            {
+              "name": "394 איתי ברכמן",
+              "role": "קופה",
+              "hours": 15.7,
+              "cost": 664
+            },
+            {
+              "name": "312 יוליה סקורנינה",
+              "role": "מטבח בוקר",
+              "hours": 15.6,
+              "cost": 663
+            },
+            {
+              "name": "396 אמליה סריאן",
+              "role": "קופה",
+              "hours": 15.7,
+              "cost": 661
+            },
+            {
+              "name": "395 דימה שיתי",
+              "role": "קופה",
+              "hours": 14.9,
+              "cost": 626
+            },
+            {
+              "name": "317 Anastasiya Kurnosov",
+              "role": "מטבח בוקר",
+              "hours": 12.1,
+              "cost": 512
+            },
+            {
+              "name": "90 נטליה קוסקובסקי",
+              "role": "משרד",
+              "hours": 7.7,
+              "cost": 386
+            },
+            {
+              "name": "90 נטליה קוסקובסקי",
+              "role": "בלת\"מ",
+              "hours": 6.9,
+              "cost": 386
+            },
+            {
+              "name": "219 אנגי מורגן",
+              "role": "מטבח בוקר",
+              "hours": 8.8,
+              "cost": 381
+            },
+            {
+              "name": "358 קארלא גובראן",
+              "role": "קופה",
+              "hours": 8,
+              "cost": 337
+            },
+            {
+              "name": "411 רחל שיפחן",
+              "role": "קופה",
+              "hours": 8,
+              "cost": 337
+            },
+            {
+              "name": "378 לובאנא סמארה",
+              "role": "קופה",
+              "hours": 7.9,
+              "cost": 333
+            },
+            {
+              "name": "377 מוקדס איסלמוב",
+              "role": "קופה",
+              "hours": 7.7,
+              "cost": 323
+            },
+            {
+              "name": "272 מריה אברמוב",
+              "role": "קופה",
+              "hours": 7.5,
+              "cost": 316
+            }
+          ],
+          "vendors": [],
+          "daily_sales": [
+            {
+              "date": "2026-07-01",
+              "sales": 20167
+            },
+            {
+              "date": "2026-07-02",
+              "sales": 22515
+            },
+            {
+              "date": "2026-07-03",
+              "sales": 41942
+            }
+          ]
+        },
+        {
+          "store": "חטיב",
+          "sales_gross": 18475,
+          "sales_net": 15657,
+          "tips": 0,
+          "tips_pct": 0,
+          "wolt_sales": 0,
+          "wolt_pct": 0.0,
+          "labor_cost": 3088,
+          "labor_pct": 19.7,
+          "labor_hours": 69.6,
+          "food_cost_net": 0,
+          "food_cost_pct": 0.0,
+          "total_pct": 19.7,
+          "workers": [
+            {
+              "name": "gilai tsorom 79",
+              "role": "בלת\"מ",
+              "hours": 29.5,
+              "cost": 1332
+            },
+            {
+              "name": "216 דן איגרא",
+              "role": "בלת\"מ",
+              "hours": 25.1,
+              "cost": 1101
+            },
+            {
+              "name": "400 עלא חורי",
+              "role": "בלת\"מ",
+              "hours": 15,
+              "cost": 656
+            }
+          ],
+          "vendors": [],
+          "daily_sales": [
+            {
+              "date": "2026-07-01",
+              "sales": 3869
+            },
+            {
+              "date": "2026-07-02",
+              "sales": 4932
+            },
+            {
+              "date": "2026-07-03",
+              "sales": 9674
+            }
+          ]
+        }
+      ],
+      "combined": {
+        "sales_gross": 103099,
+        "sales_net": 87372,
+        "wolt_sales": 10911,
+        "wolt_pct": 10.6,
+        "labor_cost": 14673,
+        "labor_pct": 16.8,
+        "food_cost_net": 0,
+        "food_pct": 0.0,
+        "total_pct": 16.8
+      }
+    }
+  },
+  "last_updated": "2026-07-04T05:04:42.190782Z"
+};
 let currentStore = { may: 'combined', jun: 'combined' };
 
 function checkCode() {
@@ -316,7 +993,7 @@ function buildContent(month, storeKey, d) {
 }
 
 function switchTab(month) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === (month==='may'?0:1)));
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === (month==='jun'?0:1)));
   document.querySelectorAll('.month-panel').forEach(p => p.classList.remove('active'));
   document.getElementById(`panel-${month}`).classList.add('active');
 }
@@ -470,6 +1147,40 @@ async function syncNow() {
   btn.disabled = false;
   btn.innerHTML = '<span>🔄</span> סנכרן עכשיו';
 }
+
+const JUN_2026 = {
+  "הנמל": {
+    "sales_gross": 504838,
+    "sales_net": 427829,
+    "labor_cost": 78163,
+    "labor_pct": 18.3,
+    "food_cost_net": 221582.39,
+    "food_cost_pct": 51.8,
+    "wolt_sales": 55386,
+    "wolt_pct": 11,
+    "total_pct": 70.1
+  },
+  "חטיב": {
+    "sales_gross": 81918,
+    "sales_net": 69422,
+    "labor_cost": 14516,
+    "labor_pct": 20.9,
+    "food_cost_net": 19846.56,
+    "food_cost_pct": 28.6,
+    "wolt_sales": 0,
+    "wolt_pct": 0,
+    "total_pct": 49.5
+  },
+  "combined": {
+    "sales_gross": 586756,
+    "sales_net": 497251,
+    "labor_cost": 92679,
+    "food_cost": 241428.95,
+    "wolt_sales": 55386,
+    "total_pct": 67.2
+  },
+  "updated": "2026-06-21T21:31:21Z"
+};
 </script>
 </body>
 </html>
