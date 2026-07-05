@@ -1017,6 +1017,7 @@ async function loadDashboard() {
   try {
     const res = await fetch(SYNC_URL, { method: 'POST' });
     const raw = await res.json();
+    if (raw.error) throw new Error(raw.error);
 
     // Transform old format (single month) to new multi-month format
     // The new breadaSync returns {months:{may:{...}, jun:{...}}}
@@ -1035,7 +1036,9 @@ async function loadDashboard() {
     renderAll();
     document.getElementById('last-sync').textContent = 'עדכון אחרון: ' + new Date(raw.last_updated || Date.now()).toLocaleString('he-IL');
   } catch(e) {
-    document.getElementById('last-sync').textContent = 'שגיאה בטעינה — ' + e.message;
+    console.log("Fallback to embedded DATA due to error:", e);
+    renderAll();
+    document.getElementById('last-sync').textContent = 'מציג נתונים מקומיים (שגיאת רשת) — ' + e.message;
   } finally {
     document.getElementById('loading').classList.remove('show');
   }
