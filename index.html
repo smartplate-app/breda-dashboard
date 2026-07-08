@@ -455,7 +455,7 @@ let DATA = {
           "tips": 0,
           "tips_pct": 0,
           "wolt_sales": 0,
-          "wolt_pct": 0,
+          "wolt_pct": 0.0,
           "labor_cost": 23936,
           "labor_pct": 23.7,
           "labor_hours": 538.3,
@@ -618,30 +618,30 @@ let DATA = {
         "sales_gross": 858179,
         "sales_net": 727270,
         "wolt_sales": 83981,
-        "wolt_pct": 13.6,
+        "wolt_pct": 9.8,
         "labor_cost": 177331,
         "labor_pct": 24.4,
         "food_cost_net": 150066.12,
         "food_pct": 20.6,
-        "total_pct": null
+        "total_pct": 45.0
       }
     },
     "jul": {
       "stores": [
         {
           "store": "הנמל",
-          "sales_gross": 177318,
-          "sales_net": 150269,
+          "sales_gross": 195860,
+          "sales_net": 165983,
           "tips": 0,
           "tips_pct": 0,
-          "wolt_sales": 21931,
-          "wolt_pct": 12.4,
-          "labor_cost": 28405,
-          "labor_pct": 18.9,
-          "labor_hours": 575.4,
+          "wolt_sales": 24466,
+          "wolt_pct": 12.5,
+          "labor_cost": 31886,
+          "labor_pct": 19.2,
+          "labor_hours": 648.8,
           "food_cost_net": 0,
-          "food_cost_pct": 0,
-          "total_pct": 18.9,
+          "food_cost_pct": 0.0,
+          "total_pct": 19.2,
           "workers": [
             {
               "name": "360 איוון פאוקמן",
@@ -658,14 +658,32 @@ let DATA = {
             {
               "name": "Abraham 347",
               "role": "שטיפה בוקר",
-              "hours": 35.6,
-              "cost": 1827
+              "hours": 42.4,
+              "cost": 2173
             },
             {
               "name": "272 מריה אברמוב",
               "role": "קופה",
-              "hours": 37.4,
-              "cost": 1727
+              "hours": 43.2,
+              "cost": 1972
+            },
+            {
+              "name": "317 Anastasiya Kurnosov",
+              "role": "מטבח בוקר",
+              "hours": 40.7,
+              "cost": 1871
+            },
+            {
+              "name": "406 איגור אנטיפייב",
+              "role": "מטבח בוקר",
+              "hours": 39.7,
+              "cost": 1833
+            },
+            {
+              "name": "403  מיאר מטר",
+              "role": "קופה",
+              "hours": 43.4,
+              "cost": 1829
             },
             {
               "name": "396 אמליה סריאן",
@@ -674,22 +692,10 @@ let DATA = {
               "cost": 1694
             },
             {
-              "name": "403  מיאר מטר",
+              "name": "394 איתי ברכמן",
               "role": "קופה",
-              "hours": 36.4,
-              "cost": 1534
-            },
-            {
-              "name": "317 Anastasiya Kurnosov",
-              "role": "מטבח בוקר",
-              "hours": 32.4,
-              "cost": 1514
-            },
-            {
-              "name": "406 איגור אנטיפייב",
-              "role": "מטבח בוקר",
-              "hours": 31.3,
-              "cost": 1476
+              "hours": 37.4,
+              "cost": 1579
             },
             {
               "name": "386 אנסטסיה קוזצנקו",
@@ -698,28 +704,34 @@ let DATA = {
               "cost": 1384
             },
             {
+              "name": "377 מוקדס איסלמוב",
+              "role": "קופה",
+              "hours": 29,
+              "cost": 1380
+            },
+            {
+              "name": "395 דימה שיתי",
+              "role": "קופה",
+              "hours": 30.8,
+              "cost": 1301
+            },
+            {
               "name": "366 אנסטסיה אוסנייה",
               "role": "בריסטה",
               "hours": 24.1,
               "cost": 1278
             },
             {
-              "name": "394 איתי ברכמן",
-              "role": "קופה",
-              "hours": 29.9,
-              "cost": 1264
+              "name": "90 נטליה קוסקובסקי",
+              "role": "משרד",
+              "hours": 14.6,
+              "cost": 1030
             },
             {
-              "name": "377 מוקדס איסלמוב",
-              "role": "קופה",
-              "hours": 22.8,
-              "cost": 1118
-            },
-            {
-              "name": "395 דימה שיתי",
-              "role": "קופה",
-              "hours": 22.7,
-              "cost": 959
+              "name": "90 נטליה קוסקובסקי",
+              "role": "בלת\"מ",
+              "hours": 9.8,
+              "cost": 1030
             },
             {
               "name": "312 יוליה סקורנינה",
@@ -734,18 +746,6 @@ let DATA = {
               "cost": 941
             },
             {
-              "name": "90 נטליה קוסקובסקי",
-              "role": "משרד",
-              "hours": 14.6,
-              "cost": 901
-            },
-            {
-              "name": "90 נטליה קוסקובסקי",
-              "role": "בלת\"מ",
-              "hours": 9.8,
-              "cost": 901
-            },
-            {
               "name": "219 אנגי מורגן",
               "role": "מטבח בוקר",
               "hours": 16.2,
@@ -758,10 +758,10 @@ let DATA = {
               "cost": 778
             },
             {
-              "name": "414 ערין קסיס",
-              "role": "קופה",
-              "hours": 6.5,
-              "cost": 410
+              "name": "358 קארלא גובראן",
+              "role": "ראנר בוקר",
+              "hours": 13.4,
+              "cost": 566
             }
           ],
           "vendors": [],
@@ -793,35 +793,39 @@ let DATA = {
             {
               "date": "2026-07-07",
               "sales": 19474
+            },
+            {
+              "date": "2026-07-08",
+              "sales": 18542
             }
           ]
         },
         {
           "store": "חטיב",
-          "sales_gross": 28127,
-          "sales_net": 23836,
+          "sales_gross": 31632,
+          "sales_net": 26807,
           "tips": 0,
           "tips_pct": 0,
           "wolt_sales": 0,
-          "wolt_pct": 0,
-          "labor_cost": 5676,
-          "labor_pct": 23.8,
-          "labor_hours": 127.3,
+          "wolt_pct": 0.0,
+          "labor_cost": 6559,
+          "labor_pct": 24.5,
+          "labor_hours": 146.9,
           "food_cost_net": 0,
-          "food_cost_pct": 0,
-          "total_pct": 23.8,
+          "food_cost_pct": 0.0,
+          "total_pct": 24.5,
           "workers": [
             {
               "name": "gilai tsorom 79",
               "role": "בלת\"מ",
-              "hours": 59.2,
-              "cost": 2667
+              "hours": 69.2,
+              "cost": 3120
             },
             {
               "name": "216 דן איגרא",
               "role": "בלת\"מ",
-              "hours": 34.5,
-              "cost": 1520
+              "hours": 44.1,
+              "cost": 1949
             },
             {
               "name": "400 עלא חורי",
@@ -855,24 +859,28 @@ let DATA = {
             {
               "date": "2026-07-07",
               "sales": 3527
+            },
+            {
+              "date": "2026-07-08",
+              "sales": 3505
             }
           ]
         }
       ],
       "combined": {
-        "sales_gross": 205445,
-        "sales_net": 174105,
-        "wolt_sales": 21931,
-        "wolt_pct": 10.7,
-        "labor_cost": 34081,
-        "labor_pct": 19.6,
+        "sales_gross": 227492,
+        "sales_net": 192790,
+        "wolt_sales": 24466,
+        "wolt_pct": 10.8,
+        "labor_cost": 38445,
+        "labor_pct": 19.9,
         "food_cost_net": 0,
-        "food_pct": 0,
-        "total_pct": null
+        "food_pct": 0.0,
+        "total_pct": 19.9
       }
     }
   },
-  "last_updated": "2026-07-08T05:06:32.614Z"
+  "last_updated": "2026-07-08T21:35:03.080237Z"
 };
 let currentStore = { may: 'combined', jun: 'combined' };
 
