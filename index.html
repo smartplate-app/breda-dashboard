@@ -169,8 +169,8 @@ const SYNC_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/breadaSync';
 
 let DATA = {
   "months": {
-    "may": {},
     "jun": {
+      "month": "2026-06",
       "stores": [
         {
           "store": "הנמל",
@@ -185,7 +185,7 @@ let DATA = {
           "labor_hours": 2750,
           "food_cost_net": 139412.24,
           "food_cost_pct": 22.3,
-          "total_pct": 46.8,
+          "total_pct": 46.7,
           "workers": [
             {
               "name": "43 דילארה איסמאילובה",
@@ -617,16 +617,35 @@ let DATA = {
       "combined": {
         "sales_gross": 858179,
         "sales_net": 727270,
-        "wolt_sales": 83981,
-        "wolt_pct": 9.8,
         "labor_cost": 177331,
         "labor_pct": 24.4,
         "food_cost_net": 150066.12,
         "food_pct": 20.6,
-        "total_pct": 45.0
-      }
+        "wolt_sales": 83981,
+        "total_pct": 45.0,
+        "covers": 0
+      },
+      "food_vendors": [
+        {
+          "name": "הנמל 6",
+          "amount": 115396.57
+        },
+        {
+          "name": "גן המלך",
+          "amount": 7251.8
+        },
+        {
+          "name": "ישרקו",
+          "amount": 6424.41
+        },
+        {
+          "name": "מחלבות גד",
+          "amount": 955.23
+        }
+      ]
     },
     "jul": {
+      "month": "2026-07",
       "stores": [
         {
           "store": "הנמל",
@@ -870,19 +889,20 @@ let DATA = {
       "combined": {
         "sales_gross": 227492,
         "sales_net": 192790,
-        "wolt_sales": 24466,
-        "wolt_pct": 10.8,
         "labor_cost": 38445,
         "labor_pct": 19.9,
         "food_cost_net": 0,
         "food_pct": 0.0,
-        "total_pct": 19.9
-      }
+        "wolt_sales": 24466,
+        "total_pct": 19.9,
+        "covers": 0
+      },
+      "food_vendors": []
     }
   },
-  "last_updated": "2026-07-08T21:35:03.080237Z"
+  "last_updated": "2026-07-09T21:32:30.348162Z"
 };
-let currentStore = { may: 'combined', jun: 'combined' };
+let currentStore = { jun: 'combined', jul: 'combined' };
 
 function checkCode() {
   const v = document.getElementById('pw-input').value.trim().toUpperCase();
@@ -910,7 +930,7 @@ function buildContent(month, storeKey, d) {
   const hanmal = stores.find(s => s.store === 'הנמל');
   const hatib  = stores.find(s => s.store === 'חטיב');
   const comb   = d.months[month].combined;
-  const label  = month === 'may' ? 'מאי 2026' : 'יוני 2026 MTD';
+  const label  = month === 'jun' ? 'יוני 2026' : 'יולי 2026 MTD';
 
   let s, vendors, workers, dailySales;
   if (storeKey === 'combined') {
@@ -1175,8 +1195,8 @@ function buildFallbackData(raw) {
 }
 
 function renderAll() {
-  document.getElementById('may-content').innerHTML = buildContent('may', currentStore.may, DATA);
   document.getElementById('jun-content').innerHTML = buildContent('jun', currentStore.jun, DATA);
+  document.getElementById('jul-content').innerHTML = buildContent('jul', currentStore.jul, DATA);
 }
 
 async function syncNow() {
