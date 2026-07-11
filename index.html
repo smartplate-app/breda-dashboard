@@ -134,28 +134,34 @@
 
 <!-- Tabs -->
 <div class="tabs" id="main-tabs" style="display:none">
-  <div class="tab active" onclick="switchTab('jul')">יוני 2026 — חודש מלא</div>
-  <div class="tab" onclick="switchTab('jul')">יולי 2026 — MTD</div>
+  <div class="tab active" onclick="switchTab('jul')">יולי 2026 — MTD</div>
+  <div class="tab" onclick="switchTab('jun')">יוני 2026 — חודש מלא</div>
 </div>
 
 <!-- Main content -->
 <div class="main" id="main-content" style="display:none">
 
-  <!-- MAY panel -->
+  <!-- JUL panel -->
   <div class="month-panel active" id="panel-jul">
     <div class="store-tabs">
       <div class="store-tab active" onclick="switchStore('jul','combined')">🏢 שני הסניפים</div>
       <div class="store-tab" onclick="switchStore('jul','hanmal')">📍 הנמל</div>
       <div class="store-tab" onclick="switchStore('jul','hatib')">📍 חטיב</div>
     </div>
-    <div id="jun-content"></div>
+    <div id="jul-content"></div>
   </div>
 
   <!-- JUN panel -->
-  <div class="month-panel" id="panel-jul">
+  <div class="month-panel" id="panel-jun">
     <div class="store-tabs">
-      <div class="store-tab active" onclick="switchStore('jul','combined')">🏢 שני הסניפים</div>
-      <div class="store-tab" onclick="switchStore('jul','hanmal')">📍 הנמל</div>
+      <div class="store-tab active" onclick="switchStore('jun','combined')">🏢 שני הסניפים</div>
+      <div class="store-tab" onclick="switchStore('jun','hanmal')">📍 הנמל</div>
+      <div class="store-tab" onclick="switchStore('jun','hatib')">📍 חטיב</div>
+    </div>
+    <div id="jun-content"></div>
+  </div>
+
+</div>
       <div class="store-tab" onclick="switchStore('jul','hatib')">📍 חטיב</div>
     </div>
     <div id="jul-content"></div>
@@ -1110,7 +1116,7 @@ function buildContent(month, storeKey, d) {
 }
 
 function switchTab(month) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === (month==='jun'?0:1)));
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === (month==='jul'?0:1)));
   document.querySelectorAll('.month-panel').forEach(p => p.classList.remove('active'));
   document.getElementById(`panel-${month}`).classList.add('active');
 }
@@ -1127,34 +1133,18 @@ function switchStore(month, storeKey) {
 
 async function loadDashboard() {
   document.getElementById('loading').classList.add('show');
-  try {
-    const res = await fetch(SYNC_URL, { method: 'POST' });
-    const raw = await res.json();
-    if (raw.error) throw new Error(raw.error);
-
-    // Transform old format (single month) to new multi-month format
-    // The new breadaSync returns {months:{may:{...}, jun:{...}}}
-    // For now handle both formats
-    let data;
-    if (raw.months) {
-      data = raw;
+  
+  // By-passing failing Rosa backend — data is statically injected by the agent nightly
+  setTimeout(() => {
+    if (DATA) {
+      renderAll();
+      let lastUp = DATA.jul?.last_updated || DATA.jun?.last_updated || Date.now();
+      document.getElementById('last-sync').textContent = 'עדכון אחרון: ' + new Date(lastUp).toLocaleString('he-IL');
     } else {
-      // Old format — only has current month, build structure
-      // We need to call twice or use embedded data
-      // Use embedded May data we already fetched
-      data = buildFallbackData(raw);
+      document.getElementById('last-sync').textContent = 'אין נתונים זמינים';
     }
-
-    DATA = data;
-    renderAll();
-    document.getElementById('last-sync').textContent = 'עדכון אחרון: ' + new Date(raw.last_updated || Date.now()).toLocaleString('he-IL');
-  } catch(e) {
-    console.log("Fallback to embedded DATA due to error:", e);
-    renderAll();
-    document.getElementById('last-sync').textContent = 'מציג נתונים מקומיים (שגיאת רשת) — ' + e.message;
-  } finally {
     document.getElementById('loading').classList.remove('show');
-  }
+  }, 100);
 }
 
 function buildFallbackData(raw) {
