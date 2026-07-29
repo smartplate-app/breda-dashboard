@@ -1,384 +1,481 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Breda Coffee — Menu Engineering</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; color: #111; direction: rtl; }
-
-  .header {
-    background: #111;
-    color: #fff;
-    padding: 28px 40px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .header h1 { font-size: 28px; font-weight: 800; letter-spacing: 0.5px; }
-  .header p { font-size: 13px; color: #aaa; margin-top: 4px; }
-
-  .summary-bar {
-    background: #fff;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 16px 40px;
-    display: flex;
-    gap: 40px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .summary-stat { display: flex; flex-direction: column; gap: 2px; }
-  .summary-stat .val { font-size: 20px; font-weight: 700; color: #111; }
-  .summary-stat .lbl { font-size: 11px; color: #888; }
-
-  .tabs {
-    display: flex;
-    gap: 0;
-    padding: 24px 40px 0;
-    border-bottom: 2px solid #e0e0e0;
-    background: #fff;
-  }
-  .tab {
-    padding: 10px 24px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
-    transition: all 0.2s;
-    color: #666;
-  }
-  .tab:hover { color: #111; }
-  .tab.active { border-bottom-color: #111; color: #111; }
-  .tab .badge {
-    display: inline-block;
-    background: #eee;
-    border-radius: 10px;
-    font-size: 11px;
-    padding: 1px 7px;
-    margin-right: 6px;
-    font-weight: 700;
-  }
-  .tab.active .badge { background: #111; color: #fff; }
-
-  .content { padding: 32px 40px; }
-
-  .quadrant-section { display: none; }
-  .quadrant-section.active { display: block; }
-
-  .q-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-  .q-icon { font-size: 28px; }
-  .q-title { font-size: 20px; font-weight: 800; }
-  .q-desc { font-size: 13px; color: #666; margin-top: 2px; }
-
-  .items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-  }
-
-  .item-card {
-    background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 10px;
-    padding: 18px 20px;
-    transition: box-shadow 0.2s;
-    cursor: default;
-  }
-  .item-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-
-  .item-name {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: #111;
-    line-height: 1.3;
-  }
-
-  .item-metrics {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .metric { display: flex; flex-direction: column; gap: 2px; }
-  .metric .val { font-size: 15px; font-weight: 700; color: #111; }
-  .metric .lbl { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
-
-  .cost-bar-wrap { margin-top: 12px; }
-  .cost-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: #999; margin-bottom: 4px; }
-  .cost-bar { height: 5px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
-  .cost-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
-
-  /* Star = gold, Plowhorse = blue, Puzzle = orange, Dog = gray */
-  .tab-stars .badge { background: #f5a623; color: #fff; }
-  .tab-stars.active .badge { background: #111; color: #f5a623; }
-  .tab-plowhorses .badge { background: #2196f3; color: #fff; }
-  .tab-plowhorses.active .badge { background: #111; color: #4fc3f7; }
-  .tab-puzzles .badge { background: #ff9800; color: #fff; }
-  .tab-puzzles.active .badge { background: #111; color: #ffb74d; }
-  .tab-dogs .badge { background: #9e9e9e; color: #fff; }
-  .tab-dogs.active .badge { background: #111; color: #ccc; }
-
-  .q-stars .q-icon { color: #f5a623; }
-  .q-plowhorses .q-icon { color: #2196f3; }
-  .q-puzzles .q-icon { color: #ff9800; }
-  .q-dogs .q-icon { color: #9e9e9e; }
-
-  .stars-fill { background: #f5a623; }
-  .plowhorses-fill { background: #2196f3; }
-  .puzzles-fill { background: #ff9800; }
-  .dogs-fill { background: #bdbdbd; }
-
-  .section-stats {
-    display: flex;
-    gap: 24px;
-    margin-bottom: 24px;
-    padding: 16px 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    flex-wrap: wrap;
-  }
-  .section-stat .val { font-size: 18px; font-weight: 700; }
-  .section-stat .lbl { font-size: 11px; color: #888; }
-
-  .matrix-view {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 16px;
-    margin-top: 8px;
-  }
-  .matrix-cell {
-    background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 10px;
-    padding: 20px;
-  }
-  .matrix-cell h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-  .matrix-cell p { font-size: 12px; color: #888; margin-bottom: 14px; }
-  .matrix-item { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid #f5f5f5; }
-  .matrix-item:last-child { border: none; }
-  .matrix-item .name { font-weight: 500; }
-  .matrix-item .amt { color: #555; font-size: 12px; }
-
-  @media (max-width: 600px) {
-    .header, .summary-bar, .tabs, .content { padding-left: 16px; padding-right: 16px; }
-    .matrix-view { grid-template-columns: 1fr; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breda Coffee - Menu Engineering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+        }
+        .block-title {
+            background-color: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 4px 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .quadrant {
+            background: #fff;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0px #000;
+        }
+        .quad-header {
+            border-bottom: 2px solid #000;
+            padding: 12px 16px;
+            background: #f3f4f6;
+        }
+        .item-row:not(:last-child) {
+            border-bottom: 1px solid #e5e7eb;
+        }
+    </style>
 </head>
-<body>
+<body class="p-6 md:p-12">
 
-<div class="header">
-  <h1>The Breda Coffee</h1>
-  <p>Smart Plate analysis from MarketMan &nbsp;·&nbsp; Menu Engineering Report</p>
-</div>
-
-<div class="summary-bar" id="summaryBar">
-  <!-- filled by JS -->
-</div>
-
-<div class="tabs">
-  <div class="tab tab-stars active" onclick="showTab('stars')">
-    <span class="badge" id="badge-stars">1</span>⭐ כוכבים
-  </div>
-  <div class="tab tab-plowhorses" onclick="showTab('plowhorses')">
-    <span class="badge" id="badge-plowhorses">16</span>🐂 סוסי עבודה
-  </div>
-  <div class="tab tab-puzzles" onclick="showTab('puzzles')">
-    <span class="badge" id="badge-puzzles">12</span>🧩 חידות
-  </div>
-  <div class="tab tab-dogs" onclick="showTab('dogs')">
-    <span class="badge" id="badge-dogs">13</span>🐕 כלבים
-  </div>
-  <div class="tab" onclick="showTab('matrix')">📊 מטריצה</div>
-</div>
-
-<div class="content">
-
-  <div class="quadrant-section q-stars active" id="sec-stars">
-    <div class="q-header">
-      <span class="q-icon">⭐</span>
-      <div>
-        <div class="q-title">כוכבים — Stars</div>
-        <div class="q-desc">ביקוש גבוה + רווח גבוה. הם הלב של הקפה שלך — שמור עליהם!</div>
-      </div>
-    </div>
-    <div class="section-stats" id="stats-stars"></div>
-    <div class="items-grid" id="grid-stars"></div>
-  </div>
-
-  <div class="quadrant-section q-plowhorses" id="sec-plowhorses">
-    <div class="q-header">
-      <span class="q-icon">🐂</span>
-      <div>
-        <div class="q-title">סוסי עבודה — Plowhorses</div>
-        <div class="q-desc">ביקוש גבוה, רווח נמוך. בדוק אם אפשר לשפר את מחיר המכירה או להפחית עלות.</div>
-      </div>
-    </div>
-    <div class="section-stats" id="stats-plowhorses"></div>
-    <div class="items-grid" id="grid-plowhorses"></div>
-  </div>
-
-  <div class="quadrant-section q-puzzles" id="sec-puzzles">
-    <div class="q-header">
-      <span class="q-icon">🧩</span>
-      <div>
-        <div class="q-title">חידות — Puzzles</div>
-        <div class="q-desc">רווח גבוה, ביקוש נמוך. שווה לקדם — הפוטנציאל כאן.</div>
-      </div>
-    </div>
-    <div class="section-stats" id="stats-puzzles"></div>
-    <div class="items-grid" id="grid-puzzles"></div>
-  </div>
-
-  <div class="quadrant-section q-dogs" id="sec-dogs">
-    <div class="q-header">
-      <span class="q-icon">🐕</span>
-      <div>
-        <div class="q-title">כלבים — Dogs</div>
-        <div class="q-desc">ביקוש נמוך + רווח נמוך. שקול הסרה מהתפריט או שינוי מחיר/מתכון.</div>
-      </div>
-    </div>
-    <div class="section-stats" id="stats-dogs"></div>
-    <div class="items-grid" id="grid-dogs"></div>
-  </div>
-
-  <div class="quadrant-section" id="sec-matrix">
-    <div class="q-header">
-      <span class="q-icon">📊</span>
-      <div>
-        <div class="q-title">מטריצת מנו אינג'ינירינג</div>
-        <div class="q-desc">כל 4 הרבעונים במבט אחד</div>
-      </div>
-    </div>
-    <div class="matrix-view" id="matrix-grid"></div>
-  </div>
-
-</div>
-
-<script>
-const DATA = {"Stars": [{"name": "גבינה מתוקה אפויה קטן", "quantity": 556, "profit": 6987, "margin": 12.57, "cost_pct": 16.2, "price": 15.0}], "Plowhorses": [{"name": "סינבון", "quantity": 1647, "profit": 11037, "margin": 6.7, "cost_pct": 21.2, "price": 8.5}, {"name": "קרואסון חמאה", "quantity": 1907, "profit": 10383, "margin": 5.44, "cost_pct": 22.2, "price": 7.0}, {"name": "קרואסון שקדים", "quantity": 1315, "profit": 8623, "margin": 6.56, "cost_pct": 34.4, "price": 10.0}, {"name": "בריוש הל", "quantity": 696, "profit": 7834, "margin": 11.26, "cost_pct": 6.2, "price": 12.0}, {"name": "קרואסון שוקולד", "quantity": 1213, "profit": 6941, "margin": 5.72, "cost_pct": 28.5, "price": 8.0}, {"name": "קרואסון פיסטוק שוקולד", "quantity": 926, "profit": 6780, "margin": 7.32, "cost_pct": 30.6, "price": 10.55}, {"name": "קרואסון פטל", "quantity": 1028, "profit": 6078, "margin": 5.91, "cost_pct": 26.1, "price": 8.0}, {"name": "קרואסון שוקולד שקדים", "quantity": 670, "profit": 5584, "margin": 8.33, "cost_pct": 33.3, "price": 12.5}, {"name": "בורקס", "quantity": 818, "profit": 4842, "margin": 5.92, "cost_pct": 26.0, "price": 8.0}, {"name": "קרואסון פתוח", "quantity": 811, "profit": 4384, "margin": 5.41, "cost_pct": 22.8, "price": 7.0}, {"name": "גבינה תרד בצק עלים", "quantity": 707, "profit": 4378, "margin": 6.19, "cost_pct": 22.9, "price": 8.03}, {"name": "קרואסון פיסטוק", "quantity": 500, "profit": 3648, "margin": 7.3, "cost_pct": 27.0, "price": 10.0}, {"name": "מיני קרואסון חמאה", "quantity": 1094, "profit": 3607, "margin": 3.3, "cost_pct": 17.6, "price": 4.0}, {"name": "קרואסון מרובע", "quantity": 544, "profit": 3180, "margin": 5.85, "cost_pct": 17.1, "price": 7.05}, {"name": "עוגיה שוקולד צ'יפס", "quantity": 602, "profit": 2590, "margin": 4.3, "cost_pct": 21.8, "price": 5.5}, {"name": "מיני קרואסון שוקולד", "quantity": 622, "profit": 2319, "margin": 3.73, "cost_pct": 25.4, "price": 5.0}], "Puzzles": [{"name": "פאן סוויס", "quantity": 349, "profit": 5628, "margin": 16.13, "cost_pct": 14.2, "price": 18.8}, {"name": "קרואסון עגול צ'יזקייק", "quantity": 317, "profit": 5481, "margin": 17.29, "cost_pct": 13.6, "price": 20.0}, {"name": "עוגה בבקה", "quantity": 135, "profit": 4727, "margin": 35.02, "cost_pct": 22.2, "price": 45.0}, {"name": "אריזה עוגיות שוקולד צ'יפס", "quantity": 122, "profit": 4679, "margin": 38.36, "cost_pct": 14.8, "price": 45.0}, {"name": "קרואסון שום", "quantity": 353, "profit": 4288, "margin": 12.15, "cost_pct": 19.0, "price": 15.0}, {"name": "עוגה גזר", "quantity": 113, "profit": 3430, "margin": 30.36, "cost_pct": 32.5, "price": 45.0}, {"name": "עוגה תפוז", "quantity": 51, "profit": 1892, "margin": 37.1, "cost_pct": 17.6, "price": 45.0}, {"name": "מארז עוגיות פקאן", "quantity": 30, "profit": 1163, "margin": 38.76, "cost_pct": 13.9, "price": 45.0}, {"name": "עוגת פרג לימון", "quantity": 36, "profit": 1145, "margin": 31.8, "cost_pct": 29.3, "price": 45.0}, {"name": "עוגה טארט תפוחים", "quantity": 47, "profit": 671, "margin": 14.28, "cost_pct": 36.5, "price": 22.5}, {"name": "קרואסון פטיסייר פתוח", "quantity": 35, "profit": 598, "margin": 17.09, "cost_pct": 14.6, "price": 20.0}, {"name": "קרואסון גבינה מתוקה", "quantity": 16, "profit": 210, "margin": 13.11, "cost_pct": 12.6, "price": 15.0}], "Dogs": [{"name": "גבינית קראמבל", "quantity": 400, "profit": 3928, "margin": 9.82, "cost_pct": 10.7, "price": 11.0}, {"name": "מאפין קיפודים", "quantity": 434, "profit": 3672, "margin": 8.46, "cost_pct": 15.4, "price": 10.0}, {"name": "קרואסון פס לבנה זעתר", "quantity": 315, "profit": 3047, "margin": 9.67, "cost_pct": 19.4, "price": 12.0}, {"name": "קרואסון לימון", "quantity": 353, "profit": 2981, "margin": 8.44, "cost_pct": 15.6, "price": 10.0}, {"name": "קרואסון רול צ'דר חריף", "quantity": 287, "profit": 2623, "margin": 9.14, "cost_pct": 23.9, "price": 12.0}, {"name": "בננה מאפין", "quantity": 356, "profit": 2213, "margin": 6.22, "cost_pct": 11.2, "price": 7.0}, {"name": "עוגיה פקאן", "quantity": 353, "profit": 1554, "margin": 4.4, "cost_pct": 19.9, "price": 5.5}, {"name": "עוגיה מאצ'יה", "quantity": 328, "profit": 1379, "margin": 4.21, "cost_pct": 23.5, "price": 5.5}, {"name": "עוגיה פיסטוק", "quantity": 90, "profit": 369, "margin": 4.1, "cost_pct": 25.5, "price": 5.5}, {"name": "שקית פטיסייר 1 ליטר", "quantity": 25, "profit": 232, "margin": 9.27, "cost_pct": 48.5, "price": 18.0}, {"name": "מאפין טבעוני", "quantity": 10, "profit": 93, "margin": 9.33, "cost_pct": 6.7, "price": 10.0}, {"name": "שקית גבינה מתוקה לברדא 1 קג", "quantity": 7, "profit": 0, "margin": -0.01, "cost_pct": 100.0, "price": 24.48}, {"name": "שקית פטיסייר לברדא 1 ליטר", "quantity": 7, "profit": 0, "margin": -0.01, "cost_pct": 100.1, "price": 8.72}]};
-
-const CONFIG = {
-  stars:      { emoji: '⭐', label: 'כוכבים',      fillClass: 'stars-fill',      color: '#f5a623' },
-  plowhorses: { emoji: '🐂', label: 'סוסי עבודה', fillClass: 'plowhorses-fill', color: '#2196f3' },
-  puzzles:    { emoji: '🧩', label: 'חידות',       fillClass: 'puzzles-fill',    color: '#ff9800' },
-  dogs:       { emoji: '🐕', label: 'כלבים',       fillClass: 'dogs-fill',       color: '#9e9e9e' },
-};
-
-let currentTab = 'stars';
-
-function fmt(n) { return n.toLocaleString('he-IL'); }
-
-function buildSummary() {
-  const bar = document.getElementById('summaryBar');
-  let totalItems = 0, totalProfit = 0, totalQty = 0;
-  for (const q of Object.values(DATA)) {
-    for (const it of q) {
-      totalItems++;
-      totalProfit += it.profit;
-      totalQty += it.quantity;
-    }
-  }
-  bar.innerHTML = `
-    <div class="summary-stat"><div class="val">${totalItems}</div><div class="lbl">פריטים</div></div>
-    <div class="summary-stat"><div class="val">₪${fmt(totalProfit)}</div><div class="lbl">סה"כ רווח</div></div>
-    <div class="summary-stat"><div class="val">${fmt(totalQty)}</div><div class="lbl">יחידות נמכרו</div></div>
-    <div class="summary-stat"><div class="val">${DATA.Stars.length}</div><div class="lbl">כוכבים</div></div>
-    <div class="summary-stat"><div class="val">${DATA.Plowhorses.length}</div><div class="lbl">סוסי עבודה</div></div>
-    <div class="summary-stat"><div class="val">${DATA.Puzzles.length}</div><div class="lbl">חידות</div></div>
-    <div class="summary-stat"><div class="val">${DATA.Dogs.length}</div><div class="lbl">כלבים</div></div>
-  `;
-}
-
-function renderSection(key, items) {
-  const cfg = CONFIG[key.toLowerCase()] || CONFIG.dogs;
-  const grid = document.getElementById('grid-' + key.toLowerCase());
-  const stats = document.getElementById('stats-' + key.toLowerCase());
-  const badge = document.getElementById('badge-' + key.toLowerCase());
-  if (badge) badge.textContent = items.length;
-
-  const totalProfit = items.reduce((s, i) => s + i.profit, 0);
-  const totalQty = items.reduce((s, i) => s + i.quantity, 0);
-  const avgMargin = items.length ? items.reduce((s, i) => s + i.margin, 0) / items.length : 0;
-  if (stats) {
-    stats.innerHTML = `
-      <div class="section-stat"><div class="val">₪${fmt(totalProfit)}</div><div class="lbl">סה"כ רווח</div></div>
-      <div class="section-stat"><div class="val">${fmt(totalQty)}</div><div class="lbl">יחידות</div></div>
-      <div class="section-stat"><div class="val">₪${avgMargin.toFixed(2)}</div><div class="lbl">מרווח ממוצע</div></div>
-      <div class="section-stat"><div class="val">${items.length}</div><div class="lbl">פריטים</div></div>
-    `;
-  }
-
-  const maxCost = Math.max(...items.map(i => i.cost_pct || 0), 1);
-  grid.innerHTML = items.map(item => `
-    <div class="item-card">
-      <div class="item-name">${item.name}</div>
-      <div class="item-metrics">
-        <div class="metric"><div class="val">₪${item.margin.toFixed(2)}</div><div class="lbl">מרווח ליחידה</div></div>
-        <div class="metric"><div class="val">${fmt(item.quantity)}</div><div class="lbl">יחידות</div></div>
-        <div class="metric"><div class="val">₪${fmt(item.profit)}</div><div class="lbl">סה"כ רווח</div></div>
-        <div class="metric"><div class="val">₪${item.price.toFixed(2)}</div><div class="lbl">מחיר מכירה</div></div>
-      </div>
-      <div class="cost-bar-wrap">
-        <div class="cost-bar-label"><span>עלות</span><span>${item.cost_pct.toFixed(1)}%</span></div>
-        <div class="cost-bar"><div class="cost-bar-fill ${cfg.fillClass}" style="width:${Math.min((item.cost_pct / 60) * 100, 100)}%"></div></div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function buildMatrix() {
-  const grid = document.getElementById('matrix-grid');
-  const sections = [
-    { key: 'Stars',      emoji: '⭐', label: 'כוכבים',      desc: 'ביקוש גבוה, רווח גבוה' },
-    { key: 'Plowhorses', emoji: '🐂', label: 'סוסי עבודה', desc: 'ביקוש גבוה, רווח נמוך' },
-    { key: 'Puzzles',    emoji: '🧩', label: 'חידות',       desc: 'ביקוש נמוך, רווח גבוה' },
-    { key: 'Dogs',       emoji: '🐕', label: 'כלבים',       desc: 'ביקוש נמוך, רווח נמוך' },
-  ];
-  grid.innerHTML = sections.map(s => `
-    <div class="matrix-cell">
-      <h3>${s.emoji} ${s.label} (${DATA[s.key].length})</h3>
-      <p>${s.desc}</p>
-      ${DATA[s.key].slice(0, 6).map(i => `
-        <div class="matrix-item">
-          <span class="name">${i.name}</span>
-          <span class="amt">₪${fmt(i.profit)}</span>
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- HEADER -->
+        <div class="mb-10 text-center">
+            <h1 class="text-3xl font-bold mt-6 mb-1">The Breda Coffee</h1>
+            <p class="text-gray-600 mb-6 font-medium">Smart Plate Analysis from MarketMan</p>
         </div>
-      `).join('')}
+
+        <!-- SUMMARY STATS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            <div class="quadrant p-5 text-center">
+                <div class="text-3xl font-black">42</div>
+                <div class="text-sm text-gray-500 mt-1 font-semibold">פריטים</div>
+            </div>
+            <div class="quadrant p-5 text-center">
+                <div class="text-3xl font-black">₪155,198</div>
+                <div class="text-sm text-gray-500 mt-1 font-semibold">סה"כ רווח</div>
+            </div>
+            <div class="quadrant p-5 text-center">
+                <div class="text-3xl font-black">20,225</div>
+                <div class="text-sm text-gray-500 mt-1 font-semibold">יחידות</div>
+            </div>
+            <div class="quadrant p-5 text-center">
+                <div class="flex justify-around items-center h-full">
+                    <div class="text-center"><div class="text-xl font-black text-green-600">1</div><div class="text-xs text-gray-500">⭐</div></div>
+                    <div class="text-center"><div class="text-xl font-black text-blue-600">16</div><div class="text-xs text-gray-500">🐂</div></div>
+                    <div class="text-center"><div class="text-xl font-black text-orange-500">12</div><div class="text-xs text-gray-500">🧩</div></div>
+                    <div class="text-center"><div class="text-xl font-black text-gray-400">13</div><div class="text-xs text-gray-500">🐕</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUADRANTS GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- STARS -->
+            <div class="quadrant flex flex-col">
+                <div class="quad-header flex justify-between items-center bg-green-100">
+                    <div>
+                        <h2 class="text-xl font-bold block-title !mb-1">כוכבים (Stars)</h2>
+                        <p class="text-sm font-semibold">רווחיות גבוהה, פופולריות גבוהה</p>
+                    </div>
+                    <div class="text-2xl font-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_#000]">1</div>
+                </div>
+                <div class="p-0 flex-1 overflow-auto max-h-[500px]">
+                    <table class="w-full text-sm text-right">
+                        <thead class="bg-gray-50 border-b-2 border-black sticky top-0">
+                            <tr>
+                                <th class="p-3 font-bold">מנה</th>
+                                <th class="p-3 font-bold text-center">כמות</th>
+                                <th class="p-3 font-bold text-center">רווח למנה</th>
+                                <th class="p-3 font-bold text-center">עלות (FC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">גבינה מתוקה אפויה קטן</td>
+                                <td class="p-3 text-center">556</td>
+                                <td class="p-3 text-center">₪12.57</td>
+                                <td class="p-3 text-center" dir="ltr">16.2%</td>
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PLOWHORSES -->
+            <div class="quadrant flex flex-col">
+                <div class="quad-header flex justify-between items-center bg-blue-100">
+                    <div>
+                        <h2 class="text-xl font-bold block-title !mb-1">סוסי עבודה (Plowhorses)</h2>
+                        <p class="text-sm font-semibold">רווחיות נמוכה, פופולריות גבוהה</p>
+                    </div>
+                    <div class="text-2xl font-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_#000]">16</div>
+                </div>
+                <div class="p-0 flex-1 overflow-auto max-h-[500px]">
+                    <table class="w-full text-sm text-right">
+                        <thead class="bg-gray-50 border-b-2 border-black sticky top-0">
+                            <tr>
+                                <th class="p-3 font-bold">מנה</th>
+                                <th class="p-3 font-bold text-center">כמות</th>
+                                <th class="p-3 font-bold text-center">רווח למנה</th>
+                                <th class="p-3 font-bold text-center">עלות (FC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">סינבון</td>
+                                <td class="p-3 text-center">1,647</td>
+                                <td class="p-3 text-center">₪6.70</td>
+                                <td class="p-3 text-center" dir="ltr">21.2%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון חמאה</td>
+                                <td class="p-3 text-center">1,907</td>
+                                <td class="p-3 text-center">₪5.44</td>
+                                <td class="p-3 text-center" dir="ltr">22.2%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון שקדים</td>
+                                <td class="p-3 text-center">1,315</td>
+                                <td class="p-3 text-center">₪6.56</td>
+                                <td class="p-3 text-center" dir="ltr">34.4%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">בריוש הל</td>
+                                <td class="p-3 text-center">696</td>
+                                <td class="p-3 text-center">₪11.26</td>
+                                <td class="p-3 text-center" dir="ltr">6.2%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון שוקולד</td>
+                                <td class="p-3 text-center">1,213</td>
+                                <td class="p-3 text-center">₪5.72</td>
+                                <td class="p-3 text-center" dir="ltr">28.5%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון פיסטוק שוקולד</td>
+                                <td class="p-3 text-center">926</td>
+                                <td class="p-3 text-center">₪7.32</td>
+                                <td class="p-3 text-center" dir="ltr">30.6%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון פטל</td>
+                                <td class="p-3 text-center">1,028</td>
+                                <td class="p-3 text-center">₪5.91</td>
+                                <td class="p-3 text-center" dir="ltr">26.1%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון שוקולד שקדים</td>
+                                <td class="p-3 text-center">670</td>
+                                <td class="p-3 text-center">₪8.33</td>
+                                <td class="p-3 text-center" dir="ltr">33.3%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">בורקס</td>
+                                <td class="p-3 text-center">818</td>
+                                <td class="p-3 text-center">₪5.92</td>
+                                <td class="p-3 text-center" dir="ltr">26.0%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון פתוח</td>
+                                <td class="p-3 text-center">811</td>
+                                <td class="p-3 text-center">₪5.41</td>
+                                <td class="p-3 text-center" dir="ltr">22.8%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">גבינה תרד בצק עלים</td>
+                                <td class="p-3 text-center">707</td>
+                                <td class="p-3 text-center">₪6.19</td>
+                                <td class="p-3 text-center" dir="ltr">22.9%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון פיסטוק</td>
+                                <td class="p-3 text-center">500</td>
+                                <td class="p-3 text-center">₪7.30</td>
+                                <td class="p-3 text-center" dir="ltr">27.0%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">מיני קרואסון חמאה</td>
+                                <td class="p-3 text-center">1,094</td>
+                                <td class="p-3 text-center">₪3.30</td>
+                                <td class="p-3 text-center" dir="ltr">17.6%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון מרובע</td>
+                                <td class="p-3 text-center">544</td>
+                                <td class="p-3 text-center">₪5.85</td>
+                                <td class="p-3 text-center" dir="ltr">17.1%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגיה שוקולד צ'יפס</td>
+                                <td class="p-3 text-center">602</td>
+                                <td class="p-3 text-center">₪4.30</td>
+                                <td class="p-3 text-center" dir="ltr">21.8%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">מיני קרואסון שוקולד</td>
+                                <td class="p-3 text-center">622</td>
+                                <td class="p-3 text-center">₪3.73</td>
+                                <td class="p-3 text-center" dir="ltr">25.4%</td>
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PUZZLES -->
+            <div class="quadrant flex flex-col">
+                <div class="quad-header flex justify-between items-center bg-yellow-100">
+                    <div>
+                        <h2 class="text-xl font-bold block-title !mb-1">חידות (Puzzles)</h2>
+                        <p class="text-sm font-semibold">רווחיות גבוהה, פופולריות נמוכה</p>
+                    </div>
+                    <div class="text-2xl font-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_#000]">12</div>
+                </div>
+                <div class="p-0 flex-1 overflow-auto max-h-[500px]">
+                    <table class="w-full text-sm text-right">
+                        <thead class="bg-gray-50 border-b-2 border-black sticky top-0">
+                            <tr>
+                                <th class="p-3 font-bold">מנה</th>
+                                <th class="p-3 font-bold text-center">כמות</th>
+                                <th class="p-3 font-bold text-center">רווח למנה</th>
+                                <th class="p-3 font-bold text-center">עלות (FC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">פאן סוויס</td>
+                                <td class="p-3 text-center">349</td>
+                                <td class="p-3 text-center">₪16.13</td>
+                                <td class="p-3 text-center" dir="ltr">14.2%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון עגול צ'יזקייק</td>
+                                <td class="p-3 text-center">317</td>
+                                <td class="p-3 text-center">₪17.29</td>
+                                <td class="p-3 text-center" dir="ltr">13.6%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגה בבקה</td>
+                                <td class="p-3 text-center">135</td>
+                                <td class="p-3 text-center">₪35.02</td>
+                                <td class="p-3 text-center" dir="ltr">22.2%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">אריזה עוגיות שוקולד צ'יפס</td>
+                                <td class="p-3 text-center">122</td>
+                                <td class="p-3 text-center">₪38.36</td>
+                                <td class="p-3 text-center" dir="ltr">14.8%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון שום</td>
+                                <td class="p-3 text-center">353</td>
+                                <td class="p-3 text-center">₪12.15</td>
+                                <td class="p-3 text-center" dir="ltr">19.0%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגה גזר</td>
+                                <td class="p-3 text-center">113</td>
+                                <td class="p-3 text-center">₪30.36</td>
+                                <td class="p-3 text-center" dir="ltr">32.5%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגה תפוז</td>
+                                <td class="p-3 text-center">51</td>
+                                <td class="p-3 text-center">₪37.10</td>
+                                <td class="p-3 text-center" dir="ltr">17.6%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">מארז עוגיות פקאן</td>
+                                <td class="p-3 text-center">30</td>
+                                <td class="p-3 text-center">₪38.76</td>
+                                <td class="p-3 text-center" dir="ltr">13.9%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגת פרג לימון</td>
+                                <td class="p-3 text-center">36</td>
+                                <td class="p-3 text-center">₪31.80</td>
+                                <td class="p-3 text-center" dir="ltr">29.3%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגה טארט תפוחים</td>
+                                <td class="p-3 text-center">47</td>
+                                <td class="p-3 text-center">₪14.28</td>
+                                <td class="p-3 text-center" dir="ltr">36.5%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון פטיסייר פתוח</td>
+                                <td class="p-3 text-center">35</td>
+                                <td class="p-3 text-center">₪17.09</td>
+                                <td class="p-3 text-center" dir="ltr">14.6%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון גבינה מתוקה</td>
+                                <td class="p-3 text-center">16</td>
+                                <td class="p-3 text-center">₪13.11</td>
+                                <td class="p-3 text-center" dir="ltr">12.6%</td>
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- DOGS -->
+            <div class="quadrant flex flex-col">
+                <div class="quad-header flex justify-between items-center bg-red-100">
+                    <div>
+                        <h2 class="text-xl font-bold block-title !mb-1">כלבים (Dogs)</h2>
+                        <p class="text-sm font-semibold">רווחיות נמוכה, פופולריות נמוכה</p>
+                    </div>
+                    <div class="text-2xl font-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_#000]">13</div>
+                </div>
+                <div class="p-0 flex-1 overflow-auto max-h-[500px]">
+                    <table class="w-full text-sm text-right">
+                        <thead class="bg-gray-50 border-b-2 border-black sticky top-0">
+                            <tr>
+                                <th class="p-3 font-bold">מנה</th>
+                                <th class="p-3 font-bold text-center">כמות</th>
+                                <th class="p-3 font-bold text-center">רווח למנה</th>
+                                <th class="p-3 font-bold text-center">עלות (FC)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">גבינית קראמבל</td>
+                                <td class="p-3 text-center">400</td>
+                                <td class="p-3 text-center">₪9.82</td>
+                                <td class="p-3 text-center" dir="ltr">10.7%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">מאפין קיפודים</td>
+                                <td class="p-3 text-center">434</td>
+                                <td class="p-3 text-center">₪8.46</td>
+                                <td class="p-3 text-center" dir="ltr">15.4%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון פס לבנה זעתר</td>
+                                <td class="p-3 text-center">315</td>
+                                <td class="p-3 text-center">₪9.67</td>
+                                <td class="p-3 text-center" dir="ltr">19.4%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון לימון</td>
+                                <td class="p-3 text-center">353</td>
+                                <td class="p-3 text-center">₪8.44</td>
+                                <td class="p-3 text-center" dir="ltr">15.6%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">קרואסון רול צ'דר חריף</td>
+                                <td class="p-3 text-center">287</td>
+                                <td class="p-3 text-center">₪9.14</td>
+                                <td class="p-3 text-center" dir="ltr">23.9%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">בננה מאפין</td>
+                                <td class="p-3 text-center">356</td>
+                                <td class="p-3 text-center">₪6.22</td>
+                                <td class="p-3 text-center" dir="ltr">11.2%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגיה פקאן</td>
+                                <td class="p-3 text-center">353</td>
+                                <td class="p-3 text-center">₪4.40</td>
+                                <td class="p-3 text-center" dir="ltr">19.9%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגיה מאצ'יה</td>
+                                <td class="p-3 text-center">328</td>
+                                <td class="p-3 text-center">₪4.21</td>
+                                <td class="p-3 text-center" dir="ltr">23.5%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">עוגיה פיסטוק</td>
+                                <td class="p-3 text-center">90</td>
+                                <td class="p-3 text-center">₪4.10</td>
+                                <td class="p-3 text-center" dir="ltr">25.5%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">שקית פטיסייר 1 ליטר</td>
+                                <td class="p-3 text-center">25</td>
+                                <td class="p-3 text-center">₪9.27</td>
+                                <td class="p-3 text-center" dir="ltr">48.5%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">מאפין טבעוני</td>
+                                <td class="p-3 text-center">10</td>
+                                <td class="p-3 text-center">₪9.33</td>
+                                <td class="p-3 text-center" dir="ltr">6.7%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">שקית גבינה מתוקה לברדא 1 קג</td>
+                                <td class="p-3 text-center">7</td>
+                                <td class="p-3 text-center">₪-0.01</td>
+                                <td class="p-3 text-center" dir="ltr">100.0%</td>
+                            </tr>
+    
+                            <tr class="item-row hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-semibold">שקית פטיסייר לברדא 1 ליטר</td>
+                                <td class="p-3 text-center">7</td>
+                                <td class="p-3 text-center">₪-0.01</td>
+                                <td class="p-3 text-center" dir="ltr">100.1%</td>
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <p class="text-center text-xs text-gray-400 mt-10">Smart Plate &nbsp;·&nbsp; Menu Engineering by MarketMan data</p>
     </div>
-  `).join('');
-}
 
-function showTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.quadrant-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  
-  const sec = document.getElementById('sec-' + tab);
-  if (sec) sec.classList.add('active');
-  
-  const tabs = document.querySelectorAll('.tab');
-  const tabMap = { stars: 0, plowhorses: 1, puzzles: 2, dogs: 3, matrix: 4 };
-  const idx = tabMap[tab];
-  if (idx !== undefined) tabs[idx].classList.add('active');
-}
-
-// Init
-buildSummary();
-renderSection('Stars', DATA.Stars);
-renderSection('Plowhorses', DATA.Plowhorses);
-renderSection('Puzzles', DATA.Puzzles);
-renderSection('Dogs', DATA.Dogs);
-buildMatrix();
-</script>
 </body>
 </html>
