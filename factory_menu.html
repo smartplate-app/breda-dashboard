@@ -3,54 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Breda Factory - Menu Engineering</title>
+    <title>The Breda Factory - Menu Engineering</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Assistant', sans-serif;
-            background-color: #f9fafb;
-            color: #111827;
-        }
-        .block-title {
-            background-color: #000;
-            color: #fff;
-            display: inline-block;
-            padding: 4px 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-        .quadrant {
-            background: #fff;
-            border: 2px solid #000;
-            box-shadow: 4px 4px 0px #000;
-        }
-        .quad-header {
-            border-bottom: 2px solid #000;
-            padding: 12px 16px;
-            background: #f3f4f6;
-        }
-        .item-row:not(:last-child) {
-            border-bottom: 1px solid #e5e7eb;
-        }
+        body { font-family: 'Assistant', sans-serif; background-color: #f9fafb; color: #111827; }
+        .block-title { background-color: #000; color: #fff; display: inline-block; padding: 4px 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .quadrant { background: #fff; border: 2px solid #000; box-shadow: 4px 4px 0px #000; }
+        .quad-header { border-bottom: 2px solid #000; padding: 12px 16px; background: #f3f4f6; }
+        .item-row:not(:last-child) { border-bottom: 1px solid #e5e7eb; }
     </style>
 </head>
 <body class="p-6 md:p-12">
-
     <div class="max-w-7xl mx-auto">
-        
-        <!-- HEADER -->
         <div class="mb-10 text-center">
-            <h1 class="text-3xl font-bold mt-6 mb-1">Breda Factory</h1>
+            <h1 class="text-3xl font-bold mt-6 mb-1">The Breda Factory</h1>
             <p class="text-gray-600 mb-6 font-medium">Smart Plate Analysis from MarketMan</p>
-            
         </div>
-
-        <!-- QUADRANTS GRID -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            <div class="quadrant p-5 text-center"><div class="text-3xl font-black">72</div><div class="text-sm text-gray-500 mt-1 font-semibold">פריטים</div></div>
+            <div class="quadrant p-5 text-center"><div class="text-3xl font-black">₪359,348</div><div class="text-sm text-gray-500 mt-1 font-semibold">סה"כ רווח</div></div>
+            <div class="quadrant p-5 text-center"><div class="text-3xl font-black">56,818</div><div class="text-sm text-gray-500 mt-1 font-semibold">יחידות</div></div>
+            <div class="quadrant p-5 text-center"><div class="flex justify-around items-center h-full"><div class="text-center"><div class="text-xl font-black text-green-600">3</div><div class="text-xs text-gray-500">⭐</div></div><div class="text-center"><div class="text-xl font-black text-blue-600">16</div><div class="text-xs text-gray-500">🐂</div></div><div class="text-center"><div class="text-xl font-black text-orange-500">26</div><div class="text-xs text-gray-500">🧩</div></div><div class="text-center"><div class="text-xl font-black text-gray-400">27</div><div class="text-xs text-gray-500">🐕</div></div></div></div>
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
+            
             <div class="quadrant flex flex-col">
                 <div class="quad-header flex justify-between items-center bg-green-100">
                     <div>
@@ -66,37 +43,33 @@
                                 <th class="p-3 font-bold">מנה</th>
                                 <th class="p-3 font-bold text-center">כמות</th>
                                 <th class="p-3 font-bold text-center">רווח למנה</th>
+                                <th class="p-3 font-bold text-center">סה"כ רווח</th>
                                 <th class="p-3 font-bold text-center">עלות (FC)</th>
                             </tr>
-                        </thead>
-                        <tbody>
-    
+                        </thead><tbody>
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם כפרי בלי תוספות</td>
                                 <td class="p-3 text-center">1,089</td>
                                 <td class="p-3 text-center">₪12.98</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪14,135</td>
                                 <td class="p-3 text-center" dir="ltr">12.1%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם כוסמין</td>
                                 <td class="p-3 text-center">891</td>
                                 <td class="p-3 text-center">₪14.93</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪13,301</td>
                                 <td class="p-3 text-center" dir="ltr">14.3%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם שיפון פרג אגוזים</td>
                                 <td class="p-3 text-center">791</td>
                                 <td class="p-3 text-center">₪12.68</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪10,026</td>
                                 <td class="p-3 text-center" dir="ltr">16.5%</td>
-                            </tr>
-        
-                        </tbody>
-                    </table>
+                            </tr></tbody></table>
                 </div>
             </div>
-    
             <div class="quadrant flex flex-col">
                 <div class="quad-header flex justify-between items-center bg-blue-100">
                     <div>
@@ -112,128 +85,124 @@
                                 <th class="p-3 font-bold">מנה</th>
                                 <th class="p-3 font-bold text-center">כמות</th>
                                 <th class="p-3 font-bold text-center">רווח למנה</th>
+                                <th class="p-3 font-bold text-center">סה"כ רווח</th>
                                 <th class="p-3 font-bold text-center">עלות (FC)</th>
                             </tr>
-                        </thead>
-                        <tbody>
-    
+                        </thead><tbody>
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחמניה פרעצל</td>
                                 <td class="p-3 text-center">16,108</td>
                                 <td class="p-3 text-center">₪3.72</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪59,998</td>
                                 <td class="p-3 text-center" dir="ltr">8.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">ג'בטה רגילה</td>
                                 <td class="p-3 text-center">4,612</td>
                                 <td class="p-3 text-center">₪3.59</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪16,535</td>
                                 <td class="p-3 text-center" dir="ltr">10.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">סינבון</td>
                                 <td class="p-3 text-center">1,647</td>
                                 <td class="p-3 text-center">₪6.70</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪11,037</td>
                                 <td class="p-3 text-center" dir="ltr">21.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון חמאה</td>
                                 <td class="p-3 text-center">1,907</td>
                                 <td class="p-3 text-center">₪5.44</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪10,383</td>
                                 <td class="p-3 text-center" dir="ltr">22.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון שקדים</td>
                                 <td class="p-3 text-center">1,315</td>
                                 <td class="p-3 text-center">₪6.56</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪8,623</td>
                                 <td class="p-3 text-center" dir="ltr">34.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון שוקולד</td>
                                 <td class="p-3 text-center">1,213</td>
                                 <td class="p-3 text-center">₪5.72</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪6,940</td>
                                 <td class="p-3 text-center" dir="ltr">28.5%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון פיסטוק שוקולד</td>
                                 <td class="p-3 text-center">926</td>
                                 <td class="p-3 text-center">₪7.32</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪6,779</td>
                                 <td class="p-3 text-center" dir="ltr">30.6%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחמניה בורגר דלעת</td>
                                 <td class="p-3 text-center">3,080</td>
                                 <td class="p-3 text-center">₪1.99</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪6,134</td>
                                 <td class="p-3 text-center" dir="ltr">20.3%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון פטל</td>
                                 <td class="p-3 text-center">1,028</td>
                                 <td class="p-3 text-center">₪5.91</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪6,077</td>
                                 <td class="p-3 text-center" dir="ltr">26.1%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">בורקס</td>
                                 <td class="p-3 text-center">818</td>
                                 <td class="p-3 text-center">₪5.92</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,841</td>
                                 <td class="p-3 text-center" dir="ltr">26.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון פתוח</td>
                                 <td class="p-3 text-center">811</td>
                                 <td class="p-3 text-center">₪5.41</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,384</td>
                                 <td class="p-3 text-center" dir="ltr">22.8%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">מיני קרואסון חמאה</td>
                                 <td class="p-3 text-center">1,094</td>
                                 <td class="p-3 text-center">₪3.30</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,607</td>
                                 <td class="p-3 text-center" dir="ltr">17.6%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">פניני</td>
                                 <td class="p-3 text-center">868</td>
                                 <td class="p-3 text-center">₪3.46</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,002</td>
                                 <td class="p-3 text-center" dir="ltr">10.7%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">ג'בטה כוסמין</td>
                                 <td class="p-3 text-center">984</td>
                                 <td class="p-3 text-center">₪2.73</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,686</td>
                                 <td class="p-3 text-center" dir="ltr">31.8%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחמניה בריוש 80 גם</td>
                                 <td class="p-3 text-center">895</td>
                                 <td class="p-3 text-center">₪2.50</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,233</td>
                                 <td class="p-3 text-center" dir="ltr">16.8%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחמניה ביס כוסמין</td>
                                 <td class="p-3 text-center">929</td>
                                 <td class="p-3 text-center">₪2.26</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,097</td>
                                 <td class="p-3 text-center" dir="ltr">24.7%</td>
-                            </tr>
-        
-                        </tbody>
-                    </table>
+                            </tr></tbody></table>
                 </div>
             </div>
-    
             <div class="quadrant flex flex-col">
                 <div class="quad-header flex justify-between items-center bg-yellow-100">
                     <div>
@@ -249,198 +218,194 @@
                                 <th class="p-3 font-bold">מנה</th>
                                 <th class="p-3 font-bold text-center">כמות</th>
                                 <th class="p-3 font-bold text-center">רווח למנה</th>
+                                <th class="p-3 font-bold text-center">סה"כ רווח</th>
                                 <th class="p-3 font-bold text-center">עלות (FC)</th>
                             </tr>
-                        </thead>
-                        <tbody>
-    
+                        </thead><tbody>
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם חיטה מלאה</td>
                                 <td class="p-3 text-center">704</td>
                                 <td class="p-3 text-center">₪14.58</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪10,261</td>
                                 <td class="p-3 text-center" dir="ltr">14.8%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">גבינה מתוקה אפויה קטן</td>
                                 <td class="p-3 text-center">556</td>
                                 <td class="p-3 text-center">₪12.57</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪6,987</td>
                                 <td class="p-3 text-center" dir="ltr">16.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">מגש פוקאצ'יה</td>
                                 <td class="p-3 text-center">318</td>
                                 <td class="p-3 text-center">₪21.87</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪6,955</td>
                                 <td class="p-3 text-center" dir="ltr">19.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם בריוש 840גם</td>
                                 <td class="p-3 text-center">502</td>
                                 <td class="p-3 text-center">₪11.69</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪5,866</td>
                                 <td class="p-3 text-center" dir="ltr">27.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">פאן סוויס</td>
                                 <td class="p-3 text-center">349</td>
                                 <td class="p-3 text-center">₪16.13</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪5,628</td>
                                 <td class="p-3 text-center" dir="ltr">14.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון עגול צ'יזקייק</td>
                                 <td class="p-3 text-center">317</td>
                                 <td class="p-3 text-center">₪17.29</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪5,481</td>
                                 <td class="p-3 text-center" dir="ltr">13.6%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם שיפון בלי תוספות</td>
                                 <td class="p-3 text-center">435</td>
                                 <td class="p-3 text-center">₪12.24</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪5,326</td>
                                 <td class="p-3 text-center" dir="ltr">12.6%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם כפרי זעתר</td>
                                 <td class="p-3 text-center">361</td>
                                 <td class="p-3 text-center">₪13.34</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,814</td>
                                 <td class="p-3 text-center" dir="ltr">15.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגה בבקה</td>
                                 <td class="p-3 text-center">135</td>
                                 <td class="p-3 text-center">₪35.02</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,727</td>
                                 <td class="p-3 text-center" dir="ltr">22.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">אריזה עוגיות שוקולד צ'יפס</td>
                                 <td class="p-3 text-center">122</td>
                                 <td class="p-3 text-center">₪38.36</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,679</td>
                                 <td class="p-3 text-center" dir="ltr">14.8%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם שיפון זיתים</td>
                                 <td class="p-3 text-center">400</td>
                                 <td class="p-3 text-center">₪11.34</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,535</td>
                                 <td class="p-3 text-center" dir="ltr">21.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון שום</td>
                                 <td class="p-3 text-center">353</td>
                                 <td class="p-3 text-center">₪12.15</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,287</td>
                                 <td class="p-3 text-center" dir="ltr">19.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם של פעם</td>
                                 <td class="p-3 text-center">239</td>
                                 <td class="p-3 text-center">₪16.43</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,926</td>
                                 <td class="p-3 text-center" dir="ltr">17.9%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם כפרי בצל</td>
                                 <td class="p-3 text-center">289</td>
                                 <td class="p-3 text-center">₪13.11</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,788</td>
                                 <td class="p-3 text-center" dir="ltr">16.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם כפרי גערינים</td>
                                 <td class="p-3 text-center">269</td>
                                 <td class="p-3 text-center">₪13.21</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,553</td>
                                 <td class="p-3 text-center" dir="ltr">17.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגה גזר</td>
                                 <td class="p-3 text-center">113</td>
                                 <td class="p-3 text-center">₪30.36</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,430</td>
                                 <td class="p-3 text-center" dir="ltr">32.5%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם כפרי צימוקים ואגוזים</td>
                                 <td class="p-3 text-center">235</td>
                                 <td class="p-3 text-center">₪12.41</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,917</td>
                                 <td class="p-3 text-center" dir="ltr">20.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגה תפוז</td>
                                 <td class="p-3 text-center">51</td>
                                 <td class="p-3 text-center">₪37.10</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪1,892</td>
                                 <td class="p-3 text-center" dir="ltr">17.6%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם עגבניות מיובשות</td>
                                 <td class="p-3 text-center">135</td>
                                 <td class="p-3 text-center">₪13.36</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪1,803</td>
                                 <td class="p-3 text-center" dir="ltr">16.5%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">מארז עוגיות פקאן</td>
                                 <td class="p-3 text-center">30</td>
                                 <td class="p-3 text-center">₪38.76</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪1,162</td>
                                 <td class="p-3 text-center" dir="ltr">13.9%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגת פרג לימון</td>
                                 <td class="p-3 text-center">36</td>
                                 <td class="p-3 text-center">₪31.80</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪1,144</td>
                                 <td class="p-3 text-center" dir="ltr">29.3%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגה טארט תפוחים</td>
                                 <td class="p-3 text-center">47</td>
                                 <td class="p-3 text-center">₪14.28</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪671</td>
                                 <td class="p-3 text-center" dir="ltr">36.5%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון פטיסייר פתוח</td>
                                 <td class="p-3 text-center">35</td>
                                 <td class="p-3 text-center">₪17.09</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪598</td>
                                 <td class="p-3 text-center" dir="ltr">14.6%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">כפרי רגיל בלי תוספות 2</td>
                                 <td class="p-3 text-center">40</td>
                                 <td class="p-3 text-center">₪14.21</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪568</td>
                                 <td class="p-3 text-center" dir="ltr">11.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון גבינה מתוקה</td>
                                 <td class="p-3 text-center">16</td>
                                 <td class="p-3 text-center">₪13.11</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪209</td>
                                 <td class="p-3 text-center" dir="ltr">12.6%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם קסטמ</td>
                                 <td class="p-3 text-center">2</td>
                                 <td class="p-3 text-center">₪21.43</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪42</td>
                                 <td class="p-3 text-center" dir="ltr">23.5%</td>
-                            </tr>
-        
-                        </tbody>
-                    </table>
+                            </tr></tbody></table>
                 </div>
             </div>
-    
             <div class="quadrant flex flex-col">
                 <div class="quad-header flex justify-between items-center bg-red-100">
                     <div>
@@ -456,210 +421,203 @@
                                 <th class="p-3 font-bold">מנה</th>
                                 <th class="p-3 font-bold text-center">כמות</th>
                                 <th class="p-3 font-bold text-center">רווח למנה</th>
+                                <th class="p-3 font-bold text-center">סה"כ רווח</th>
                                 <th class="p-3 font-bold text-center">עלות (FC)</th>
                             </tr>
-                        </thead>
-                        <tbody>
-    
+                        </thead><tbody>
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">בריוש הל</td>
                                 <td class="p-3 text-center">696</td>
                                 <td class="p-3 text-center">₪11.26</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪7,833</td>
                                 <td class="p-3 text-center" dir="ltr">6.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">בגט</td>
                                 <td class="p-3 text-center">577</td>
                                 <td class="p-3 text-center">₪10.27</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪5,923</td>
                                 <td class="p-3 text-center" dir="ltr">12.7%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון שוקולד שקדים</td>
                                 <td class="p-3 text-center">670</td>
                                 <td class="p-3 text-center">₪8.33</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪5,584</td>
                                 <td class="p-3 text-center" dir="ltr">33.3%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">גבינה תרד בצק עלים</td>
                                 <td class="p-3 text-center">707</td>
                                 <td class="p-3 text-center">₪6.19</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,378</td>
                                 <td class="p-3 text-center" dir="ltr">22.9%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם כפרי זיתים</td>
                                 <td class="p-3 text-center">418</td>
                                 <td class="p-3 text-center">₪10.21</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪4,265</td>
                                 <td class="p-3 text-center" dir="ltr">33.3%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">גבינית קראמבל</td>
                                 <td class="p-3 text-center">400</td>
                                 <td class="p-3 text-center">₪9.82</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,927</td>
                                 <td class="p-3 text-center" dir="ltr">10.7%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">מאפין קיפודים</td>
                                 <td class="p-3 text-center">434</td>
                                 <td class="p-3 text-center">₪8.46</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,672</td>
                                 <td class="p-3 text-center" dir="ltr">15.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון פיסטוק</td>
                                 <td class="p-3 text-center">500</td>
                                 <td class="p-3 text-center">₪7.30</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,648</td>
                                 <td class="p-3 text-center" dir="ltr">27.0%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">חלה רגילה</td>
                                 <td class="p-3 text-center">412</td>
                                 <td class="p-3 text-center">₪7.82</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,220</td>
                                 <td class="p-3 text-center" dir="ltr">21.8%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון מרובע</td>
                                 <td class="p-3 text-center">544</td>
                                 <td class="p-3 text-center">₪5.85</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,180</td>
                                 <td class="p-3 text-center" dir="ltr">17.1%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון פס לבנה זעתר</td>
                                 <td class="p-3 text-center">315</td>
                                 <td class="p-3 text-center">₪9.67</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪3,047</td>
                                 <td class="p-3 text-center" dir="ltr">19.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון לימון</td>
                                 <td class="p-3 text-center">353</td>
                                 <td class="p-3 text-center">₪8.44</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,980</td>
                                 <td class="p-3 text-center" dir="ltr">15.6%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">קרואסון רול צ'דר חריף</td>
                                 <td class="p-3 text-center">287</td>
                                 <td class="p-3 text-center">₪9.14</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,622</td>
                                 <td class="p-3 text-center" dir="ltr">23.9%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגיה שוקולד צ'יפס</td>
                                 <td class="p-3 text-center">602</td>
                                 <td class="p-3 text-center">₪4.30</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,589</td>
                                 <td class="p-3 text-center" dir="ltr">21.8%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">מיני קרואסון שוקולד</td>
                                 <td class="p-3 text-center">622</td>
                                 <td class="p-3 text-center">₪3.73</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,318</td>
                                 <td class="p-3 text-center" dir="ltr">25.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">בננה מאפין</td>
                                 <td class="p-3 text-center">356</td>
                                 <td class="p-3 text-center">₪6.22</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,212</td>
                                 <td class="p-3 text-center" dir="ltr">11.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">בגט שומשום</td>
                                 <td class="p-3 text-center">221</td>
                                 <td class="p-3 text-center">₪9.72</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪2,148</td>
                                 <td class="p-3 text-center" dir="ltr">14.2%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגיה פקאן</td>
                                 <td class="p-3 text-center">353</td>
                                 <td class="p-3 text-center">₪4.40</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪1,554</td>
                                 <td class="p-3 text-center" dir="ltr">19.9%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגיה מאצ'יה</td>
                                 <td class="p-3 text-center">328</td>
                                 <td class="p-3 text-center">₪4.21</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪1,379</td>
                                 <td class="p-3 text-center" dir="ltr">23.5%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">כפרי מלא גרינים</td>
                                 <td class="p-3 text-center">132</td>
                                 <td class="p-3 text-center">₪9.45</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪1,247</td>
                                 <td class="p-3 text-center" dir="ltr">14.1%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">כפרי מלא אגוזים</td>
                                 <td class="p-3 text-center">126</td>
                                 <td class="p-3 text-center">₪9.03</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪1,138</td>
                                 <td class="p-3 text-center" dir="ltr">17.9%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">ג'בטה קטנה</td>
                                 <td class="p-3 text-center">300</td>
                                 <td class="p-3 text-center">₪2.24</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪672</td>
                                 <td class="p-3 text-center" dir="ltr">10.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחם שיפון ארוך 690 גם</td>
                                 <td class="p-3 text-center">75</td>
                                 <td class="p-3 text-center">₪8.59</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪644</td>
                                 <td class="p-3 text-center" dir="ltr">14.1%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">לחמניה טיבוני</td>
                                 <td class="p-3 text-center">170</td>
                                 <td class="p-3 text-center">₪2.21</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪376</td>
                                 <td class="p-3 text-center" dir="ltr">11.4%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">עוגיה פיסטוק</td>
                                 <td class="p-3 text-center">90</td>
                                 <td class="p-3 text-center">₪4.10</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪368</td>
                                 <td class="p-3 text-center" dir="ltr">25.5%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">שקית פטיסייר 1 ליטר</td>
                                 <td class="p-3 text-center">25</td>
                                 <td class="p-3 text-center">₪9.27</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪231</td>
                                 <td class="p-3 text-center" dir="ltr">48.5%</td>
                             </tr>
-        
                             <tr class="item-row hover:bg-gray-50 transition-colors">
                                 <td class="p-3 font-semibold">מאפין טבעוני</td>
                                 <td class="p-3 text-center">10</td>
                                 <td class="p-3 text-center">₪9.33</td>
+                                <td class="p-3 text-center font-bold text-green-700">₪93</td>
                                 <td class="p-3 text-center" dir="ltr">6.7%</td>
-                            </tr>
-        
-                        </tbody>
-                    </table>
+                            </tr></tbody></table>
                 </div>
             </div>
-    
         </div>
-        
-        <div class="mt-12 text-center text-gray-500 text-sm">
-            <p>מופק אוטומטית על ידי Smart Plate AI | נתונים מתוך MarketMan</p>
-        </div>
+        <p class="text-center text-xs text-gray-400 mt-10">Smart Plate &nbsp;·&nbsp; Menu Engineering by MarketMan data</p>
     </div>
 </body>
 </html>
