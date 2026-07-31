@@ -134,15 +134,26 @@
 
 <!-- Tabs -->
 <div class="tabs" id="main-tabs" style="display:none">
-  <div class="tab active" onclick="switchTab('jul')">יולי 2026 — MTD</div>
-  <div class="tab" onclick="switchTab('jun')">יוני 2026 — חודש מלא</div>
+  <div class="tab active" onclick="switchTab('aug')">אוגוסט 2026 — MTD</div>
+  <div class="tab" onclick="switchTab('jul')">יולי 2026</div>
+  <div class="tab" onclick="switchTab('jun')">יוני 2026</div>
 </div>
 
 <!-- Main content -->
 <div class="main" id="main-content" style="display:none">
 
+  <!-- AUG panel -->
+  <div class="month-panel active" id="panel-aug">
+    <div class="store-tabs">
+      <div class="store-tab active" onclick="switchStore('aug','combined')">🏢 שני הסניפים</div>
+      <div class="store-tab" onclick="switchStore('aug','hanmal')">📍 הנמל</div>
+      <div class="store-tab" onclick="switchStore('aug','hatib')">📍 חטיב</div>
+    </div>
+    <div id="aug-content"></div>
+  </div>
+
   <!-- JUL panel -->
-  <div class="month-panel active" id="panel-jul">
+  <div class="month-panel" id="panel-jul">
     <div class="store-tabs">
       <div class="store-tab active" onclick="switchStore('jul','combined')">🏢 שני הסניפים</div>
       <div class="store-tab" onclick="switchStore('jul','hanmal')">📍 הנמל</div>
@@ -1158,7 +1169,7 @@ let DATA = {
   },
   "last_updated": "2026-07-31T21:34:41.823Z"
 };
-let currentStore = { jun: 'combined', jul: 'combined' };
+let currentStore = { jun: 'combined', jul: 'combined', aug: 'combined' };
 
 function checkCode() {
   const v = document.getElementById('pw-input').value.trim().toUpperCase();
@@ -1306,7 +1317,8 @@ function buildContent(month, storeKey, d) {
 }
 
 function switchTab(month) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === (month==='jul'?0:1)));
+  let idx = month === 'aug' ? 0 : (month === 'jul' ? 1 : 2);
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === idx));
   document.querySelectorAll('.month-panel').forEach(p => p.classList.remove('active'));
   document.getElementById(`panel-${month}`).classList.add('active');
 }
@@ -1437,6 +1449,7 @@ function buildFallbackData(raw) {
 function renderAll() {
   document.getElementById('jun-content').innerHTML = buildContent('jun', currentStore.jun, DATA);
   document.getElementById('jul-content').innerHTML = buildContent('jul', currentStore.jul, DATA);
+  document.getElementById('aug-content').innerHTML = buildContent('aug', currentStore.aug, DATA);
 }
 
 async function syncNow() {
