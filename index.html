@@ -1340,7 +1340,7 @@ async function loadDashboard() {
   setTimeout(() => {
     if (DATA) {
       renderAll();
-      let lastUp = DATA.jul?.last_updated || DATA.jun?.last_updated || Date.now();
+      let lastUp = DATA.last_updated || DATA.months?.aug?.last_updated || DATA.months?.jul?.last_updated || Date.now();
       document.getElementById('last-sync').textContent = 'עדכון אחרון: ' + new Date(lastUp).toLocaleString('he-IL');
     } else {
       document.getElementById('last-sync').textContent = 'אין נתונים זמינים';
