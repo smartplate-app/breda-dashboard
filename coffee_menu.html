@@ -1,413 +1,99 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Breda Coffee - Menu Engineering</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Assistant', sans-serif; background-color: #f9fafb; color: #111827; }
-        .block-title { background-color: #000; color: #fff; display: inline-block; padding: 4px 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-        .quadrant { background: #fff; border: 2px solid #000; box-shadow: 4px 4px 0px #000; }
-        .quad-header { border-bottom: 2px solid #000; padding: 12px 16px; background: #f3f4f6; }
-        .item-row:not(:last-child) { border-bottom: 1px solid #e5e7eb; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breda Coffee Shop — Menu Engineering | SmartPlate</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; }
+.header { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.logo { font-size: 22px; font-weight: 800; color: #111827; }
+.logo span { color: #d97706; }
+.sub-logo { font-size: 13px; color: #6b7280; margin-top: 2px; }
+.main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.kpi-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.kpi-value { font-size: 22px; font-weight: 800; color: #111827; }
+.kpi-sub { font-size: 12px; color: #6b7280; margin-top: 4px; }
+.kpi.green .kpi-value { color: #059669; }
+.kpi.blue .kpi-value { color: #2563eb; }
+.kpi.purple .kpi-value { color: #7c3aed; }
+.kpi.orange .kpi-value { color: #ea580c; }
+.kpi.red .kpi-value { color: #dc2626; }
+.controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.btn { padding: 8px 16px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 13px; font-weight: 600; color: #374151; transition: all 0.15s; }
+.btn:hover { background: #f9fafb; }
+.btn.active { background: #111827; color: #fff; border-color: #111827; }
+.section { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.section-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
+.badge.star { background: #dbeafe; color: #1e40af; }
+.badge.plowhorse { background: #d1fae5; color: #065f46; }
+.badge.puzzle { background: #fef3c7; color: #92400e; }
+.badge.dog { background: #fee2e2; color: #991b1b; }
+table { width: 100%; border-collapse: collapse; }
+th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; }
+td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f9fafb; }
+.search { padding: 8px 14px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 13px; width: 200px; }
+</style>
 </head>
-<body class="p-6 md:p-12">
-    <div class="max-w-7xl mx-auto">
-        <div class="mb-10 text-center">
-            <h1 class="text-3xl font-bold mt-6 mb-1">The Breda Coffee</h1>
-            <p class="text-gray-600 mb-6 font-medium">Smart Plate Analysis from MarketMan</p>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            <div class="quadrant p-5 text-center"><div class="text-3xl font-black">42</div><div class="text-sm text-gray-500 mt-1 font-semibold">פריטים</div></div>
-            <div class="quadrant p-5 text-center"><div class="text-3xl font-black">₪155,198</div><div class="text-sm text-gray-500 mt-1 font-semibold">סה"כ רווח</div></div>
-            <div class="quadrant p-5 text-center"><div class="text-3xl font-black">20,225</div><div class="text-sm text-gray-500 mt-1 font-semibold">יחידות</div></div>
-            <div class="quadrant p-5 text-center"><div class="flex justify-around items-center h-full"><div class="text-center"><div class="text-xl font-black text-green-600">1</div><div class="text-xs text-gray-500">⭐</div></div><div class="text-center"><div class="text-xl font-black text-blue-600">16</div><div class="text-xs text-gray-500">🐂</div></div><div class="text-center"><div class="text-xl font-black text-orange-500">12</div><div class="text-xs text-gray-500">🧩</div></div><div class="text-center"><div class="text-xl font-black text-gray-400">13</div><div class="text-xs text-gray-500">🐕</div></div></div></div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            <div class="quadrant flex flex-col">
-                <div class="quad-header flex justify-between items-center bg-green-100">
-                    <div>
-                        <h2 class="text-xl font-bold block-title !mb-1">כוכבים (Stars)</h2>
-                        <p class="text-sm font-semibold">רווחיות גבוהה, פופולריות גבוהה</p>
-                    </div>
-                    <div class="text-2xl font-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_#000]">1</div>
-                </div>
-                <div class="p-0 flex-1 overflow-auto max-h-[500px]">
-                    <table class="w-full text-sm text-right">
-                        <thead class="bg-gray-50 border-b-2 border-black sticky top-0">
-                            <tr>
-                                <th class="p-3 font-bold">מנה</th>
-                                <th class="p-3 font-bold text-center">כמות</th>
-                                <th class="p-3 font-bold text-center">רווח למנה</th>
-                                <th class="p-3 font-bold text-center">סה"כ רווח</th>
-                                <th class="p-3 font-bold text-center">עלות (FC)</th>
-                            </tr>
-                        </thead><tbody>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">גבינה מתוקה אפויה קטן</td>
-                                <td class="p-3 text-center">556</td>
-                                <td class="p-3 text-center">₪12.57</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪6,987</td>
-                                <td class="p-3 text-center" dir="ltr">16.2%</td>
-                            </tr></tbody></table>
-                </div>
-            </div>
-            <div class="quadrant flex flex-col">
-                <div class="quad-header flex justify-between items-center bg-blue-100">
-                    <div>
-                        <h2 class="text-xl font-bold block-title !mb-1">סוסי עבודה (Plowhorses)</h2>
-                        <p class="text-sm font-semibold">רווחיות נמוכה, פופולריות גבוהה</p>
-                    </div>
-                    <div class="text-2xl font-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_#000]">16</div>
-                </div>
-                <div class="p-0 flex-1 overflow-auto max-h-[500px]">
-                    <table class="w-full text-sm text-right">
-                        <thead class="bg-gray-50 border-b-2 border-black sticky top-0">
-                            <tr>
-                                <th class="p-3 font-bold">מנה</th>
-                                <th class="p-3 font-bold text-center">כמות</th>
-                                <th class="p-3 font-bold text-center">רווח למנה</th>
-                                <th class="p-3 font-bold text-center">סה"כ רווח</th>
-                                <th class="p-3 font-bold text-center">עלות (FC)</th>
-                            </tr>
-                        </thead><tbody>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">סינבון</td>
-                                <td class="p-3 text-center">1,647</td>
-                                <td class="p-3 text-center">₪6.70</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪11,037</td>
-                                <td class="p-3 text-center" dir="ltr">21.2%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון חמאה</td>
-                                <td class="p-3 text-center">1,907</td>
-                                <td class="p-3 text-center">₪5.44</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪10,383</td>
-                                <td class="p-3 text-center" dir="ltr">22.2%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון שקדים</td>
-                                <td class="p-3 text-center">1,315</td>
-                                <td class="p-3 text-center">₪6.56</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪8,623</td>
-                                <td class="p-3 text-center" dir="ltr">34.4%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">בריוש הל</td>
-                                <td class="p-3 text-center">696</td>
-                                <td class="p-3 text-center">₪11.26</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪7,834</td>
-                                <td class="p-3 text-center" dir="ltr">6.2%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון שוקולד</td>
-                                <td class="p-3 text-center">1,213</td>
-                                <td class="p-3 text-center">₪5.72</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪6,941</td>
-                                <td class="p-3 text-center" dir="ltr">28.5%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון פיסטוק שוקולד</td>
-                                <td class="p-3 text-center">926</td>
-                                <td class="p-3 text-center">₪7.32</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪6,780</td>
-                                <td class="p-3 text-center" dir="ltr">30.6%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון פטל</td>
-                                <td class="p-3 text-center">1,028</td>
-                                <td class="p-3 text-center">₪5.91</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪6,078</td>
-                                <td class="p-3 text-center" dir="ltr">26.1%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון שוקולד שקדים</td>
-                                <td class="p-3 text-center">670</td>
-                                <td class="p-3 text-center">₪8.33</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪5,584</td>
-                                <td class="p-3 text-center" dir="ltr">33.3%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">בורקס</td>
-                                <td class="p-3 text-center">818</td>
-                                <td class="p-3 text-center">₪5.92</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪4,842</td>
-                                <td class="p-3 text-center" dir="ltr">26.0%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון פתוח</td>
-                                <td class="p-3 text-center">811</td>
-                                <td class="p-3 text-center">₪5.41</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪4,384</td>
-                                <td class="p-3 text-center" dir="ltr">22.8%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">גבינה תרד בצק עלים</td>
-                                <td class="p-3 text-center">707</td>
-                                <td class="p-3 text-center">₪6.19</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪4,378</td>
-                                <td class="p-3 text-center" dir="ltr">22.9%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון פיסטוק</td>
-                                <td class="p-3 text-center">500</td>
-                                <td class="p-3 text-center">₪7.30</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪3,648</td>
-                                <td class="p-3 text-center" dir="ltr">27.0%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">מיני קרואסון חמאה</td>
-                                <td class="p-3 text-center">1,094</td>
-                                <td class="p-3 text-center">₪3.30</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪3,607</td>
-                                <td class="p-3 text-center" dir="ltr">17.6%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון מרובע</td>
-                                <td class="p-3 text-center">544</td>
-                                <td class="p-3 text-center">₪5.85</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪3,180</td>
-                                <td class="p-3 text-center" dir="ltr">17.1%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגיה שוקולד צ'יפס</td>
-                                <td class="p-3 text-center">602</td>
-                                <td class="p-3 text-center">₪4.30</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪2,590</td>
-                                <td class="p-3 text-center" dir="ltr">21.8%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">מיני קרואסון שוקולד</td>
-                                <td class="p-3 text-center">622</td>
-                                <td class="p-3 text-center">₪3.73</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪2,319</td>
-                                <td class="p-3 text-center" dir="ltr">25.4%</td>
-                            </tr></tbody></table>
-                </div>
-            </div>
-            <div class="quadrant flex flex-col">
-                <div class="quad-header flex justify-between items-center bg-yellow-100">
-                    <div>
-                        <h2 class="text-xl font-bold block-title !mb-1">חידות (Puzzles)</h2>
-                        <p class="text-sm font-semibold">רווחיות גבוהה, פופולריות נמוכה</p>
-                    </div>
-                    <div class="text-2xl font-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_#000]">12</div>
-                </div>
-                <div class="p-0 flex-1 overflow-auto max-h-[500px]">
-                    <table class="w-full text-sm text-right">
-                        <thead class="bg-gray-50 border-b-2 border-black sticky top-0">
-                            <tr>
-                                <th class="p-3 font-bold">מנה</th>
-                                <th class="p-3 font-bold text-center">כמות</th>
-                                <th class="p-3 font-bold text-center">רווח למנה</th>
-                                <th class="p-3 font-bold text-center">סה"כ רווח</th>
-                                <th class="p-3 font-bold text-center">עלות (FC)</th>
-                            </tr>
-                        </thead><tbody>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">פאן סוויס</td>
-                                <td class="p-3 text-center">349</td>
-                                <td class="p-3 text-center">₪16.13</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪5,628</td>
-                                <td class="p-3 text-center" dir="ltr">14.2%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון עגול צ'יזקייק</td>
-                                <td class="p-3 text-center">317</td>
-                                <td class="p-3 text-center">₪17.29</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪5,481</td>
-                                <td class="p-3 text-center" dir="ltr">13.6%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגה בבקה</td>
-                                <td class="p-3 text-center">135</td>
-                                <td class="p-3 text-center">₪35.02</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪4,727</td>
-                                <td class="p-3 text-center" dir="ltr">22.2%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">אריזה עוגיות שוקולד צ'יפס</td>
-                                <td class="p-3 text-center">122</td>
-                                <td class="p-3 text-center">₪38.36</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪4,679</td>
-                                <td class="p-3 text-center" dir="ltr">14.8%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון שום</td>
-                                <td class="p-3 text-center">353</td>
-                                <td class="p-3 text-center">₪12.15</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪4,288</td>
-                                <td class="p-3 text-center" dir="ltr">19.0%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגה גזר</td>
-                                <td class="p-3 text-center">113</td>
-                                <td class="p-3 text-center">₪30.36</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪3,430</td>
-                                <td class="p-3 text-center" dir="ltr">32.5%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגה תפוז</td>
-                                <td class="p-3 text-center">51</td>
-                                <td class="p-3 text-center">₪37.10</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪1,892</td>
-                                <td class="p-3 text-center" dir="ltr">17.6%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">מארז עוגיות פקאן</td>
-                                <td class="p-3 text-center">30</td>
-                                <td class="p-3 text-center">₪38.76</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪1,163</td>
-                                <td class="p-3 text-center" dir="ltr">13.9%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגת פרג לימון</td>
-                                <td class="p-3 text-center">36</td>
-                                <td class="p-3 text-center">₪31.80</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪1,145</td>
-                                <td class="p-3 text-center" dir="ltr">29.3%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגה טארט תפוחים</td>
-                                <td class="p-3 text-center">47</td>
-                                <td class="p-3 text-center">₪14.28</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪671</td>
-                                <td class="p-3 text-center" dir="ltr">36.5%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון פטיסייר פתוח</td>
-                                <td class="p-3 text-center">35</td>
-                                <td class="p-3 text-center">₪17.09</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪598</td>
-                                <td class="p-3 text-center" dir="ltr">14.6%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון גבינה מתוקה</td>
-                                <td class="p-3 text-center">16</td>
-                                <td class="p-3 text-center">₪13.11</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪210</td>
-                                <td class="p-3 text-center" dir="ltr">12.6%</td>
-                            </tr></tbody></table>
-                </div>
-            </div>
-            <div class="quadrant flex flex-col">
-                <div class="quad-header flex justify-between items-center bg-red-100">
-                    <div>
-                        <h2 class="text-xl font-bold block-title !mb-1">כלבים (Dogs)</h2>
-                        <p class="text-sm font-semibold">רווחיות נמוכה, פופולריות נמוכה</p>
-                    </div>
-                    <div class="text-2xl font-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_#000]">13</div>
-                </div>
-                <div class="p-0 flex-1 overflow-auto max-h-[500px]">
-                    <table class="w-full text-sm text-right">
-                        <thead class="bg-gray-50 border-b-2 border-black sticky top-0">
-                            <tr>
-                                <th class="p-3 font-bold">מנה</th>
-                                <th class="p-3 font-bold text-center">כמות</th>
-                                <th class="p-3 font-bold text-center">רווח למנה</th>
-                                <th class="p-3 font-bold text-center">סה"כ רווח</th>
-                                <th class="p-3 font-bold text-center">עלות (FC)</th>
-                            </tr>
-                        </thead><tbody>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">גבינית קראמבל</td>
-                                <td class="p-3 text-center">400</td>
-                                <td class="p-3 text-center">₪9.82</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪3,928</td>
-                                <td class="p-3 text-center" dir="ltr">10.7%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">מאפין קיפודים</td>
-                                <td class="p-3 text-center">434</td>
-                                <td class="p-3 text-center">₪8.46</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪3,672</td>
-                                <td class="p-3 text-center" dir="ltr">15.4%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון פס לבנה זעתר</td>
-                                <td class="p-3 text-center">315</td>
-                                <td class="p-3 text-center">₪9.67</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪3,047</td>
-                                <td class="p-3 text-center" dir="ltr">19.4%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון לימון</td>
-                                <td class="p-3 text-center">353</td>
-                                <td class="p-3 text-center">₪8.44</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪2,981</td>
-                                <td class="p-3 text-center" dir="ltr">15.6%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">קרואסון רול צ'דר חריף</td>
-                                <td class="p-3 text-center">287</td>
-                                <td class="p-3 text-center">₪9.14</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪2,623</td>
-                                <td class="p-3 text-center" dir="ltr">23.9%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">בננה מאפין</td>
-                                <td class="p-3 text-center">356</td>
-                                <td class="p-3 text-center">₪6.22</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪2,213</td>
-                                <td class="p-3 text-center" dir="ltr">11.2%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגיה פקאן</td>
-                                <td class="p-3 text-center">353</td>
-                                <td class="p-3 text-center">₪4.40</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪1,554</td>
-                                <td class="p-3 text-center" dir="ltr">19.9%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגיה מאצ'יה</td>
-                                <td class="p-3 text-center">328</td>
-                                <td class="p-3 text-center">₪4.21</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪1,379</td>
-                                <td class="p-3 text-center" dir="ltr">23.5%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">עוגיה פיסטוק</td>
-                                <td class="p-3 text-center">90</td>
-                                <td class="p-3 text-center">₪4.10</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪369</td>
-                                <td class="p-3 text-center" dir="ltr">25.5%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">שקית פטיסייר 1 ליטר</td>
-                                <td class="p-3 text-center">25</td>
-                                <td class="p-3 text-center">₪9.27</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪232</td>
-                                <td class="p-3 text-center" dir="ltr">48.5%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">מאפין טבעוני</td>
-                                <td class="p-3 text-center">10</td>
-                                <td class="p-3 text-center">₪9.33</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪93</td>
-                                <td class="p-3 text-center" dir="ltr">6.7%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">שקית גבינה מתוקה לברדא 1 קג</td>
-                                <td class="p-3 text-center">7</td>
-                                <td class="p-3 text-center">₪-0.01</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪0</td>
-                                <td class="p-3 text-center" dir="ltr">100.0%</td>
-                            </tr>
-                            <tr class="item-row hover:bg-gray-50 transition-colors">
-                                <td class="p-3 font-semibold">שקית פטיסייר לברדא 1 ליטר</td>
-                                <td class="p-3 text-center">7</td>
-                                <td class="p-3 text-center">₪-0.01</td>
-                                <td class="p-3 text-center font-bold text-green-700">₪0</td>
-                                <td class="p-3 text-center" dir="ltr">100.1%</td>
-                            </tr></tbody></table>
-                </div>
-            </div>
-        </div>
-        <p class="text-center text-xs text-gray-400 mt-10">Smart Plate &nbsp;·&nbsp; Menu Engineering by MarketMan data</p>
-    </div>
+<body>
+<div class="header">
+  <div>
+    <div class="logo">Breda <span>Coffee Shop</span></div>
+    <div class="sub-logo">Menu Engineering | דוח רווחיות מנות — POS Sales | 162 פריטים פעילים</div>
+  </div>
+  <div style="font-size:12px;color:#9ca3af">מקור: Google Sheets | עודכן: 05.08.2026</div>
+</div>
+<div class="main" id="content"></div>
+<script>
+function fmt(n) { return '₪' + Math.round(n).toLocaleString('he-IL'); }
+function fmt2(n) { return '₪' + n.toFixed(2); }
+
+var ALL_ITEMS = [{"name": "קפה קר", "qty": 3568, "sales": 52108, "fc_per": 2.28, "fc_total": 8143, "profit": 43965, "profit_per": 12.32, "q": "star"}, {"name": "הפוך קטן", "qty": 2502, "sales": 30276, "fc_per": 2.6, "fc_total": 6505, "profit": 23771, "profit_per": 9.5, "q": "star"}, {"name": "fresh orange juice", "qty": 1478, "sales": 26266, "fc_per": 1.98, "fc_total": 2919, "profit": 23347, "profit_per": 15.8, "q": "star"}, {"name": "הפוך גדול", "qty": 1981, "sales": 27181, "fc_per": 3.07, "fc_total": 6086, "profit": 21095, "profit_per": 10.65, "q": "star"}, {"name": "פרצל ביצים", "qty": 2066, "sales": 29579, "fc_per": 4.44, "fc_total": 9163, "profit": 20416, "profit_per": 9.88, "q": "star"}, {"name": "פרצל סלמון", "qty": 1837, "sales": 29451, "fc_per": 5.36, "fc_total": 9840, "profit": 19612, "profit_per": 10.68, "q": "star"}, {"name": "פרצל טונה", "qty": 1612, "sales": 23103, "fc_per": 3.49, "fc_total": 5619, "profit": 17484, "profit_per": 10.85, "q": "star"}, {"name": "פרצל מוצרלה", "qty": 1790, "sales": 25560, "fc_per": 5.49, "fc_total": 9820, "profit": 15741, "profit_per": 8.79, "q": "plowhorse"}, {"name": "ספיישל היום", "qty": 700, "sales": 15117, "fc_per": 0.0, "fc_total": 0, "profit": 15117, "profit_per": 21.6, "q": "star"}, {"name": "אמריקנו קר", "qty": 1433, "sales": 17410, "fc_per": 1.63, "fc_total": 2336, "profit": 15074, "profit_per": 10.52, "q": "star"}, {"name": "קרואסון פירות", "qty": 695, "sales": 17057, "fc_per": 6.98, "fc_total": 4850, "profit": 12207, "profit_per": 17.56, "q": "star"}, {"name": "פרצל סלמי גאודה", "qty": 1231, "sales": 18579, "fc_per": 6.16, "fc_total": 7577, "profit": 11002, "profit_per": 8.94, "q": "plowhorse"}, {"name": "גבינה מתוקה", "qty": 798, "sales": 14101, "fc_per": 4.42, "fc_total": 3527, "profit": 10574, "profit_per": 13.25, "q": "star"}, {"name": "פרצל כרובית", "qty": 994, "sales": 14271, "fc_per": 5.11, "fc_total": 5080, "profit": 9191, "profit_per": 9.25, "q": "plowhorse"}, {"name": "סינבון", "qty": 772, "sales": 13695, "fc_per": 6.8, "fc_total": 5250, "profit": 8445, "profit_per": 10.94, "q": "star"}, {"name": "פ. בולגרית", "qty": 896, "sales": 12843, "fc_per": 5.21, "fc_total": 4672, "profit": 8171, "profit_per": 9.12, "q": "plowhorse"}, {"name": "מאצ'ה קר", "qty": 500, "sales": 9001, "fc_per": 2.04, "fc_total": 1019, "profit": 7982, "profit_per": 15.96, "q": "star"}, {"name": "פוקצ^ה גדול", "qty": 356, "sales": 9617, "fc_per": 5.7, "fc_total": 2030, "profit": 7587, "profit_per": 21.31, "q": "star"}, {"name": "פוקצ'יה סלמי", "qty": 297, "sales": 9499, "fc_per": 8.28, "fc_total": 2459, "profit": 7040, "profit_per": 23.7, "q": "star"}, {"name": "קרואסון שקדים", "qty": 678, "sales": 12002, "fc_per": 8.0, "fc_total": 5424, "profit": 6578, "profit_per": 9.7, "q": "star"}, {"name": "פ. גאודה", "qty": 712, "sales": 10216, "fc_per": 5.36, "fc_total": 3818, "profit": 6398, "profit_per": 8.99, "q": "plowhorse"}, {"name": "לחם מוצרלה פסטו", "qty": 294, "sales": 7201, "fc_per": 4.43, "fc_total": 1302, "profit": 5900, "profit_per": 20.07, "q": "star"}, {"name": "עגול לימון", "qty": 244, "sales": 5553, "fc_per": 0.0, "fc_total": 0, "profit": 5553, "profit_per": 22.76, "q": "star"}, {"name": "סלט טונה", "qty": 269, "sales": 6577, "fc_per": 4.76, "fc_total": 1281, "profit": 5296, "profit_per": 19.69, "q": "star"}, {"name": "קרואסון לאבנה שרי", "qty": 456, "sales": 8500, "fc_per": 7.62, "fc_total": 3475, "profit": 5026, "profit_per": 11.02, "q": "star"}, {"name": "שוקו קר", "qty": 382, "sales": 5738, "fc_per": 1.9, "fc_total": 726, "profit": 5013, "profit_per": 13.12, "q": "star"}, {"name": "מים בינוני", "qty": 692, "sales": 7049, "fc_per": 3.71, "fc_total": 2567, "profit": 4482, "profit_per": 6.48, "q": "plowhorse"}, {"name": "לחם סלט ביצים", "qty": 256, "sales": 6268, "fc_per": 7.05, "fc_total": 1804, "profit": 4463, "profit_per": 17.44, "q": "star"}, {"name": "אספרסו כפול", "qty": 452, "sales": 4518, "fc_per": 0.93, "fc_total": 420, "profit": 4097, "profit_per": 9.07, "q": "plowhorse"}, {"name": "אמריקנו", "qty": 465, "sales": 4781, "fc_per": 1.53, "fc_total": 711, "profit": 4069, "profit_per": 8.75, "q": "plowhorse"}, {"name": "קרואסון שוקולד", "qty": 458, "sales": 6934, "fc_per": 6.4, "fc_total": 2931, "profit": 4003, "profit_per": 8.74, "q": "plowhorse"}, {"name": "לחם כרובית", "qty": 244, "sales": 5990, "fc_per": 8.37, "fc_total": 2042, "profit": 3947, "profit_per": 16.18, "q": "star"}, {"name": "לחם גאודה", "qty": 204, "sales": 4881, "fc_per": 5.45, "fc_total": 1111, "profit": 3770, "profit_per": 18.48, "q": "star"}, {"name": "לחם בולגרית", "qty": 216, "sales": 5301, "fc_per": 7.62, "fc_total": 1646, "profit": 3656, "profit_per": 16.93, "q": "star"}, {"name": "תרד בולגרית", "qty": 337, "sales": 5760, "fc_per": 6.4, "fc_total": 2157, "profit": 3604, "profit_per": 10.69, "q": "star"}, {"name": "גזר", "qty": 379, "sales": 5446, "fc_per": 5.14, "fc_total": 1949, "profit": 3497, "profit_per": 9.23, "q": "plowhorse"}, {"name": "קרואסון שוקולד לבן פטל", "qty": 394, "sales": 6009, "fc_per": 6.4, "fc_total": 2522, "profit": 3487, "profit_per": 8.85, "q": "plowhorse"}, {"name": "עגול אוכמניות", "qty": 349, "sales": 8823, "fc_per": 16.0, "fc_total": 5584, "profit": 3239, "profit_per": 9.28, "q": "plowhorse"}, {"name": "קרואסון פיסטוק שוקולד", "qty": 406, "sales": 6504, "fc_per": 8.8, "fc_total": 3573, "profit": 2932, "profit_per": 7.22, "q": "plowhorse"}, {"name": "מיני שוקולד", "qty": 312, "sales": 4167, "fc_per": 4.0, "fc_total": 1248, "profit": 2919, "profit_per": 9.35, "q": "plowhorse"}, {"name": "עוגיה שוקולד צ'יפס", "qty": 438, "sales": 4771, "fc_per": 4.4, "fc_total": 1927, "profit": 2844, "profit_per": 6.49, "q": "plowhorse"}, {"name": "קרואסון חמאה", "qty": 320, "sales": 4547, "fc_per": 5.6, "fc_total": 1792, "profit": 2755, "profit_per": 8.61, "q": "plowhorse"}, {"name": "בורקס בולגרית זיתים", "qty": 316, "sales": 4530, "fc_per": 6.4, "fc_total": 2022, "profit": 2508, "profit_per": 7.94, "q": "plowhorse"}, {"name": "סודה", "qty": 487, "sales": 4901, "fc_per": 5.3, "fc_total": 2583, "profit": 2318, "profit_per": 4.76, "q": "plowhorse"}, {"name": "פרצל כרובית וטחינה", "qty": 238, "sales": 3429, "fc_per": 5.11, "fc_total": 1216, "profit": 2213, "profit_per": 9.3, "q": "plowhorse"}, {"name": "טארט תפוח", "qty": 111, "sales": 2163, "fc_per": 0.0, "fc_total": 0, "profit": 2163, "profit_per": 19.49, "q": "star"}, {"name": "פריט יבוא", "qty": 83, "sales": 2139, "fc_per": 0.0, "fc_total": 0, "profit": 2139, "profit_per": 25.77, "q": "puzzle"}, {"name": "תה קר", "qty": 153, "sales": 2042, "fc_per": 0.0, "fc_total": 0, "profit": 2042, "profit_per": 13.35, "q": "star"}, {"name": "גאודה עיזים ריבה", "qty": 221, "sales": 3912, "fc_per": 8.5, "fc_total": 1878, "profit": 2034, "profit_per": 9.2, "q": "plowhorse"}, {"name": "קרואסון פיסטוק", "qty": 231, "sales": 3703, "fc_per": 8.0, "fc_total": 1848, "profit": 1855, "profit_per": 8.03, "q": "plowhorse"}, {"name": "פרוסה בבקה 17", "qty": 249, "sales": 3588, "fc_per": 7.2, "fc_total": 1793, "profit": 1795, "profit_per": 7.21, "q": "plowhorse"}, {"name": "אספרסו ארוך", "qty": 290, "sales": 1979, "fc_per": 0.77, "fc_total": 222, "profit": 1757, "profit_per": 6.06, "q": "plowhorse"}, {"name": "גבינית", "qty": 304, "sales": 4348, "fc_per": 8.8, "fc_total": 2675, "profit": 1673, "profit_per": 5.5, "q": "plowhorse"}, {"name": "קרואסון פטיסייר שוקולד", "qty": 343, "sales": 4330, "fc_per": 8.0, "fc_total": 2744, "profit": 1586, "profit_per": 4.62, "q": "plowhorse"}, {"name": "קרואסונ סלמון", "qty": 70, "sales": 2261, "fc_per": 10.43, "fc_total": 730, "profit": 1530, "profit_per": 21.86, "q": "puzzle"}, {"name": "קורטדו", "qty": 160, "sales": 1685, "fc_per": 1.05, "fc_total": 168, "profit": 1517, "profit_per": 9.48, "q": "star"}, {"name": "תפוח", "qty": 234, "sales": 3371, "fc_per": 7.94, "fc_total": 1858, "profit": 1514, "profit_per": 6.47, "q": "plowhorse"}, {"name": "חלה", "qty": 135, "sales": 2603, "fc_per": 8.24, "fc_total": 1112, "profit": 1491, "profit_per": 11.04, "q": "star"}, {"name": "פס לבנה זעתר", "qty": 225, "sales": 3559, "fc_per": 9.6, "fc_total": 2160, "profit": 1399, "profit_per": 6.22, "q": "plowhorse"}, {"name": "צ'דר חריף", "qty": 202, "sales": 3252, "fc_per": 9.6, "fc_total": 1939, "profit": 1313, "profit_per": 6.5, "q": "plowhorse"}, {"name": "כפרי", "qty": 211, "sales": 4031, "fc_per": 13.04, "fc_total": 2751, "profit": 1280, "profit_per": 6.06, "q": "plowhorse"}, {"name": "פרצל קלאסי", "qty": 125, "sales": 1251, "fc_per": 0.0, "fc_total": 0, "profit": 1251, "profit_per": 10.01, "q": "star"}, {"name": "אספרסו קצר", "qty": 184, "sales": 1354, "fc_per": 0.77, "fc_total": 141, "profit": 1213, "profit_per": 6.59, "q": "plowhorse"}, {"name": "בורודינסקי", "qty": 65, "sales": 1143, "fc_per": 0.0, "fc_total": 0, "profit": 1143, "profit_per": 17.59, "q": "puzzle"}, {"name": "הל וקינמון", "qty": 237, "sales": 3415, "fc_per": 9.6, "fc_total": 2275, "profit": 1139, "profit_per": 4.81, "q": "plowhorse"}, {"name": "שיפון פרג אגוזים", "qty": 119, "sales": 2678, "fc_per": 13.04, "fc_total": 1552, "profit": 1126, "profit_per": 9.47, "q": "star"}, {"name": "קולה זירו", "qty": 213, "sales": 2162, "fc_per": 4.93, "fc_total": 1050, "profit": 1113, "profit_per": 5.22, "q": "plowhorse"}, {"name": "שיפון מלא בורודינסקי", "qty": 57, "sales": 1082, "fc_per": 0.0, "fc_total": 0, "profit": 1082, "profit_per": 18.98, "q": "puzzle"}, {"name": "שום פרמזן", "qty": 328, "sales": 5009, "fc_per": 12.0, "fc_total": 3936, "profit": 1073, "profit_per": 3.27, "q": "plowhorse"}, {"name": "קרואסון בשר", "qty": 45, "sales": 1449, "fc_per": 9.29, "fc_total": 418, "profit": 1031, "profit_per": 22.91, "q": "puzzle"}, {"name": "פרוסה עוגה תפוז", "qty": 168, "sales": 2234, "fc_per": 7.2, "fc_total": 1210, "profit": 1024, "profit_per": 6.1, "q": "plowhorse"}, {"name": "עוגיה פקאן", "qty": 141, "sales": 1628, "fc_per": 4.4, "fc_total": 620, "profit": 1008, "profit_per": 7.15, "q": "plowhorse"}, {"name": "כפרי זיתים", "qty": 104, "sales": 2323, "fc_per": 13.04, "fc_total": 1356, "profit": 966, "profit_per": 9.29, "q": "plowhorse"}, {"name": "בגט", "qty": 224, "sales": 3197, "fc_per": 10.0, "fc_total": 2240, "profit": 957, "profit_per": 4.27, "q": "plowhorse"}, {"name": "חיטה מלאה", "qty": 133, "sales": 2984, "fc_per": 15.24, "fc_total": 2027, "profit": 957, "profit_per": 7.19, "q": "plowhorse"}, {"name": "בננה מאפין", "qty": 125, "sales": 1585, "fc_per": 5.6, "fc_total": 700, "profit": 885, "profit_per": 7.08, "q": "plowhorse"}, {"name": "שיפון זיתים", "qty": 91, "sales": 2021, "fc_per": 13.04, "fc_total": 1187, "profit": 834, "profit_per": 9.17, "q": "plowhorse"}, {"name": "Kombucha", "qty": 41, "sales": 818, "fc_per": 0.0, "fc_total": 0, "profit": 818, "profit_per": 19.95, "q": "puzzle"}, {"name": "כפרי צימוקים אגוזים", "qty": 84, "sales": 1864, "fc_per": 13.04, "fc_total": 1095, "profit": 769, "profit_per": 9.16, "q": "plowhorse"}, {"name": "אריזה עוגיות ריבה", "qty": 19, "sales": 768, "fc_per": 0.0, "fc_total": 0, "profit": 768, "profit_per": 40.41, "q": "puzzle"}, {"name": "שוקו חם", "qty": 75, "sales": 862, "fc_per": 1.52, "fc_total": 114, "profit": 748, "profit_per": 9.98, "q": "puzzle"}, {"name": "סויה", "qty": 940, "sales": 748, "fc_per": 0.0, "fc_total": 0, "profit": 748, "profit_per": 0.8, "q": "plowhorse"}, {"name": "לחם כוסמין מלא פרוס", "qty": 86, "sales": 2114, "fc_per": 16.24, "fc_total": 1397, "profit": 717, "profit_per": 8.34, "q": "plowhorse"}, {"name": "עוגה פרג שמרים", "qty": 52, "sales": 701, "fc_per": 0.0, "fc_total": 0, "profit": 701, "profit_per": 13.48, "q": "puzzle"}, {"name": "קדור שוקולד", "qty": 56, "sales": 699, "fc_per": 0.0, "fc_total": 0, "profit": 699, "profit_per": 12.48, "q": "puzzle"}, {"name": "בראוניס", "qty": 45, "sales": 686, "fc_per": 0.0, "fc_total": 0, "profit": 686, "profit_per": 15.25, "q": "puzzle"}, {"name": "שוקו חם גדול", "qty": 68, "sales": 798, "fc_per": 1.9, "fc_total": 129, "profit": 669, "profit_per": 9.84, "q": "puzzle"}, {"name": "קרואסון סלמי", "qty": 64, "sales": 651, "fc_per": 0.0, "fc_total": 0, "profit": 651, "profit_per": 10.17, "q": "puzzle"}, {"name": "מקיאטו כפול", "qty": 64, "sales": 747, "fc_per": 1.59, "fc_total": 102, "profit": 646, "profit_per": 10.09, "q": "puzzle"}, {"name": "כפרי זעתר", "qty": 74, "sales": 1601, "fc_per": 13.04, "fc_total": 965, "profit": 636, "profit_per": 8.6, "q": "dog"}, {"name": "כוסמין גדול", "qty": 80, "sales": 1903, "fc_per": 16.24, "fc_total": 1299, "profit": 603, "profit_per": 7.54, "q": "dog"}, {"name": "פס פטיסייר שוקולד", "qty": 225, "sales": 4005, "fc_per": 15.2, "fc_total": 3420, "profit": 585, "profit_per": 2.6, "q": "plowhorse"}, {"name": "כפרי בצל", "qty": 69, "sales": 1471, "fc_per": 13.04, "fc_total": 900, "profit": 571, "profit_per": 8.28, "q": "dog"}, {"name": "עוגה בבקה שלמה", "qty": 10, "sales": 551, "fc_per": 0.0, "fc_total": 0, "profit": 551, "profit_per": 55.08, "q": "puzzle"}, {"name": "מאפין טבעוני", "qty": 36, "sales": 549, "fc_per": 0.0, "fc_total": 0, "profit": 549, "profit_per": 15.25, "q": "puzzle"}, {"name": "לחם כתף בקר", "qty": 25, "sales": 789, "fc_per": 9.78, "fc_total": 245, "profit": 544, "profit_per": 21.77, "q": "puzzle"}, {"name": "סודה לימון\\תפוז", "qty": 83, "sales": 839, "fc_per": 3.65, "fc_total": 303, "profit": 536, "profit_per": 6.46, "q": "dog"}, {"name": "סלק אדום תפוח", "qty": 37, "sales": 533, "fc_per": 0.0, "fc_total": 0, "profit": 533, "profit_per": 14.41, "q": "puzzle"}, {"name": "קרואסון שוקולד שקדים", "qty": 68, "sales": 1210, "fc_per": 10.0, "fc_total": 680, "profit": 530, "profit_per": 7.8, "q": "dog"}, {"name": "ריבה", "qty": 25, "sales": 530, "fc_per": 0.0, "fc_total": 0, "profit": 530, "profit_per": 21.19, "q": "puzzle"}, {"name": "מקיאטו", "qty": 51, "sales": 539, "fc_per": 0.82, "fc_total": 42, "profit": 497, "profit_per": 9.75, "q": "puzzle"}, {"name": "עוגיה פיסטוק", "qty": 68, "sales": 791, "fc_per": 4.4, "fc_total": 299, "profit": 492, "profit_per": 7.24, "q": "dog"}, {"name": "עוגיה מאציה", "qty": 82, "sales": 834, "fc_per": 4.4, "fc_total": 361, "profit": 473, "profit_per": 5.77, "q": "dog"}, {"name": "קראפין פטיסייר", "qty": 85, "sales": 1153, "fc_per": 8.0, "fc_total": 680, "profit": 473, "profit_per": 5.56, "q": "plowhorse"}, {"name": "קוקה קולה", "qty": 90, "sales": 885, "fc_per": 4.65, "fc_total": 418, "profit": 466, "profit_per": 5.18, "q": "plowhorse"}, {"name": "סירופ תות", "qty": 132, "sales": 431, "fc_per": 0.0, "fc_total": 0, "profit": 431, "profit_per": 3.27, "q": "plowhorse"}, {"name": "קרואסון רול קינמון", "qty": 28, "sales": 427, "fc_per": 0.0, "fc_total": 0, "profit": 427, "profit_per": 15.25, "q": "puzzle"}, {"name": "צ'אי קר", "qty": 25, "sales": 424, "fc_per": 0.0, "fc_total": 0, "profit": 424, "profit_per": 16.96, "q": "puzzle"}, {"name": "פרצל אבוקדו", "qty": 41, "sales": 591, "fc_per": 4.68, "fc_total": 192, "profit": 399, "profit_per": 9.73, "q": "puzzle"}, {"name": "שקית קפה", "qty": 18, "sales": 1688, "fc_per": 75.0, "fc_total": 1350, "profit": 338, "profit_per": 18.78, "q": "puzzle"}, {"name": "מאציה גדול", "qty": 18, "sales": 331, "fc_per": 0.0, "fc_total": 0, "profit": 331, "profit_per": 18.37, "q": "puzzle"}, {"name": "לחמניה פרעצל", "qty": 138, "sales": 701, "fc_per": 2.8, "fc_total": 386, "profit": 315, "profit_per": 2.28, "q": "plowhorse"}, {"name": "מאציה קטן", "qty": 23, "sales": 341, "fc_per": 1.36, "fc_total": 31, "profit": 310, "profit_per": 13.47, "q": "puzzle"}, {"name": "סודה גדול", "qty": 26, "sales": 529, "fc_per": 8.74, "fc_total": 227, "profit": 302, "profit_per": 11.6, "q": "puzzle"}, {"name": "לחם עגבניות", "qty": 30, "sales": 669, "fc_per": 13.04, "fc_total": 391, "profit": 278, "profit_per": 9.26, "q": "dog"}, {"name": "אריזה עוגיות שוקולד ציפס", "qty": 65, "sales": 2615, "fc_per": 36.0, "fc_total": 2340, "profit": 275, "profit_per": 4.24, "q": "dog"}, {"name": "תה נענע", "qty": 33, "sales": 263, "fc_per": 0.0, "fc_total": 0, "profit": 263, "profit_per": 7.96, "q": "dog"}, {"name": "שיפון", "qty": 47, "sales": 871, "fc_per": 13.04, "fc_total": 613, "profit": 258, "profit_per": 5.5, "q": "dog"}, {"name": "קרואסון גבינה מתוקה אפויה עם פירות עונה", "qty": 19, "sales": 467, "fc_per": 12.0, "fc_total": 228, "profit": 239, "profit_per": 12.58, "q": "puzzle"}, {"name": "לחם חיטה מלאה עם עגבניות מיובשות", "qty": 23, "sales": 526, "fc_per": 12.8, "fc_total": 294, "profit": 232, "profit_per": 10.08, "q": "puzzle"}, {"name": "לחם אבוקדו", "qty": 13, "sales": 320, "fc_per": 7.07, "fc_total": 92, "profit": 228, "profit_per": 17.51, "q": "puzzle"}, {"name": "מים גדול", "qty": 18, "sales": 336, "fc_per": 6.18, "fc_total": 111, "profit": 224, "profit_per": 12.46, "q": "puzzle"}, {"name": "דאבל גדול", "qty": 9, "sales": 221, "fc_per": 0.0, "fc_total": 0, "profit": 221, "profit_per": 24.57, "q": "puzzle"}, {"name": "ריבה חריפה", "qty": 10, "sales": 212, "fc_per": 0.0, "fc_total": 0, "profit": 212, "profit_per": 21.18, "q": "puzzle"}, {"name": "אסטריה", "qty": 15, "sales": 305, "fc_per": 6.94, "fc_total": 104, "profit": 201, "profit_per": 13.4, "q": "puzzle"}, {"name": "גאודה עגבניות", "qty": 8, "sales": 197, "fc_per": 0.0, "fc_total": 0, "profit": 197, "profit_per": 24.58, "q": "puzzle"}, {"name": "תוספת אספרסו", "qty": 70, "sales": 237, "fc_per": 0.68, "fc_total": 47, "profit": 190, "profit_per": 2.71, "q": "dog"}, {"name": "זיתים", "qty": 22, "sales": 522, "fc_per": 15.39, "fc_total": 339, "profit": 183, "profit_per": 8.34, "q": "dog"}, {"name": "קמבוצ׳ה אורגני", "qty": 8, "sales": 163, "fc_per": 0.0, "fc_total": 0, "profit": 163, "profit_per": 20.34, "q": "puzzle"}, {"name": "גזר תפוח", "qty": 24, "sales": 346, "fc_per": 7.94, "fc_total": 191, "profit": 155, "profit_per": 6.47, "q": "dog"}, {"name": "דאבל", "qty": 25, "sales": 445, "fc_per": 12.0, "fc_total": 300, "profit": 145, "profit_per": 5.8, "q": "dog"}, {"name": "תה", "qty": 17, "sales": 144, "fc_per": 0.0, "fc_total": 0, "profit": 144, "profit_per": 8.47, "q": "dog"}, {"name": "סאן פלגרינו תפוז", "qty": 18, "sales": 183, "fc_per": 3.65, "fc_total": 66, "profit": 117, "profit_per": 6.52, "q": "dog"}, {"name": "סאן פלגרינו לימון", "qty": 11, "sales": 112, "fc_per": 0.0, "fc_total": 0, "profit": 112, "profit_per": 10.16, "q": "puzzle"}, {"name": "אריזה עוגיות פקאן", "qty": 19, "sales": 789, "fc_per": 36.0, "fc_total": 684, "profit": 105, "profit_per": 5.53, "q": "dog"}, {"name": "תפוזים", "qty": 14, "sales": 202, "fc_per": 6.9, "fc_total": 97, "profit": 105, "profit_per": 7.5, "q": "dog"}, {"name": "סירופ קרמל", "qty": 34, "sales": 93, "fc_per": 0.0, "fc_total": 0, "profit": 93, "profit_per": 2.74, "q": "dog"}, {"name": "שמן זית", "qty": 5, "sales": 318, "fc_per": 45.0, "fc_total": 225, "profit": 93, "profit_per": 18.56, "q": "puzzle"}, {"name": "קונפיטור משמש", "qty": 4, "sales": 85, "fc_per": 0.0, "fc_total": 0, "profit": 85, "profit_per": 21.19, "q": "puzzle"}, {"name": "מיני חמאה", "qty": 16, "sales": 108, "fc_per": 3.2, "fc_total": 51, "profit": 57, "profit_per": 3.58, "q": "dog"}, {"name": "שמן זית אורגני קורונייקי של מקורה", "qty": 3, "sales": 191, "fc_per": 45.0, "fc_total": 135, "profit": 56, "profit_per": 18.56, "q": "puzzle"}, {"name": "סנדביץ' קרואסון", "qty": 3, "sales": 51, "fc_per": 0.0, "fc_total": 0, "profit": 51, "profit_per": 16.95, "q": "puzzle"}, {"name": "עוגיה קטנה", "qty": 15, "sales": 51, "fc_per": 0.0, "fc_total": 0, "profit": 51, "profit_per": 3.39, "q": "dog"}, {"name": "קרואסון לימון", "qty": 7, "sales": 107, "fc_per": 8.0, "fc_total": 56, "profit": 51, "profit_per": 7.25, "q": "dog"}, {"name": "שמן זית 500", "qty": 1, "sales": 44, "fc_per": 0.0, "fc_total": 0, "profit": 44, "profit_per": 44.07, "q": "puzzle"}, {"name": "סאן פלגרינו גדול", "qty": 2, "sales": 44, "fc_per": 0.0, "fc_total": 0, "profit": 44, "profit_per": 22.02, "q": "puzzle"}, {"name": "קמבוצ'ה Acai VIGO", "qty": 2, "sales": 41, "fc_per": 0.0, "fc_total": 0, "profit": 41, "profit_per": 20.34, "q": "puzzle"}, {"name": "קמבוצ'ה Schisandra VIGO", "qty": 2, "sales": 41, "fc_per": 0.0, "fc_total": 0, "profit": 41, "profit_per": 20.34, "q": "puzzle"}, {"name": "טארט דובדבן", "qty": 23, "sales": 404, "fc_per": 16.0, "fc_total": 368, "profit": 36, "profit_per": 1.58, "q": "dog"}, {"name": "פוקאציה קטנה בשר", "qty": 1, "sales": 23, "fc_per": 0.0, "fc_total": 0, "profit": 23, "profit_per": 22.88, "q": "puzzle"}, {"name": "סיידר תפוח", "qty": 2, "sales": 19, "fc_per": 0.0, "fc_total": 0, "profit": 19, "profit_per": 9.32, "q": "dog"}, {"name": "עוגיה ריבה גדולה", "qty": 2, "sales": 15, "fc_per": 0.0, "fc_total": 0, "profit": 15, "profit_per": 7.62, "q": "dog"}, {"name": "צ'אי קטן", "qty": 1, "sales": 15, "fc_per": 0.0, "fc_total": 0, "profit": 15, "profit_per": 15.25, "q": "puzzle"}, {"name": "כריך בגט", "qty": 1, "sales": 14, "fc_per": 0.0, "fc_total": 0, "profit": 14, "profit_per": 13.56, "q": "puzzle"}, {"name": "מיני שקדים", "qty": 1, "sales": 10, "fc_per": 0.0, "fc_total": 0, "profit": 10, "profit_per": 10.17, "q": "puzzle"}, {"name": "כוס חלב רגיל", "qty": 2, "sales": 10, "fc_per": 0.0, "fc_total": 0, "profit": 10, "profit_per": 5.08, "q": "dog"}, {"name": "מים", "qty": 1, "sales": 7, "fc_per": 0.0, "fc_total": 0, "profit": 7, "profit_per": 6.77, "q": "dog"}, {"name": "כוס חלב שיבולת שועל", "qty": 1, "sales": 5, "fc_per": 0.0, "fc_total": 0, "profit": 5, "profit_per": 5.08, "q": "dog"}, {"name": "רוגלך", "qty": 1, "sales": 5, "fc_per": 0.0, "fc_total": 0, "profit": 5, "profit_per": 5.08, "q": "dog"}, {"name": "מיני סלט עובדים", "qty": 9, "sales": 0, "fc_per": 0.0, "fc_total": 0, "profit": 0, "profit_per": 0.0, "q": "dog"}, {"name": "בורקס בשר", "qty": 1, "sales": 22, "fc_per": 25.0, "fc_total": 25, "profit": -3, "profit_per": -2.97, "q": "dog"}, {"name": "שיבולת שועל", "qty": 1565, "sales": 1206, "fc_per": 1.72, "fc_total": 2692, "profit": -1486, "profit_per": -0.95, "q": "plowhorse"}];
+var QUADS = {
+  star: { name: "Stars ⭐", desc: "רווח גבוה + כמות גבוהה — השאר כמו שהם", items: [] },
+  plowhorse: { name: "Plowhorses 🐴", desc: "רווח נמוך + כמות גבוהה — העלה מחיר או הורד עלות", items: [] },
+  puzzle: { name: "Puzzles 🧩", desc: "רווח גבוה + כמות נמוכה — קדם יותר", items: [] },
+  dog: { name: "Dogs 🐕", desc: "רווח נמוך + כמות נמוכה — שקול להסיר", items: [] }
+};
+
+ALL_ITEMS.forEach(function(i) { QUADS[i.q].items.push(i); });
+
+var totalSales = ALL_ITEMS.reduce(function(s,i) { return s+i.sales; },0);
+var totalFC = ALL_ITEMS.reduce(function(s,i) { return s+i.fc_total; },0);
+var totalProfit = ALL_ITEMS.reduce(function(s,i) { return s+i.profit; },0);
+
+var h = '';
+h += '<div class="kpi-grid">';
+h += '<div class="kpi"><div class="kpi-label">סה"כ מכירות</div><div class="kpi-value">' + fmt(totalSales) + '</div><div class="kpi-sub">162 פריטים פעילים</div></div>';
+h += '<div class="kpi orange"><div class="kpi-label">עלות מזון</div><div class="kpi-value">' + fmt(totalFC) + '</div><div class="kpi-sub">' + (totalFC/totalSales*100).toFixed(1) + '% ממכירות</div></div>';
+h += '<div class="kpi green"><div class="kpi-label">סה"כ רווח</div><div class="kpi-value">' + fmt(totalProfit) + '</div><div class="kpi-sub">' + (totalProfit/totalSales*100).toFixed(1) + '% רווחיות</div></div>';
+h += '<div class="kpi blue"><div class="kpi-label">Stars</div><div class="kpi-value">' + QUADS.star.items.length + '</div><div class="kpi-sub">פריטים מצטיינים</div></div>';
+h += '<div class="kpi purple"><div class="kpi-label">Plowhorses</div><div class="kpi-value">' + QUADS.plowhorse.items.length + '</div><div class="kpi-sub">כמות גבוהה, רווח נמוך</div></div>';
+h += '<div class="kpi"><div class="kpi-label">Puzzles</div><div class="kpi-value">' + QUADS.puzzle.items.length + '</div><div class="kpi-sub">רווח גבוה, כמות נמוכה</div></div>';
+h += '<div class="kpi red"><div class="kpi-label">Dogs</div><div class="kpi-value">' + QUADS.dog.items.length + '</div><div class="kpi-sub">שקול הסרה</div></div>';
+h += '</div>';
+
+['star','plowhorse','puzzle','dog'].forEach(function(qkey) {
+  var q = QUADS[qkey];
+  var items = q.items;
+  items.sort(function(a,b) { return b.profit - a.profit; });
+  h += '<div class="section"><div class="section-title"><span class="badge ' + qkey + '">' + q.name + '</span> <span style="font-size:13px;color:#6b7280">' + q.desc + '</span> <span style="font-size:12px;color:#9ca3af;margin-right:auto">' + items.length + ' פריטים</span></div>';
+  h += '<table><thead><tr><th>#</th><th>פריט</th><th>כמות</th><th>רווח/יחידה</th><th>רווח כולל</th><th>עלות מזון/יח</th></tr></thead><tbody>';
+  items.forEach(function(item,i) {
+    var fcColor = item.fc_per > 8 ? '#dc2626' : item.fc_per > 5 ? '#d97706' : '#059669';
+    var profitColor = item.profit < 0 ? '#dc2626' : '#059669';
+    h += '<tr><td>' + (i+1) + '</td><td style="font-weight:600">' + item.name + '</td><td>' + item.qty.toLocaleString('he-IL') + '</td><td style="color:' + profitColor + '">' + fmt2(item.profit_per) + '</td><td style="font-weight:700;color:' + profitColor + '">' + fmt(item.profit) + '</td><td style="color:' + fcColor + '">' + fmt2(item.fc_per) + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+});
+
+document.getElementById('content').innerHTML = h;
+</script>
 </body>
 </html>
