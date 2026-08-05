@@ -25,9 +25,11 @@
   .kpi.yellow .kpi-value { color: #fbbf24; }
   .kpi.red .kpi-value { color: #f87171; }
   .kpi.orange .kpi-value { color: #f59e0b; }
+  .kpi.purple .kpi-value { color: #a78bfa; }
 
   .section { background: #1a1d2e; border: 1px solid #2d3056; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
   .section-title { font-size: 15px; font-weight: 700; color: #a0aec0; margin-bottom: 16px; }
+  .section-title .badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-right: 8px; }
 
   table { width: 100%; border-collapse: collapse; }
   th { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; text-align: right; border-bottom: 1px solid #2d3056; }
@@ -40,6 +42,8 @@
   .gauge-fill { height: 100%; border-radius: 6px; }
   .gauge-mark { position: absolute; top: -3px; width: 2px; height: 18px; background: #475569; }
   .gauge-label { font-size: 12px; color: #64748b; margin-top: 8px; }
+
+  .note { font-size: 13px; color: #64748b; padding: 12px; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.15); border-radius: 8px; margin-top: 16px; }
 </style>
 </head>
 <body>
@@ -47,7 +51,7 @@
 <div class="header">
   <div>
     <div class="logo">Breda <span>Factory</span></div>
-    <div class="sub-logo">SmartPlate | MarketMan (Sales + Food Cost) × ShiftOrganizer (Labor)</div>
+    <div class="sub-logo">SmartPlate | MarketMan (Sales + Food Cost + Variance) x ShiftOrganizer (Labor)</div>
   </div>
   <div class="last-sync">עודכן: 05.08.2026</div>
 </div>
@@ -63,6 +67,46 @@ const LABOR_PCT = 41.1;
 const PRIME = 59.2;
 const PROFIT = SALES - FOOD_COST - LABOR;
 const PROFIT_PCT = Math.round(PROFIT / SALES * 1000) / 10;
+
+const VARIANCE = {
+  period: '01/07/2026 - 31/07/2026',
+  totalSales: 496267.60,
+  varianceValue: -32374.60,
+  variancePct: -6.49,
+  grossProfitVariance: -6.52,
+  varianceExclWaste: -32213.17,
+  varianceExclWastePct: -6.49,
+  actualUsage: 130734.60,
+  actualGrossProfit: 365533.00,
+  actualGrossProfitPct: 73.66,
+  theoreticalUsage: 98360.01,
+  theoreticalGrossProfit: 397907.59,
+  theoreticalGrossProfitPct: 80.18,
+  totalItems: 421
+};
+
+const VARIANCE_ITEMS = [
+  {cat:'food',    name:'חמאה פלשארד יבשה מרודדת (1 ק"ג*10) 82% שומן', uom:'ק"ג', qty:520,   actual:19060.00, theo:3.28,    var:-19056.72, varPct:-99.98},
+  {cat:'food',    name:'לחם לבן תפזורת',                       uom:'ק"ג', qty:2745,  actual:9456.53,  theo:74.62,    var:-9381.90,  varPct:-99.21},
+  {cat:'food',    name:'חמאה צהובה 25 קג uruguay',              uom:'ק"ג', qty:319,   actual:8587.00,  theo:57.56,    var:-8529.44,  varPct:-99.32},
+  {cat:'food',    name:'קמח מניטובה לבן בשק 25 קג',             uom:'ק"ג', qty:1187,  actual:7683.97,  theo:0.40,     var:-7683.57,  varPct:-99.99},
+  {cat:'packages',name:'תבנית אלומיניום סופלא 1/50',            uom:"יח'", qty:17,    actual:7650.00,  theo:0.00,     var:-7650.00,  varPct:-100.00},
+  {cat:'packages',name:'קרטון לחם נמוך 603*373*206',             uom:"יח'", qty:1500,  actual:5925.00,  theo:0.00,     var:-5925.00,  varPct:-100.00},
+  {cat:'food',    name:'חלב בקרטון 3% 1*12',                    uom:'ליטר',qty:729,   actual:4228.20,  theo:0.00,     var:-4228.20,  varPct:-100.00},
+  {cat:'food',    name:'ביצים מעורב מפוסטר 1 קג קפוא',          uom:'ק"ג', qty:217,   actual:3819.20,  theo:93.34,    var:-3725.86,  varPct:-97.56},
+  {cat:'food',    name:'קמח מניטובה מלא נמופה 25 קג',           uom:'ק"ג', qty:727,   actual:3126.10,  theo:62.46,    var:-3063.64,  varPct:-98.00},
+  {cat:'packages',name:'מגש סופגניות 24 חלק',                  uom:"יח'", qty:1100,  actual:2970.00,  theo:0.00,     var:-2970.00,  varPct:-100.00},
+  {cat:'packages',name:'קרטון סופגניה ענק חום 72*390*605',      uom:"יח'", qty:1470,  actual:2719.50,  theo:0.00,     var:-2719.50,  varPct:-100.00},
+  {cat:'food',    name:'גבינת שמנת 30% 2 קג עד"ח',             uom:'ק"ג', qty:110,   actual:2653.20,  theo:0.00,     var:-2653.20,  varPct:-100.00},
+  {cat:'food',    name:'קמח כוסמין מלא מנופה 25 קג',          uom:'ק"ג', qty:465,   actual:2092.50,  theo:12.37,    var:-2080.13,  varPct:-99.41},
+  {cat:'food',    name:'קמח petra 0103hp',                      uom:'ק"ג', qty:90,    actual:1986.30,  theo:2.20,     var:-1984.10,  varPct:-99.89},
+  {cat:'food',    name:'שקדים טחונים ספרד 10 קג אקסטרה פיין',   uom:'ק"ג', qty:50,    actual:1950.00,  theo:0.00,     var:-1950.00,  varPct:-100.00},
+  {cat:'food',    name:'סוכר לבן 25 קג',                         uom:'ק"ג', qty:502,   actual:1807.20,  theo:27.81,    var:-1779.39,  varPct:-98.46},
+  {cat:'food',    name:'אגוזים חצאים 80% 10 קג סולימה',         uom:'ק"ג', qty:63.68, actual:1768.84,  theo:2.81,     var:-1766.03,  varPct:-99.84},
+  {cat:'food',    name:'Belcostick 8 cm 1.6 kg',                uom:'ק"ג', qty:36.9,  actual:1660.50,  theo:0.00,     var:-1660.50,  varPct:-100.00},
+  {cat:'food',    name:'משק 500 גרם',                          uom:"יח'", qty:179,   actual:1611.00,  theo:0.26,     var:-1610.74,  varPct:-99.98},
+  {cat:'pastry',  name:'עוגה תפוז',                             uom:"יח'", qty:11,    actual:1589.94,  theo:7856.03,  var:6266.08,   varPct:436.36}
+];
 
 const WORKERS = [
   {"name":"310 קונסטנטין מדבדובסקי","role":"מנהל מפעל","hours":234.2,"cost":13046},
@@ -106,53 +150,80 @@ const TOP_ITEMS = [
 ];
 
 function fmt(n){return '₪'+Math.round(n).toLocaleString('he-IL');}
-
+function fmtNeg(n){const v=Math.round(Math.abs(n));return (n<0?'-':'+')+'₪'+v.toLocaleString('he-IL');}
 function pctClass(p){if(p<=60)return'green';if(p<=75)return'yellow';return'red';}
+function varColor(v){return v<0?'#f87171':'#34d399';}
 
 const pc = pctClass(PRIME);
 const gc = pc==='green'?'#34d399':pc==='yellow'?'#fbbf24':'#f87171';
 
 let h = '';
 
-// KPIs
 h += '<div class="kpi-grid">';
-h += `<div class="kpi"><div class="kpi-label">מכירות (MarketMan — נטו)</div><div class="kpi-value">${fmt(SALES)}</div><div class="kpi-sub">דוח רווחיות מנות | 94 פריטים | 56,832 יחידות</div></div>`;
-h += `<div class="kpi green"><div class="kpi-label">עלות מזון (MarketMan)</div><div class="kpi-value">${fmt(FOOD_COST)}</div><div class="kpi-sub">${FOOD_PCT}% ממכירות נטו</div></div>`;
-h += `<div class="kpi orange"><div class="kpi-label">עלות שכר (ShiftOrganizer)</div><div class="kpi-value">${fmt(LABOR)}</div><div class="kpi-sub">${LABOR_PCT}% ממכירות נטו | 20 עובדים | 3,156שעה</div></div>`;
-h += `<div class="kpi ${pc}"><div class="kpi-label">Prime Cost (שכר + מזון)</div><div class="kpi-value">${PRIME}%</div><div class="kpi-sub">יעד: ≤60% ${pc==='green'?'✅ ירוק':pc==='yellow'?'⚠️ צהוב':'🔴 אדום'}</div></div>`;
-h += `<div class="kpi green"><div class="kpi-label">רווח תפעולי</div><div class="kpi-value">${fmt(PROFIT)}</div><div class="kpi-sub">${PROFIT_PCT}% ממכירות נטו</div></div>`;
+h += '<div class="kpi"><div class="kpi-label">מכירות (MarketMan — נטו)</div><div class="kpi-value">'+fmt(SALES)+'</div><div class="kpi-sub">דוח רווחיות מנות | 94 פריטים | 56,832 יחידות</div></div>';
+h += '<div class="kpi green"><div class="kpi-label">עלות מזון (MarketMan)</div><div class="kpi-value">'+fmt(FOOD_COST)+'</div><div class="kpi-sub">'+FOOD_PCT+'% ממכירות נטו</div></div>';
+h += '<div class="kpi orange"><div class="kpi-label">עלות שכר (ShiftOrganizer)</div><div class="kpi-value">'+fmt(LABOR)+'</div><div class="kpi-sub">'+LABOR_PCT+'% ממכירות נטו | 20 עובדים | 3,156שעה</div></div>';
+h += '<div class="kpi '+pc+'"><div class="kpi-label">Prime Cost (שכר + מזון)</div><div class="kpi-value">'+PRIME+'%</div><div class="kpi-sub">יעד: ≤60% '+(pc==='green'?'✅ ירוק':pc==='yellow'?'⚠️ צהוב':'🔴 אדום')+'</div></div>';
+h += '<div class="kpi green"><div class="kpi-label">רווח תפעולי</div><div class="kpi-value">'+fmt(PROFIT)+'</div><div class="kpi-sub">'+PROFIT_PCT+'% ממכירות נטו</div></div>';
 h += '</div>';
 
-// Prime cost gauge
 h += '<div class="section"><div class="section-title">Prime Cost — שכר + מזון (% ממכירות נטו)</div><div class="gauge-wrap">';
-h += `<div class="gauge"><div class="gauge-fill" style="width:${Math.min(PRIME/80*100,100)}%;background:${gc}"></div><div class="gauge-mark" style="left:60%"></div><div class="gauge-mark" style="left:75%"></div></div>`;
-h += `<div style="font-size:28px;font-weight:800;color:${gc}">${PRIME}%</div></div>`;
-h += `<div class="gauge-label">שכר: ${LABOR_PCT}% + מזון: ${FOOD_PCT}% = ${PRIME}% | יעד: ≤60% (ירוק) | 60-75% (צהוב) | >75% (אדום)</div></div>`;
+h += '<div class="gauge"><div class="gauge-fill" style="width:'+Math.min(PRIME/80*100,100)+'%;background:'+gc+'"></div><div class="gauge-mark" style="left:60%"></div><div class="gauge-mark" style="left:75%"></div></div>';
+h += '<div style="font-size:28px;font-weight:800;color:'+gc+'">'+PRIME+'%</div></div>';
+h += '<div class="gauge-label">שכר: '+LABOR_PCT+'% + מזון: '+FOOD_PCT+'% = '+PRIME+'% | יעד: ≤60% (ירוק) | 60-75% (צהוב) | >75% (אדום)</div></div>';
+
+// דוח פער מלאי
+h += '<div class="section" style="border-color:#7c3aed40"><div class="section-title">דוח פער מלאי — MarketMan Actual vs. Theoretical <span class="badge" style="background:#7c3aed20;color:#a78bfa">'+VARIANCE.period+'</span></div>';
+h += '<div class="kpi-grid" style="margin-bottom:20px">';
+h += '<div class="kpi red"><div class="kpi-label">פער מלאי (Variance Value)</div><div class="kpi-value">'+fmtNeg(VARIANCE.varianceValue)+'</div><div class="kpi-sub">'+VARIANCE.variancePct+'% ממכירות</div></div>';
+h += '<div class="kpi red"><div class="kpi-label">פער ללא בזבוז</div><div class="kpi-value">'+fmtNeg(VARIANCE.varianceExclWaste)+'</div><div class="kpi-sub">'+VARIANCE.varianceExclWastePct+'% ממכירות</div></div>';
+h += '<div class="kpi"><div class="kpi-label">עלות שימוש בפועל</div><div class="kpi-value">'+fmt(VARIANCE.actualUsage)+'</div><div class="kpi-sub">Actual Usage | '+VARIANCE.actualGrossProfitPct+'% רווח גולמי</div></div>';
+h += '<div class="kpi purple"><div class="kpi-label">עלות תיאורטית</div><div class="kpi-value">'+fmt(VARIANCE.theoreticalUsage)+'</div><div class="kpi-sub">Theoretical | '+VARIANCE.theoreticalGrossProfitPct+'% רווח גולמי</div></div>';
+h += '<div class="kpi"><div class="kpi-label">מכירות (לפי פער מלאי)</div><div class="kpi-value">'+fmt(VARIANCE.totalSales)+'</div><div class="kpi-sub">'+VARIANCE.totalItems+' פריטים נספרו</div></div>';
+h += '</div>';
+
+// Actual vs Theoretical comparison
+h += '<div style="display:flex;gap:32px;margin-bottom:20px;flex-wrap:wrap">';
+h += '<div style="flex:1;min-width:280px"><div style="font-size:12px;color:#64748b;margin-bottom:6px">רווח גולמי בפועל (Actual)</div><div style="font-size:24px;font-weight:800;color:#34d399">'+fmt(VARIANCE.actualGrossProfit)+'</div><div style="font-size:13px;color:#64748b">'+VARIANCE.actualGrossProfitPct+'% ממכירות</div></div>';
+h += '<div style="flex:1;min-width:280px"><div style="font-size:12px;color:#64748b;margin-bottom:6px">רווח גולמי תיאורטי (Theoretical)</div><div style="font-size:24px;font-weight:800;color:#a78bfa">'+fmt(VARIANCE.theoreticalGrossProfit)+'</div><div style="font-size:13px;color:#64748b">'+VARIANCE.theoreticalGrossProfitPct+'% ממכירות</div></div>';
+h += '<div style="flex:1;min-width:280px"><div style="font-size:12px;color:#64748b;margin-bottom:6px">הפרש רווח (Gross Profit Variance)</div><div style="font-size:24px;font-weight:800;color:#f87171">'+fmtNeg(VARIANCE.actualGrossProfit - VARIANCE.theoreticalGrossProfit)+'</div><div style="font-size:13px;color:#64748b">'+VARIANCE.grossProfitVariance+'% פער</div></div>';
+h += '</div>';
+
+// Variance items table
+h += '<table><thead><tr><th>#</th><th>קטגוריה</th><th>פריט מלאי</th><th>יחידה</th><th>כמות</th><th>עלות בפועל</th><th>עלות תיאורטית</th><th>פער ערך</th><th>%</th></tr></thead><tbody>';
+VARIANCE_ITEMS.forEach(function(item,i){
+  var vc = varColor(item.var);
+  h += '<tr><td>'+(i+1)+'</td><td style="font-size:12px;color:#64748b">'+item.cat+'</td><td>'+item.name+'</td><td style="font-size:12px;color:#64748b">'+item.uom+'</td><td>'+item.qty+'</td><td>'+fmt(item.actual)+'</td><td style="color:#a78bfa">'+(item.theo>0?fmt(item.theo):'—')+'</td><td style="font-weight:700;color:'+vc+'">'+fmtNeg(item.var)+'</td><td style="color:'+vc+'">'+(item.varPct>0?'+':'')+item.varPct+'%</td></tr>';
+});
+h += '</tbody></table>';
+h += '<div class="note">⚠️ רוב הפריטים מציגים פער של ~100% כי העלות התיאורטית קרובה לאפס — משמעות הדבר שהמתכונים בMarketMan לא מוגדרים עבור רכיבים אלו. יש להשלים את טבלת המתכונים כדי שהפער ישקף באופן מדויק את ההבדל בין צריכה תיאורטית לבין צריכה בפועל. נכון לעכשיו, הפער הכולל של ₪32,374 מייצג חוסר תיאום בין המלאי בפועל לתיאורטי.</div>';
+h += '</div>';
 
 // Workers
 h += '<div class="section"><div class="section-title">עובדים — ShiftOrganizer (20 עובדים)</div>';
 h += '<table><thead><tr><th>#</th><th>עובד</th><th>תפקיד</th><th>שעות</th><th>עלות מעסיק</th><th>₪/שעה</th></tr></thead><tbody>';
-WORKERS.forEach((w,i)=>{
-  const rate = w.hours>0 ? Math.round(w.cost/w.hours) : 0;
-  h += `<tr><td>${i+1}</td><td>${w.name}</td><td>${w.role}</td><td>${w.hours}</td><td style="font-weight:700">${fmt(w.cost)}</td><td>${rate>0?fmt(rate):'—'}</td></tr>`;
+WORKERS.forEach(function(w,i){
+  var rate = w.hours>0 ? Math.round(w.cost/w.hours) : 0;
+  h += '<tr><td>'+(i+1)+'</td><td>'+w.name+'</td><td>'+w.role+'</td><td>'+w.hours+'</td><td style="font-weight:700">'+fmt(w.cost)+'</td><td>'+(rate>0?fmt(rate):'—')+'</td></tr>';
 });
-h += `<tr style="background:rgba(245,158,11,0.08)"><td colspan="3" style="font-weight:700">סה"כ</td><td style="font-weight:700">3,155.8</td><td style="font-weight:700">${fmt(LABOR)}</td><td></td></tr>`;
+h += '<tr style="background:rgba(245,158,11,0.08)"><td colspan="3" style="font-weight:700">סה"כ</td><td style="font-weight:700">3,155.8</td><td style="font-weight:700">'+fmt(LABOR)+'</td><td></td></tr>';
 h += '</tbody></table></div>';
 
 // Top items
 h += '<div class="section"><div class="section-title">מנות מובילות — דוח רווחיות מנות (MarketMan)</div>';
 h += '<table><thead><tr><th>#</th><th>פריט</th><th>כמות</th><th>מכירות</th><th>עלות מזון</th><th>רווח ליחידה</th><th>רווח כולל</th></tr></thead><tbody>';
-TOP_ITEMS.forEach((item,i)=>{
-  h += `<tr><td>${i+1}</td><td>${item.name}</td><td>${item.qty.toLocaleString('he-IL')}</td><td>${fmt(item.sales)}</td><td>${fmt(item.fc)}</td><td>${fmt(item.profit_per)}</td><td style="font-weight:700;color:#34d399">${fmt(item.profit)}</td></tr>`;
+TOP_ITEMS.forEach(function(item,i){
+  h += '<tr><td>'+(i+1)+'</td><td>'+item.name+'</td><td>'+item.qty.toLocaleString('he-IL')+'</td><td>'+fmt(item.sales)+'</td><td>'+fmt(item.fc)+'</td><td>'+fmt(item.profit_per)+'</td><td style="font-weight:700;color:#34d399">'+fmt(item.profit)+'</td></tr>';
 });
 h += '</tbody></table></div>';
 
 // P&L summary
 h += '<div class="section"><div class="section-title">סיכום פיננסי</div><table><tbody>';
-h += `<tr><td>מכירות (נטו)</td><td style="font-weight:700">${fmt(SALES)}</td></tr>`;
-h += `<tr><td>עלות מזון</td><td style="color:#f87171">-${fmt(FOOD_COST)}</td><td>${FOOD_PCT}%</td></tr>`;
-h += `<tr><td>עלות שכר</td><td style="color:#f87171">-${fmt(LABOR)}</td><td>${LABOR_PCT}%</td></tr>`;
-h += `<tr style="background:rgba(52,211,153,0.08)"><td style="font-weight:700">רווח תפעולי</td><td style="font-weight:700;color:#34d399">${fmt(PROFIT)}</td><td>${PROFIT_PCT}%</td></tr>`;
+h += '<tr><td>מכירות (נטו)</td><td style="font-weight:700">'+fmt(SALES)+'</td></tr>';
+h += '<tr><td>עלות מזון</td><td style="color:#f87171">-'+fmt(FOOD_COST)+'</td><td>'+FOOD_PCT+'%</td></tr>';
+h += '<tr><td>עלות שכר</td><td style="color:#f87171">-'+fmt(LABOR)+'</td><td>'+LABOR_PCT+'%</td></tr>';
+h += '<tr><td>פער מלאי</td><td style="color:#f87171">'+fmtNeg(VARIANCE.varianceValue)+'</td><td>'+VARIANCE.variancePct+'%</td></tr>';
+h += '<tr style="background:rgba(52,211,153,0.08)"><td style="font-weight:700">רווח תפעולי</td><td style="font-weight:700;color:#34d399">'+fmt(PROFIT)+'</td><td>'+PROFIT_PCT+'%</td></tr>';
 h += '</tbody></table></div>';
 
 document.getElementById('content').innerHTML = h;
