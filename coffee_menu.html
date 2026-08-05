@@ -22,14 +22,15 @@ body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans
 .kpi.purple .kpi-value { color: #7c3aed; }
 .kpi.orange .kpi-value { color: #ea580c; }
 .kpi.red .kpi-value { color: #dc2626; }
-.toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.toolbar-left { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .search { padding: 8px 14px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 13px; width: 220px; }
 .btn { padding: 8px 16px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 13px; font-weight: 600; color: #374151; transition: all 0.15s; }
 .btn:hover { background: #f9fafb; }
 .btn.active { background: #111827; color: #fff; border-color: #111827; }
 .table-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
 table { width: 100%; border-collapse: collapse; }
-th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; white-space: nowrap; position: sticky; top: 0; background: #fff; z-index: 10; }
+th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; white-space: nowrap; position: sticky; top: 0; background: #fff; z-index: 10; }
 td { padding: 8px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
 tr:hover td { background: #f9fafb; }
 tr.flash td { animation: flash 1.2s; }
@@ -44,13 +45,18 @@ tr.flash td { animation: flash 1.2s; }
 .tip { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; font-size: 12px; color: #92400e; }
 .reset-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 12px; font-weight: 600; color: #6b7280; }
 .reset-btn:hover { background: #f9fafb; }
-.tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; white-space: nowrap; }
-.tag.star { background: #dbeafe; color: #1e40af; }
-.tag.plowhorse { background: #d1fae5; color: #065f46; }
-.tag.puzzle { background: #fef3c7; color: #92400e; }
-.tag.dog { background: #fee2e2; color: #991b1b; }
+.tag-select { padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; border: 1px solid transparent; }
+.tag-select.star { background: #dbeafe; color: #1e40af; }
+.tag-select.plowhorse { background: #d1fae5; color: #065f46; }
+.tag-select.puzzle { background: #fef3c7; color: #92400e; }
+.tag-select.dog { background: #fee2e2; color: #991b1b; }
+.tag-select option { font-weight: 600; }
+.tag-select.manual { border-style: dashed; border-width: 2px; }
+.tag-select.manual.star { border-color: #1e40af; }
+.tag-select.manual.plowhorse { border-color: #065f46; }
+.tag-select.manual.puzzle { border-color: #92400e; }
+.tag-select.manual.dog { border-color: #991b1b; }
 .net-cell { font-size: 12px; color: #6b7280; }
-.moved-tag { font-size: 9px; padding: 1px 5px; border-radius: 10px; background: #ede9fe; color: #6d28d9; font-weight: 600; white-space: nowrap; }
 .legend { display: flex; gap: 16px; font-size: 11px; color: #6b7280; flex-wrap: wrap; }
 </style>
 </head>
@@ -58,38 +64,29 @@ tr.flash td { animation: flash 1.2s; }
 <div class="header">
   <div>
     <div class="logo">Breda <span>Coffee Shop</span></div>
-    <div class="sub-logo">Menu Engineering | 162 פריטים | מחיר כולל מע"מ | % עלות מזון מחושב מנטו</div>
+    <div class="sub-logo">Menu Engineering | 162 פריטים | מחיר כולל מע"מ | % עלות מזון מנטו</div>
   </div>
-  <div style="display:flex;align-items:center;gap:12px">
-    <button class="reset-btn" onclick="resetAll()">↺ אפס שינויים</button>
-  </div>
+  <button class="reset-btn" onclick="resetAll()">↺ אפס שינויים</button>
 </div>
 <div class="main">
-  <div class="tip">💡 שנה <b>מחיר כולל מע"מ</b> או <b>כמות</b> — % עלות המזון והרווח מתחשבים מחדש, והתג (סטאר/פלואורס/פאזל/דוג) מתעדכן אוטומטית.</div>
+  <div class="tip">💡 שנה <b>מחיר</b>, <b>כמות</b> או <b>תג</b> — התגים מתחשבים אוטומטית לפי רווח וכמות, אבל אתה יכול לשנות אותם ידנית (מסגרת מקווקוות = שינוי ידני).</div>
   <div class="kpi-grid" id="kpis"></div>
   <div class="toolbar">
-    <input class="search" id="search" placeholder="חיפוש פריט..." oninput="render()">
+    <div class="toolbar-left">
+      <input class="search" id="search" placeholder="חיפוש פריט..." oninput="render()">
+    </div>
     <div class="legend">
-      <span><span class="tag star">Star</span> רווח+כמות גבוה</span>
-      <span><span class="tag plowhorse">Plowhorse</span> כמות גבוה, רווח נמוך</span>
-      <span><span class="tag puzzle">Puzzle</span> רווח גבוה, כמות נמוכה</span>
-      <span><span class="tag dog">Dog</span> שקול הסרה</span>
+      <span><select class="tag-select star" style="pointer-events:none"><option>⭐ Star</option></select> רווח+כמות גבוה</span>
+      <span><select class="tag-select plowhorse" style="pointer-events:none"><option>🐴 Plowhorse</option></select> כמות גבוה, רווח נמוך</span>
+      <span><select class="tag-select puzzle" style="pointer-events:none"><option>🧩 Puzzle</option></select> רווח גבוה, כמות נמוכה</span>
+      <span><select class="tag-select dog" style="pointer-events:none"><option>🐕 Dog</option></select> שקול הסרה</span>
     </div>
   </div>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th>#</th>
-          <th>פריט</th>
-          <th>תג</th>
-          <th>כמות</th>
-          <th>מחיר כולל מע"מ</th>
-          <th>מחיר נטו</th>
-          <th>עלות/יח</th>
-          <th>% עלות מזון</th>
-          <th>רווח/יח</th>
-          <th>רווח כולל</th>
+          <th>#</th><th>פריט</th><th>תג</th><th>כמות</th><th>מחיר כולל מע"מ</th><th>מחיר נטו</th><th>עלות/יח</th><th>% עלות מזון</th><th>רווח/יח</th><th>רווח כולל</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -106,6 +103,7 @@ var ORIGINAL = [{"name": "קפה קר", "qty": 3568, "vat_price": 17.23, "recipe
 var ITEMS = JSON.parse(JSON.stringify(ORIGINAL));
 var changedPrices = {};
 var changedQtys = {};
+var manualTags = {};  // name -> manually set tag
 
 function calcMedians() {
   var qtys = ITEMS.map(function(i) { return i.qty; }).sort(function(a,b){return a-b;});
@@ -121,12 +119,18 @@ function recalcItem(item) {
   item.sales_net = Math.round(item.net_price * item.qty);
 }
 
+function autoClassify(item, medQty, medProfit) {
+  var hv = item.qty >= medQty;
+  var hp = item.profit_per >= medProfit;
+  return (hv && hp) ? 'star' : (hv && !hp) ? 'plowhorse' : (!hv && hp) ? 'puzzle' : 'dog';
+}
+
 function classifyAll() {
   var m = calcMedians();
   ITEMS.forEach(function(i) {
-    var hv = i.qty >= m.medQty;
-    var hp = i.profit_per >= m.medProfit;
-    i.q = (hv && hp) ? 'star' : (hv && !hp) ? 'plowhorse' : (!hv && hp) ? 'puzzle' : 'dog';
+    i.autoQ = autoClassify(i, m.medQty, m.medProfit);
+    // Use manual tag if set, otherwise auto
+    i.q = manualTags[i.name] || i.autoQ;
   });
 }
 
@@ -136,7 +140,7 @@ function fcClass(pct) {
   return 'fc-high';
 }
 
-function quadName(q) {
+function quadLabel(q) {
   return {star:'⭐ Star', plowhorse:'🐴 Plowhorse', puzzle:'🧩 Puzzle', dog:'🐕 Dog'}[q];
 }
 
@@ -176,10 +180,18 @@ function render() {
     var pc = item.profit_per < 0 ? '#dc2626' : '#059669';
     var priceClass = changedPrices[item.name] ? 'input-cell changed' : 'input-cell';
     var qtyClass = changedQtys[item.name] ? 'input-cell changed' : 'input-cell';
+    var isManual = !!manualTags[item.name];
+    var tagClass = 'tag-select ' + item.q + (isManual ? ' manual' : '');
     h += '<tr id="row-'+sid+'">';
     h += '<td style="color:#9ca3af">'+(idx+1)+'</td>';
     h += '<td style="font-weight:600">'+item.name+'</td>';
-    h += '<td><span class="tag '+item.q+'">'+quadName(item.q)+'</span></td>';
+    h += '<td><select class="'+tagClass+'" onchange="onTagChange(this,\''+sname+'\')">';
+    h += '<option value="star"'+(item.q==='star'?' selected':'')+'>⭐ Star</option>';
+    h += '<option value="plowhorse"'+(item.q==='plowhorse'?' selected':'')+'>🐴 Plowhorse</option>';
+    h += '<option value="puzzle"'+(item.q==='puzzle'?' selected':'')+'>🧩 Puzzle</option>';
+    h += '<option value="dog"'+(item.q==='dog'?' selected':'')+'>🐕 Dog</option>';
+    h += '<option value="auto"'+(!isManual?' selected':'')+'>🤖 אוטומטי</option>';
+    h += '</select></td>';
     h += '<td style="text-align:center"><input class="'+qtyClass+'" type="number" step="1" value="'+item.qty+'" onchange="onQtyChange(this,\''+sname+'\')" onfocus="this.select()"></td>';
     h += '<td style="text-align:center"><input class="'+priceClass+'" type="number" step="0.1" value="'+item.vat_price.toFixed(2)+'" onchange="onPriceChange(this,\''+sname+'\')" onfocus="this.select()"></td>';
     h += '<td class="net-cell">'+fmt2(item.net_price)+'</td>';
@@ -190,6 +202,19 @@ function render() {
     h += '</tr>';
   });
   document.getElementById('tbody').innerHTML = h;
+}
+
+function onTagChange(select, name) {
+  var val = select.value;
+  if (val === 'auto') {
+    delete manualTags[name];
+  } else {
+    manualTags[name] = val;
+  }
+  classifyAll();
+  renderKPIs();
+  render();
+  flashRow(name);
 }
 
 function onPriceChange(input, name) {
@@ -233,6 +258,7 @@ function resetAll() {
   ITEMS = JSON.parse(JSON.stringify(ORIGINAL));
   changedPrices = {};
   changedQtys = {};
+  manualTags = {};
   ITEMS.forEach(function(i) { recalcItem(i); });
   classifyAll();
   renderKPIs();
