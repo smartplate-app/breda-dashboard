@@ -3,340 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Breda Factory | SmartPlate</title>
+<title>Breda Factory — Menu Engineering | SmartPlate</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; }
-
-  .header { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-  .logo { font-size: 22px; font-weight: 800; color: #111827; }
-  .logo span { color: #d97706; }
-  .sub-logo { font-size: 13px; color: #6b7280; margin-top: 2px; }
-  .last-sync { font-size: 12px; color: #9ca3af; }
-
-  .toggle-wrap { display: flex; gap: 4px; background: #f3f4f6; padding: 4px; border-radius: 10px; }
-  .toggle-btn { background: transparent; border: none; color: #6b7280; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.15s; }
-  .toggle-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
-  .main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
-
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
-  .kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-  .kpi-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .kpi-value { font-size: 24px; font-weight: 800; color: #111827; }
-  .kpi-sub { font-size: 12px; color: #6b7280; margin-top: 4px; }
-  .kpi.green .kpi-value { color: #059669; }
-  .kpi.yellow .kpi-value { color: #d97706; }
-  .kpi.red .kpi-value { color: #dc2626; }
-  .kpi.orange .kpi-value { color: #ea580c; }
-  .kpi.purple .kpi-value { color: #7c3aed; }
-
-  .section { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-  .section-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 14px; }
-  .section-title .badge { font-size: 11px; padding: 2px 8px; border-radius: 6px; margin-right: 8px; background: #ede9fe; color: #7c3aed; }
-
-  table { width: 100%; border-collapse: collapse; }
-  th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; }
-  td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #f9fafb; }
-
-  .gauge-wrap { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
-  .gauge { width: 100%; max-width: 400px; height: 10px; background: #e5e7eb; border-radius: 5px; overflow: hidden; position: relative; }
-  .gauge-fill { height: 100%; border-radius: 5px; }
-  .gauge-mark { position: absolute; top: -2px; width: 2px; height: 14px; background: #9ca3af; }
-  .gauge-label { font-size: 12px; color: #6b7280; margin-top: 8px; }
-
-  .note { font-size: 13px; color: #6b7280; padding: 12px; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; margin-top: 14px; }
-  .note.blue { background: #dbeafe; border-color: #93c5fd; color: #1e40af; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; }
+.header { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.logo { font-size: 22px; font-weight: 800; color: #111827; }
+.logo span { color: #d97706; }
+.sub-logo { font-size: 13px; color: #6b7280; margin-top: 2px; }
+.main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.kpi-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.kpi-value { font-size: 22px; font-weight: 800; color: #111827; }
+.kpi-sub { font-size: 12px; color: #6b7280; margin-top: 4px; }
+.kpi.green .kpi-value { color: #059669; }
+.kpi.blue .kpi-value { color: #2563eb; }
+.kpi.purple .kpi-value { color: #7c3aed; }
+.kpi.orange .kpi-value { color: #ea580c; }
+.section { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.section-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
+.badge.star { background: #dbeafe; color: #1e40af; }
+.badge.plowhorse { background: #d1fae5; color: #065f46; }
+.badge.puzzle { background: #fef3c7; color: #92400e; }
+.badge.dog { background: #fee2e2; color: #991b1b; }
+table { width: 100%; border-collapse: collapse; }
+th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; }
+td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f9fafb; }
+.fc-bar { display: inline-block; width: 40px; height: 6px; background: #e5e7eb; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+.fc-bar-fill { height: 100%; border-radius: 3px; }
 </style>
 </head>
 <body>
-
 <div class="header">
   <div>
-    <div class="logo">Breda <span>Factory</span></div>
-    <div class="sub-logo">SmartPlate | MarketMan + ShiftOrganizer — Factory Only</div>
+    <div class="logo">The Breda <span>Factory</span></div>
+    <div class="sub-logo">Smart Plate analysis from MarketMan — דוח רווחיות מנות | אוגוסט 2026 MTD</div>
   </div>
-  <div class="toggle-wrap">
-    <button class="toggle-btn" onclick="switchMonth('jun', this)">יוני 2026</button>
-    <button class="toggle-btn active" onclick="switchMonth('jul', this)">יולי 2026</button>
-    <button class="toggle-btn" onclick="switchMonth('aug', this)">אוגוסט MTD</button>
-  </div>
-  <div class="last-sync">עודכן: 05.08.2026</div>
+  <div style="font-size:12px;color:#9ca3af">70 פריטים פעילים | עודכן: 05.08.2026</div>
 </div>
-
 <div class="main" id="content"></div>
-
 <script>
 function fmt(n){return '₪'+Math.round(n).toLocaleString('he-IL');}
-function fmtNeg(n){var v=Math.round(Math.abs(n));return (n<0?'-':'+')+'₪'+v.toLocaleString('he-IL');}
-function pctClass(p){if(p<=60)return'green';if(p<=75)return'yellow';return'red';}
-function varColor(v){return v<0?'#dc2626':'#059669';}
+function fmt2(n){return '₪'+n.toFixed(2);}
 
-var JUN_WORKERS = [
-  {"name":"310 קונסטנטין מדבדובסקי","role":"מנהל אפייה","hours":222.8,"cost":12509},
-  {"name":"353 ולדימיר קביאטקובסקי","role":"מנהל אפייה","hours":179.8,"cost":12000},
-  {"name":"367 אולגה קים","role":"קונדיטוריה","hours":158.3,"cost":12000},
-  {"name":"393 saned","role":"אפייה","hours":149.2,"cost":12000},
-  {"name":"225 סטפן שולגה","role":"קונדיטוריה","hours":204.3,"cost":11508},
-  {"name":"404 פולינה ארגנטיפליק","role":"בצקים","hours":218.8,"cost":10947},
-  {"name":"371 Abaker Hamid","role":"ניקיון","hours":182.2,"cost":10939},
-  {"name":"324 מאיה פיזיק","role":"בצקים","hours":202.8,"cost":10774},
-  {"name":"334 ליבי הררי ארנולד","role":"בצקים","hours":186.4,"cost":10449},
-  {"name":"370 שהד עיסאוי","role":"קונדיטוריה","hours":180.1,"cost":9987},
-  {"name":"40 ויקטור ושצ'נקו","role":"אפייה","hours":172.2,"cost":8840},
-  {"name":"354 רומן פישמן","role":"בצקים","hours":172.2,"cost":8576},
-  {"name":"389 סרגיי גברילנקו","role":"ניקיון","hours":127.1,"cost":8452},
-  {"name":"188 דניאל קונסטנטינוב","role":"קונדיטוריה","hours":84.6,"cost":5495},
-  {"name":"202 סופיה","role":"קונדיטוריה","hours":96.0,"cost":5182},
-  {"name":"301 קתרינה יורטשוק","role":"קונדיטוריה","hours":87.8,"cost":4587},
-  {"name":"410 ריבר סטריידר","role":"בצקים","hours":76.6,"cost":3709},
-  {"name":"360 איוון פאוקמן","role":"ניקיון","hours":48.9,"cost":3411},
-  {"name":"29 Akhberet Beraki","role":"בצקים","hours":67.7,"cost":3303},
-  {"name":"315 אורית אזולאי","role":"קונדיטוריה","hours":60.7,"cost":3279}
+var ALL_ITEMS = [
+{"name":"ג'בטה רגילה","qty":1577,"sales":6308,"fc_per":0.41,"fc_total":654,"profit":5654,"profit_per":3.59,"q":"plowhorse"},
+{"name":"לחמניה פרעצל","qty":1968,"sales":6132,"fc_per":0.34,"fc_total":677,"profit":5455,"profit_per":2.77,"q":"plowhorse"},
+{"name":"לחם כוסמין","qty":157,"sales":2688,"fc_per":2.49,"fc_total":391,"profit":2297,"profit_per":14.63,"q":"star"},
+{"name":"לחם כפרי בלי תוספות","qty":168,"sales":2374,"fc_per":1.78,"fc_total":300,"profit":2074,"profit_per":12.34,"q":"star"},
+{"name":"לחם חיטה מלאה","qty":120,"sales":2005,"fc_per":2.52,"fc_total":303,"profit":1702,"profit_per":14.18,"q":"star"},
+{"name":"לחם שיפון פרג אגוזים","qty":131,"sales":1911,"fc_per":2.51,"fc_total":329,"profit":1582,"profit_per":12.08,"q":"star"},
+{"name":"מגש פוקאצ'יה","qty":68,"sales":1798,"fc_per":5.12,"fc_total":349,"profit":1449,"profit_per":21.32,"q":"star"},
+{"name":"קרואסון חמאה","qty":245,"sales":1621,"fc_per":1.55,"fc_total":381,"profit":1240,"profit_per":5.06,"q":"plowhorse"},
+{"name":"קרואסון שקדים","qty":194,"sales":1884,"fc_per":3.44,"fc_total":668,"profit":1216,"profit_per":6.27,"q":"plowhorse"},
+{"name":"אריזה עוגיות שוקולד צ'יפס","qty":40,"sales":1440,"fc_per":6.59,"fc_total":264,"profit":1176,"profit_per":29.41,"q":"puzzle"},
+{"name":"סינבון","qty":187,"sales":1488,"fc_per":1.80,"fc_total":337,"profit":1151,"profit_per":6.15,"q":"plowhorse"},
+{"name":"לחמניה בורגר דלעת","qty":540,"sales":1350,"fc_per":0.50,"fc_total":274,"profit":1076,"profit_per":1.99,"q":"plowhorse"},
+{"name":"בריוש הל","qty":89,"sales":1008,"fc_per":0.74,"fc_total":66,"profit":942,"profit_per":10.58,"q":"star"},
+{"name":"בגט","qty":95,"sales":1069,"fc_per":1.49,"fc_total":142,"profit":927,"profit_per":9.76,"q":"star"},
+{"name":"קרואסון שוקולד","qty":170,"sales":1299,"fc_per":2.27,"fc_total":387,"profit":912,"profit_per":5.36,"q":"plowhorse"},
+{"name":"לחם כפרי זעתר","qty":70,"sales":1058,"fc_per":2.36,"fc_total":165,"profit":892,"profit_per":12.74,"q":"star"},
+{"name":"לחם בריוש 840גם","qty":77,"sales":1219,"fc_per":4.31,"fc_total":332,"profit":887,"profit_per":11.52,"q":"star"},
+{"name":"קרואסון פטל","qty":152,"sales":1166,"fc_per":2.07,"fc_total":315,"profit":852,"profit_per":5.60,"q":"plowhorse"},
+{"name":"לחם שיפון בלי תוספות","qty":72,"sales":953,"fc_per":1.76,"fc_total":127,"profit":826,"profit_per":11.47,"q":"star"},
+{"name":"גבינה מתוקה אפויה קטן","qty":75,"sales":996,"fc_per":2.43,"fc_total":182,"profit":814,"profit_per":10.85,"q":"star"},
+{"name":"לחם שיפון זיתים","qty":74,"sales":1026,"fc_per":3.01,"fc_total":223,"profit":804,"profit_per":10.86,"q":"star"},
+{"name":"קרואסון פיסטוק שוקולד","qty":113,"sales":1114,"fc_per":3.17,"fc_total":359,"profit":755,"profit_per":6.68,"q":"plowhorse"},
+{"name":"לחם כפרי בצל","qty":54,"sales":810,"fc_per":2.50,"fc_total":135,"profit":675,"profit_per":12.50,"q":"puzzle"},
+{"name":"לחם של פעם","qty":40,"sales":800,"fc_per":3.57,"fc_total":143,"profit":657,"profit_per":16.43,"q":"puzzle"},
+{"name":"לחם כפרי זיתים","qty":67,"sales":962,"fc_per":5.09,"fc_total":341,"profit":620,"profit_per":9.26,"q":"star"},
+{"name":"בורקס","qty":98,"sales":742,"fc_per":2.08,"fc_total":204,"profit":538,"profit_per":5.49,"q":"plowhorse"},
+{"name":"פניני","qty":142,"sales":568,"fc_per":0.41,"fc_total":59,"profit":509,"profit_per":3.59,"q":"plowhorse"},
+{"name":"פאן סוויס","qty":34,"sales":578,"fc_per":2.43,"fc_total":83,"profit":495,"profit_per":14.56,"q":"puzzle"},
+{"name":"לחמניה ביס כוסמין","qty":218,"sales":654,"fc_per":0.74,"fc_total":162,"profit":492,"profit_per":2.26,"q":"plowhorse"},
+{"name":"עוגיה שוקולד צ'יפס","qty":137,"sales":655,"fc_per":1.19,"fc_total":164,"profit":490,"profit_per":3.58,"q":"plowhorse"},
+{"name":"גבינה תרד בצק עלים","qty":86,"sales":646,"fc_per":1.84,"fc_total":158,"profit":488,"profit_per":5.68,"q":"plowhorse"},
+{"name":"עוגה בבקה","qty":15,"sales":612,"fc_per":9.98,"fc_total":150,"profit":462,"profit_per":30.82,"q":"puzzle"},
+{"name":"לחם כפרי גערינים","qty":38,"sales":563,"fc_per":2.79,"fc_total":106,"profit":457,"profit_per":12.03,"q":"puzzle"},
+{"name":"קרואסון שום","qty":39,"sales":531,"fc_per":2.85,"fc_total":111,"profit":420,"profit_per":10.76,"q":"puzzle"},
+{"name":"קרואסון שוקולד שקדים","qty":58,"sales":655,"fc_per":4.16,"fc_total":242,"profit":413,"profit_per":7.13,"q":"dog"},
+{"name":"לחם כפרי צימוקים ואגוזים","qty":36,"sales":522,"fc_per":3.10,"fc_total":112,"profit":410,"profit_per":11.40,"q":"puzzle"},
+{"name":"קרואסון פיסטוק","qty":59,"sales":546,"fc_per":2.70,"fc_total":159,"profit":387,"profit_per":6.55,"q":"plowhorse"},
+{"name":"מיני קרואסון חמאה","qty":124,"sales":458,"fc_per":0.70,"fc_total":87,"profit":370,"profit_per":2.99,"q":"plowhorse"},
+{"name":"גבינית קראמבל","qty":40,"sales":396,"fc_per":1.18,"fc_total":47,"profit":349,"profit_per":8.72,"q":"puzzle"},
+{"name":"עוגה גזר","qty":13,"sales":531,"fc_per":14.64,"fc_total":190,"profit":341,"profit_per":26.20,"q":"puzzle"},
+{"name":"בגט שומשום","qty":40,"sales":403,"fc_per":1.60,"fc_total":64,"profit":339,"profit_per":8.47,"q":"dog"},
+{"name":"קרואסון פתוח","qty":72,"sales":448,"fc_per":1.59,"fc_total":115,"profit":333,"profit_per":4.63,"q":"plowhorse"},
+{"name":"ג'בטה כוסמין","qty":120,"sales":480,"fc_per":1.27,"fc_total":152,"profit":328,"profit_per":2.73,"q":"plowhorse"},
+{"name":"קרואסון פס לבנה זעתר","qty":36,"sales":398,"fc_per":2.32,"fc_total":84,"profit":315,"profit_per":8.74,"q":"puzzle"},
+{"name":"לחמניה בריוש 80 גם","qty":122,"sales":366,"fc_per":0.50,"fc_total":62,"profit":304,"profit_per":2.50,"q":"plowhorse"},
+{"name":"עוגיה פקאן","qty":81,"sales":391,"fc_per":1.09,"fc_total":89,"profit":302,"profit_per":3.72,"q":"plowhorse"},
+{"name":"מארז עוגיות פקאן","qty":10,"sales":360,"fc_per":6.18,"fc_total":62,"profit":298,"profit_per":29.81,"q":"puzzle"},
+{"name":"בננה מאפין","qty":48,"sales":316,"fc_per":0.78,"fc_total":38,"profit":279,"profit_per":5.81,"q":"dog"},
+{"name":"מיני קרואסון שוקולד","qty":80,"sales":380,"fc_per":1.27,"fc_total":102,"profit":278,"profit_per":3.48,"q":"plowhorse"},
+{"name":"קרואסון מרובע","qty":54,"sales":343,"fc_per":1.20,"fc_total":65,"profit":278,"profit_per":5.14,"q":"dog"},
+{"name":"מאפין קיפודים","qty":34,"sales":304,"fc_per":1.31,"fc_total":45,"profit":259,"profit_per":7.63,"q":"dog"},
+{"name":"לחם עגבניות מיובשות","qty":20,"sales":301,"fc_per":2.64,"fc_total":53,"profit":248,"profit_per":12.40,"q":"puzzle"},
+{"name":"קרואסון רול צ'דר חריף","qty":30,"sales":322,"fc_per":2.86,"fc_total":86,"profit":236,"profit_per":7.86,"q":"dog"},
+{"name":"כפרי מלא גרינים","qty":25,"sales":262,"fc_per":1.54,"fc_total":39,"profit":223,"profit_per":8.92,"q":"puzzle"},
+{"name":"עוגיה מאצ'יה","qty":63,"sales":297,"fc_per":1.29,"fc_total":82,"profit":215,"profit_per":3.42,"q":"plowhorse"},
+{"name":"קרואסון עגול צ'יזקייק","qty":14,"sales":248,"fc_per":2.72,"fc_total":38,"profit":210,"profit_per":14.99,"q":"puzzle"},
+{"name":"כפרי מלא אגוזים","qty":23,"sales":240,"fc_per":1.96,"fc_total":45,"profit":195,"profit_per":8.46,"q":"dog"},
+{"name":"קרואסון לימון עגול","qty":28,"sales":250,"fc_per":2.35,"fc_total":66,"profit":184,"profit_per":6.57,"q":"dog"},
+{"name":"עוגה תפוז","qty":4,"sales":162,"fc_per":8.88,"fc_total":36,"profit":126,"profit_per":31.61,"q":"puzzle"},
+{"name":"לחמניה טיבוני","qty":50,"sales":125,"fc_per":0.28,"fc_total":14,"profit":111,"profit_per":2.21,"q":"dog"},
+{"name":"עוגת פרג לימון","qty":4,"sales":162,"fc_per":13.87,"fc_total":55,"profit":107,"profit_per":26.63,"q":"puzzle"},
+{"name":"לחם שיפון ארוך 690 גם","qty":12,"sales":120,"fc_per":1.40,"fc_total":17,"profit":103,"profit_per":8.59,"q":"puzzle"},
+{"name":"עוגיה פיסטוק","qty":30,"sales":132,"fc_per":1.40,"fc_total":42,"profit":90,"profit_per":3.00,"q":"dog"},
+{"name":"כפרי רגיל בלי תוספות 2","qty":6,"sales":96,"fc_per":1.78,"fc_total":11,"profit":85,"profit_per":14.21,"q":"puzzle"},
+{"name":"מאפין טבעוני","qty":8,"sales":80,"fc_per":0.67,"fc_total":5,"profit":75,"profit_per":9.33,"q":"dog"},
+{"name":"ג'בטה קטנה","qty":23,"sales":58,"fc_per":0.25,"fc_total":6,"profit":52,"profit_per":2.24,"q":"dog"},
+{"name":"עוגה טארט תפוחים","qty":4,"sales":81,"fc_per":8.22,"fc_total":33,"profit":48,"profit_per":12.03,"q":"dog"},
+{"name":"שקית פטיסייר 1 ליטר","qty":5,"sales":90,"fc_per":8.72,"fc_total":44,"profit":46,"profit_per":9.27,"q":"dog"},
+{"name":"שקית פטיסייר לברדא 1 ליטר","qty":3,"sales":23,"fc_per":8.72,"fc_total":26,"profit":-4,"profit_per":-1.17,"q":"dog"},
+{"name":"שקית גבינה מתוקה לברדא 1 קג","qty":3,"sales":64,"fc_per":24.48,"fc_total":73,"profit":-10,"profit_per":-3.27,"q":"dog"}
 ];
 
-var JUN_ITEMS = [
-  {"name":"לחמניה פרעצל","qty":31771,"sales":140900,"fc":10928,"profit":129973,"profit_per":4.09},
-  {"name":"ג'בטה רגילה","qty":11432,"sales":45728,"fc":4741,"profit":40987,"profit_per":3.58},
-  {"name":"לחם כפרי בלי תוספות","qty":2198,"sales":32264,"fc":3929,"profit":28335,"profit_per":12.89},
-  {"name":"לחם כוסמין","qty":1821,"sales":31907,"fc":4540,"profit":27367,"profit_per":15.03},
-  {"name":"סינבון","qty":3240,"sales":27438,"fc":5837,"profit":21601,"profit_per":6.67},
-  {"name":"לחם חיטה מלאה","qty":1465,"sales":25229,"fc":3702,"profit":21527,"profit_per":14.69},
-  {"name":"קרואסון חמאה","qty":3955,"sales":27591,"fc":6151,"profit":21440,"profit_per":5.42},
-  {"name":"לחם שיפון פרג אגוזים","qty":1594,"sales":24075,"fc":4002,"profit":20073,"profit_per":12.59},
-  {"name":"קרואסון שקדים","qty":2753,"sales":27474,"fc":9477,"profit":17997,"profit_per":6.54},
-  {"name":"בריוש הל","qty":1409,"sales":16848,"fc":1049,"profit":15799,"profit_per":11.21},
-  {"name":"גבינה מתוקה אפויה קטן","qty":1122,"sales":16701,"fc":2730,"profit":13971,"profit_per":12.45},
-  {"name":"קרואסון פיסטוק שוקולד","qty":1916,"sales":20086,"fc":6085,"profit":14001,"profit_per":7.31},
-  {"name":"קרואסון שוקולד","qty":2401,"sales":19147,"fc":5470,"profit":13677,"profit_per":5.70},
-  {"name":"מגש פוקאצ'יה","qty":618,"sales":16648,"fc":3170,"profit":13479,"profit_per":21.81},
-  {"name":"אריזה עוגיות שוקולד צ'יפס","qty":354,"sales":15570,"fc":2334,"profit":13236,"profit_per":37.39}
-];
-
-var JUL_WORKERS = [
-  {"name":"310 קונסטנטין מדבדובסקי","role":"מנהל מפעל","hours":234.2,"cost":13046},
-  {"name":"353 ולדימיר קביאטקובסקי","role":"מנהל אפייה","hours":204.0,"cost":12000},
-  {"name":"367 אולגה קים","role":"קונדיטוריה","hours":169.7,"cost":12000},
-  {"name":"393 saned","role":"אפייה","hours":127.4,"cost":12000},
-  {"name":"404 פולינה ארגנטיפליק","role":"בצקים","hours":222.2,"cost":11070},
-  {"name":"225 סטפן שולגה","role":"קונדיטוריה","hours":195.0,"cost":10889},
-  {"name":"334 ליבי הררי ארנולד","role":"בצקים","hours":191.6,"cost":10637},
-  {"name":"370 שהד עיסאוי","role":"קונדיטוריה","hours":189.2,"cost":10449},
-  {"name":"371 Abaker Hamid","role":"ניקיון","hours":160.9,"cost":9678},
-  {"name":"324 מאיה פיזיק","role":"בצקים","hours":157.8,"cost":9595},
-  {"name":"354 רומן פישמן","role":"בצקים","hours":187.7,"cost":9307},
-  {"name":"40 ויקטור ושצ'נקו","role":"אפייה","hours":185.3,"cost":9307},
-  {"name":"389 סרגיי גברילנקו","role":"אפייה","hours":135.9,"cost":9011},
-  {"name":"416 לוי אליה","role":"ניקיון","hours":163.9,"cost":7936},
-  {"name":"301 קתרינה יורטשוק","role":"קונדיטוריה","hours":145.6,"cost":7428},
-  {"name":"415 מרינה גינסין","role":"קונדיטוריה","hours":146.8,"cost":7056},
-  {"name":"410 ריבר סטריידר","role":"בצקים","hours":134.9,"cost":6562},
-  {"name":"202 סופיה","role":"קונדיטוריה","hours":114.9,"cost":6212},
-  {"name":"188 דניאל קונסטנטינוב","role":"קונדיטוריה","hours":83.2,"cost":5688},
-  {"name":"315 אורית אזולאי","role":"קונדיטוריה","hours":5.6,"cost":301}
-];
-
-var JUL_ITEMS = [
-  {"name":"לחמניה פרעצל","qty":16108,"sales":65539,"fc":5540,"profit":59999,"profit_per":3.72},
-  {"name":"ג'בטה רגילה","qty":4612,"sales":18448,"fc":1913,"profit":16535,"profit_per":3.59},
-  {"name":"לחם כפרי בלי תוספות","qty":1089,"sales":16082,"fc":1947,"profit":14135,"profit_per":12.98},
-  {"name":"לחם כוסמין","qty":891,"sales":15523,"fc":2221,"profit":13302,"profit_per":14.93},
-  {"name":"סינבון","qty":1647,"sales":14000,"fc":2962,"profit":11037,"profit_per":6.70},
-  {"name":"קרואסון חמאה","qty":1907,"sales":13349,"fc":2966,"profit":10383,"profit_per":5.44},
-  {"name":"לחם חיטה מלאה","qty":704,"sales":12041,"fc":1779,"profit":10262,"profit_per":14.58},
-  {"name":"לחם שיפון פרג אגוזים","qty":791,"sales":12012,"fc":1986,"profit":10026,"profit_per":12.68},
-  {"name":"קרואסון שקדים","qty":1315,"sales":13150,"fc":4527,"profit":8623,"profit_per":6.56},
-  {"name":"בריוש הל","qty":696,"sales":8352,"fc":518,"profit":7834,"profit_per":11.26},
-  {"name":"גבינה מתוקה אפויה קטן","qty":556,"sales":8340,"fc":1353,"profit":6987,"profit_per":12.57},
-  {"name":"מגש פוקאצ'יה","qty":318,"sales":8586,"fc":1631,"profit":6955,"profit_per":21.87},
-  {"name":"קרואסון שוקולד","qty":1213,"sales":9704,"fc":2763,"profit":6941,"profit_per":5.72},
-  {"name":"קרואסון פיסטוק שוקולד","qty":926,"sales":9765,"fc":2985,"profit":6780,"profit_per":7.32},
-  {"name":"לחמניה בורגר דלעת","qty":3080,"sales":7700,"fc":1565,"profit":6135,"profit_per":1.99}
-];
-
-var AUG_WORKERS = [
-  {"name":"353 ולדימיר קביאטקובסקי","role":"מנהל אפייה","hours":17.9,"cost":12000},
-  {"name":"367 אולגה קים","role":"מנהל קונדיטוריה","hours":19.9,"cost":12000},
-  {"name":"393 saned","role":"אפייה","hours":21.8,"cost":12000},
-  {"name":"334 ליבי הררי ארנולד","role":"בצקים","hours":33.4,"cost":1872},
-  {"name":"354 רומן פישמן","role":"בצקים","hours":32.2,"cost":1641},
-  {"name":"310 קונסטנטין מדבדובסקי","role":"מנהל מפעל","hours":28.8,"cost":1621},
-  {"name":"40 ויקטור ושצ'נקו","role":"אפייה","hours":27.1,"cost":1395},
-  {"name":"370 שהד עיסאוי","role":"קונדיטוריה","hours":24.0,"cost":1301},
-  {"name":"415 מרינה גינסין","role":"קונדיטוריה","hours":25.1,"cost":1232},
-  {"name":"389 סרגיי גברילנקו","role":"ניקיון","hours":17.2,"cost":1164},
-  {"name":"416 לוי אליה","role":"ניקיון","hours":23.3,"cost":1122},
-  {"name":"404 פולינה ארגנטיפליק","role":"בצקים","hours":19.8,"cost":999},
-  {"name":"225 סטפן שולגה","role":"קונדיטוריה","hours":17.8,"cost":987},
-  {"name":"371 Abaker Hamid","role":"ניקיון","hours":14.2,"cost":851},
-  {"name":"301 קתרינה יורטשוק","role":"קונדיטוריה","hours":15.2,"cost":782},
-  {"name":"324 מאיה פיזיק","role":"בצקים","hours":15.0,"cost":720},
-  {"name":"417 תמר הייטנר","role":"קונדיטוריה","hours":12.9,"cost":622},
-  {"name":"410 ריבר סטריידר","role":"בצקים","hours":8.5,"cost":412},
-  {"name":"188 דניאל קונסטנטינוב","role":"אפייה","hours":2.7,"cost":130}
-];
-
-var AUG_ITEMS = [
-  {"name":"ג'בטה רגילה","qty":1577,"sales":6308,"fc":654,"profit":5654,"profit_per":3.59},
-  {"name":"לחמניה פרעצל","qty":1968,"sales":6132,"fc":677,"profit":5455,"profit_per":2.77},
-  {"name":"לחם כוסמין","qty":157,"sales":2688,"fc":391,"profit":2297,"profit_per":14.63},
-  {"name":"לחם כפרי בלי תוספות","qty":168,"sales":2374,"fc":300,"profit":2074,"profit_per":12.34},
-  {"name":"לחם חיטה מלאה","qty":120,"sales":2005,"fc":303,"profit":1702,"profit_per":14.18},
-  {"name":"לחם שיפון פרג אגוזים","qty":131,"sales":1911,"fc":329,"profit":1582,"profit_per":12.08},
-  {"name":"מגש פוקאצ'יה","qty":68,"sales":1798,"fc":349,"profit":1449,"profit_per":21.32},
-  {"name":"קרואסון חמאה","qty":245,"sales":1621,"fc":381,"profit":1240,"profit_per":5.06},
-  {"name":"קרואסון שקדים","qty":194,"sales":1884,"fc":668,"profit":1216,"profit_per":6.27},
-  {"name":"אריזה עוגיות שוקולד צ'יפס","qty":40,"sales":1440,"fc":264,"profit":1176,"profit_per":29.41},
-  {"name":"סינבון","qty":187,"sales":1488,"fc":337,"profit":1151,"profit_per":6.15},
-  {"name":"לחמניה בורגר דלעת","qty":540,"sales":1350,"fc":274,"profit":1076,"profit_per":1.99},
-  {"name":"בריוש הל","qty":89,"sales":1008,"fc":66,"profit":942,"profit_per":10.58},
-  {"name":"בגט","qty":95,"sales":1069,"fc":142,"profit":927,"profit_per":9.76},
-  {"name":"קרואסון שוקולד","qty":170,"sales":1299,"fc":387,"profit":912,"profit_per":5.36}
-];
-
-var VARIANCE = {
-  period: '01/07/2026 - 31/07/2026',
-  totalSales: 496268,
-  varianceValue: -32375,
-  variancePct: -6.49,
-  grossProfitVariance: -6.52,
-  varianceExclWaste: -32213,
-  varianceExclWastePct: -6.49,
-  actualUsage: 130735,
-  actualGrossProfit: 365533,
-  actualGrossProfitPct: 73.66,
-  theoreticalUsage: 98360,
-  theoreticalGrossProfit: 397908,
-  theoreticalGrossProfitPct: 80.18,
-  totalItems: 421
+var QUADS = {
+  star: { name: "Stars ⭐", desc: "רווח גבוה + כמות גבוהה — השאר כמו שהם", color: "#1e40af", items: [] },
+  plowhorse: { name: "Plowhorses 🐴", desc: "רווח נמוך + כמות גבוהה — העלה מחיר או הורד עלות", color: "#065f46", items: [] },
+  puzzle: { name: "Puzzles 🧩", desc: "רווח גבוה + כמות נמוכה — קדם יותר", color: "#92400e", items: [] },
+  dog: { name: "Dogs 🐕", desc: "רווח נמוך + כמות נמוכה — שקול להסיר", color: "#991b1b", items: [] }
 };
 
-var VARIANCE_ITEMS = [
-  {cat:'food',    name:'חמאה פלשארד יבשה מרודדת', uom:'ק"ג', qty:520,   actual:19060, theo:3.28,    var:-19057, varPct:-99.98},
-  {cat:'food',    name:'לחם לבן תפזורת',           uom:'ק"ג', qty:2745,  actual:9457,  theo:74.62,    var:-9382,  varPct:-99.21},
-  {cat:'food',    name:'חמאה צהובה 25 קג uruguay',  uom:'ק"ג', qty:319,   actual:8587,  theo:57.56,    var:-8529,  varPct:-99.32},
-  {cat:'food',    name:'קמח מניטובה לבן בשק 25 קג', uom:'ק"ג', qty:1187,  actual:7684,  theo:0.40,     var:-7684,  varPct:-99.99},
-  {cat:'packages',name:'תבנית אלומיניום סופלא 1/50',uom:"יח'", qty:17,    actual:7650,  theo:0,        var:-7650,  varPct:-100},
-  {cat:'packages',name:'קרטון לחם נמוך 603*373*206', uom:"יח'", qty:1500,  actual:5925,  theo:0,        var:-5925,  varPct:-100},
-  {cat:'food',    name:'חלב בקרטון 3% 1*12',        uom:'ליטר',qty:729,   actual:4228,  theo:0,        var:-4228,  varPct:-100},
-  {cat:'food',    name:'ביצים מעורב מפוסטר 1 ק"ג',   uom:'ק"ג', qty:217,   actual:3819,  theo:93,       var:-3726,  varPct:-97.56},
-  {cat:'food',    name:'קמח מניטובה מלא נמופה 25 קג',uom:'ק"ג', qty:727,   actual:3126,  theo:62,       var:-3064,  varPct:-98},
-  {cat:'packages',name:'מגש סופגניות 24 חלק',      uom:"יח'", qty:1100,  actual:2970,  theo:0,        var:-2970,  varPct:-100},
-  {cat:'packages',name:'קרטון סופגניה ענק חום',     uom:"יח'", qty:1470,  actual:2720,  theo:0,        var:-2720,  varPct:-100},
-  {cat:'food',    name:'גבינת שמנת 30% 2 קג עד"ח',  uom:'ק"ג', qty:110,   actual:2653,  theo:0,        var:-2653,  varPct:-100},
-  {cat:'food',    name:'קמח כוסמין מלא מנופה 25 קג',uom:'ק"ג', qty:465,   actual:2093,  theo:12,       var:-2080,  varPct:-99.41},
-  {cat:'food',    name:'קמח petra 0103hp',            uom:'ק"ג', qty:90,    actual:1986,  theo:2,        var:-1984,  varPct:-99.89},
-  {cat:'food',    name:'שקדים טחונים ספרד 10 קג',     uom:'ק"ג', qty:50,    actual:1950,  theo:0,        var:-1950,  varPct:-100},
-  {cat:'food',    name:'סוכר לבן 25 קג',              uom:'ק"ג', qty:502,   actual:1807,  theo:28,       var:-1779,  varPct:-98.46},
-  {cat:'food',    name:'אגוזים חצאים 80% 10 קג',     uom:'ק"ג', qty:64,    actual:1769,  theo:3,        var:-1766,  varPct:-99.84},
-  {cat:'food',    name:'Belcostick 8 cm 1.6 kg',     uom:'ק"ג', qty:37,    actual:1661,  theo:0,        var:-1661,  varPct:-100},
-  {cat:'food',    name:'משק 500 גרם',               uom:"יח'", qty:179,   actual:1611,  theo:0,        var:-1611,  varPct:-99.98},
-  {cat:'pastry',  name:'עוגה תפוז',                  uom:"יח'", qty:11,    actual:1590,  theo:7856,     var:6266,   varPct:436}
-];
+ALL_ITEMS.forEach(function(i) { QUADS[i.q].items.push(i); });
 
-var MONTHS = {
-  jun: { sales: 901022, food: 161161, foodPct: 17.9, labor: 167946, laborPct: 18.6, prime: 36.5, workers: JUN_WORKERS, items: JUN_ITEMS, workerCount: 20, workerHours: '2,911', period: 'יוני 2026 (חודש מלא)', itemTotal: 94, itemQty: '115,000+' },
-  jul: { sales: 438814, food: 79465, foodPct: 18.1, labor: 180171, laborPct: 41.1, prime: 59.2, workers: JUL_WORKERS, items: JUL_ITEMS, workerCount: 20, workerHours: '3,156', period: 'יולי 2026 (חודש מלא)', itemTotal: 94, itemQty: '56,832' },
-  aug: { sales: 60437, food: 11529, foodPct: 19.1, labor: 52850, laborPct: 87.4, prime: 106.5, workers: AUG_WORKERS, items: AUG_ITEMS, workerCount: 19, workerHours: '376.5', period: 'אוגוסט 2026 MTD (5 ימים)', itemTotal: 80, itemQty: '8,494' }
-};
+var totalSales = ALL_ITEMS.reduce(function(s,i){return s+i.sales;},0);
+var totalFC = ALL_ITEMS.reduce(function(s,i){return s+i.fc_total;},0);
+var totalProfit = ALL_ITEMS.reduce(function(s,i){return s+i.profit;},0);
 
-function render(month) {
-  var d = MONTHS[month];
-  var profit = d.sales - d.food - d.labor;
-  var profitPct = Math.round(profit / d.sales * 1000) / 10;
-  var pc = pctClass(d.prime);
-  var gc = pc==='green'?'#059669':pc==='yellow'?'#d97706':'#dc2626';
-  var isMTD = month === 'aug';
-  var isJul = month === 'jul';
+var h = '';
 
-  var h = '';
+// KPIs
+h += '<div class="kpi-grid">';
+h += '<div class="kpi"><div class="kpi-label">סה"כ מכירות (נטו)</div><div class="kpi-value">'+fmt(totalSales)+'</div><div class="kpi-sub">70 פריטים פעילים</div></div>';
+h += '<div class="kpi orange"><div class="kpi-label">עלות מזון</div><div class="kpi-value">'+fmt(totalFC)+'</div><div class="kpi-sub">'+(totalFC/totalSales*100).toFixed(1)+'% ממכירות</div></div>';
+h += '<div class="kpi green"><div class="kpi-label">סה"כ רווח</div><div class="kpi-value">'+fmt(totalProfit)+'</div><div class="kpi-sub">'+(totalProfit/totalSales*100).toFixed(1)+'% רווחיות</div></div>';
+h += '<div class="kpi blue"><div class="kpi-label">Stars</div><div class="kpi-value">'+QUADS.star.items.length+'</div><div class="kpi-sub">פריטים מצטיינים</div></div>';
+h += '<div class="kpi purple"><div class="kpi-label">פריטים שמניעים 80% רווח</div><div class="kpi-value">30</div><div class="kpi-sub">מתוך 70 פריטים</div></div>';
+h += '<div class="kpi"><div class="kpi-label">פריטים מתחת 1% רווח</div><div class="kpi-value">9</div><div class="kpi-sub">שקול הסרה</div></div>';
+h += '</div>';
 
-  // KPIs
-  h += '<div class="kpi-grid">';
-  h += '<div class="kpi"><div class="kpi-label">מכירות (MarketMan — נטו)</div><div class="kpi-value">'+fmt(d.sales)+'</div><div class="kpi-sub">'+d.itemTotal+' פריטים | '+d.itemQty+' יחידות</div></div>';
-  h += '<div class="kpi green"><div class="kpi-label">עלות מזון (MarketMan)</div><div class="kpi-value">'+fmt(d.food)+'</div><div class="kpi-sub">'+d.foodPct+'% ממכירות נטו</div></div>';
-  h += '<div class="kpi orange"><div class="kpi-label">עלות שכר (ShiftOrganizer)</div><div class="kpi-value">'+fmt(d.labor)+'</div><div class="kpi-sub">'+d.laborPct+'% ממכירות נטו | '+d.workerCount+' עובדים | '+d.workerHours+'שעה</div></div>';
-  h += '<div class="kpi '+pc+'"><div class="kpi-label">Prime Cost (שכר + מזון)</div><div class="kpi-value">'+d.prime+'%</div><div class="kpi-sub">יעד: ≤60% '+(pc==='green'?'✅ ירוק':pc==='yellow'?'⚠️ צהוב':'🔴 אדום')+'</div></div>';
-  h += '<div class="kpi '+(profit>0?'green':'red')+'"><div class="kpi-label">רווח תפעולי</div><div class="kpi-value">'+(profit<0?fmtNeg(profit):fmt(profit))+'</div><div class="kpi-sub">'+profitPct+'% ממכירות נטו</div></div>';
-  h += '</div>';
-
-  if (isMTD) {
-    h += '<div class="note blue">📊 <b>אוגוסט MTD — 5 ימים בלבד.</b> אחוזי השכר מנופחים כי 3 עובדים עם שכר חודשי קבוע (₪12,000 כל אחד) מופיעים במלואם גם ב-MTD.</div>';
-  }
-
-  // Prime cost gauge
-  h += '<div class="section"><div class="section-title">Prime Cost — שכר + מזון (% ממכירות נטו) — '+d.period+'</div><div class="gauge-wrap">';
-  h += '<div class="gauge"><div class="gauge-fill" style="width:'+Math.min(d.prime/80*100,100)+'%;background:'+gc+'"></div><div class="gauge-mark" style="left:60%"></div><div class="gauge-mark" style="left:75%"></div></div>';
-  h += '<div style="font-size:24px;font-weight:800;color:'+gc+'">'+d.prime+'%</div></div>';
-  h += '<div class="gauge-label">שכר: '+d.laborPct+'% + מזון: '+d.foodPct+'% = '+d.prime+'% | יעד: ≤60% (ירוק) | 60-75% (צהוב) | >75% (אדום)</div></div>';
-
-  // Variance report (July only)
-  if (isJul) {
-    h += '<div class="section" style="border-color:#ddd6fe"><div class="section-title">דוח פער מלאי — MarketMan Actual vs. Theoretical <span class="badge">'+VARIANCE.period+'</span></div>';
-    h += '<div class="kpi-grid" style="margin-bottom:16px">';
-    h += '<div class="kpi red"><div class="kpi-label">פער מלאי (Variance Value)</div><div class="kpi-value">'+fmtNeg(VARIANCE.varianceValue)+'</div><div class="kpi-sub">'+VARIANCE.variancePct+'% ממכירות</div></div>';
-    h += '<div class="kpi red"><div class="kpi-label">פער ללא בזבוז</div><div class="kpi-value">'+fmtNeg(VARIANCE.varianceExclWaste)+'</div><div class="kpi-sub">'+VARIANCE.varianceExclWastePct+'% ממכירות</div></div>';
-    h += '<div class="kpi"><div class="kpi-label">עלות שימוש בפועל</div><div class="kpi-value">'+fmt(VARIANCE.actualUsage)+'</div><div class="kpi-sub">Actual | '+VARIANCE.actualGrossProfitPct+'% רווח גולמי</div></div>';
-    h += '<div class="kpi purple"><div class="kpi-label">עלות תיאורטית</div><div class="kpi-value">'+fmt(VARIANCE.theoreticalUsage)+'</div><div class="kpi-sub">Theoretical | '+VARIANCE.theoreticalGrossProfitPct+'% רווח גולמי</div></div>';
-    h += '<div class="kpi"><div class="kpi-label">מכירות (לפי פער מלאי)</div><div class="kpi-value">'+fmt(VARIANCE.totalSales)+'</div><div class="kpi-sub">'+VARIANCE.totalItems+' פריטים נספרו</div></div>';
-    h += '</div>';
-    h += '<div style="display:flex;gap:24px;margin-bottom:16px;flex-wrap:wrap">';
-    h += '<div style="flex:1;min-width:240px"><div style="font-size:11px;color:#9ca3af;margin-bottom:4px">רווח גולמי בפועל</div><div style="font-size:22px;font-weight:800;color:#059669">'+fmt(VARIANCE.actualGrossProfit)+'</div><div style="font-size:12px;color:#6b7280">'+VARIANCE.actualGrossProfitPct+'% ממכירות</div></div>';
-    h += '<div style="flex:1;min-width:240px"><div style="font-size:11px;color:#9ca3af;margin-bottom:4px">רווח גולמי תיאורטי</div><div style="font-size:22px;font-weight:800;color:#7c3aed">'+fmt(VARIANCE.theoreticalGrossProfit)+'</div><div style="font-size:12px;color:#6b7280">'+VARIANCE.theoreticalGrossProfitPct+'% ממכירות</div></div>';
-    h += '<div style="flex:1;min-width:240px"><div style="font-size:11px;color:#9ca3af;margin-bottom:4px">הפרש רווח</div><div style="font-size:22px;font-weight:800;color:#dc2626">'+fmtNeg(VARIANCE.actualGrossProfit - VARIANCE.theoreticalGrossProfit)+'</div><div style="font-size:12px;color:#6b7280">'+VARIANCE.grossProfitVariance+'% פער</div></div>';
-    h += '</div>';
-    h += '<table><thead><tr><th>#</th><th>קטגוריה</th><th>פריט מלאי</th><th>יחידה</th><th>כמות</th><th>עלות בפועל</th><th>עלות תיאורטית</th><th>פער ערך</th><th>%</th></tr></thead><tbody>';
-    VARIANCE_ITEMS.forEach(function(item,i){
-      var vc = varColor(item.var);
-      h += '<tr><td>'+(i+1)+'</td><td style="font-size:11px;color:#9ca3af">'+item.cat+'</td><td>'+item.name+'</td><td style="font-size:11px;color:#9ca3af">'+item.uom+'</td><td>'+item.qty+'</td><td>'+fmt(item.actual)+'</td><td style="color:#7c3aed">'+(item.theo>0?fmt(item.theo):'—')+'</td><td style="font-weight:700;color:'+vc+'">'+fmtNeg(item.var)+'</td><td style="color:'+vc+'">'+(item.varPct>0?'+':'')+item.varPct+'%</td></tr>';
-    });
-    h += '</tbody></table>';
-    h += '<div class="note">⚠️ רוב הפריטים מציגים פער של ~100% כי המתכונים בMarketMan לא מוגדרים. הפער הכולל של ₪32,374 מייצג חוסר תיאום בין המלאי בפועל לתיאורטי.</div>';
-    h += '</div>';
-  }
-
-  // Workers
-  h += '<div class="section"><div class="section-title">עובדים — ShiftOrganizer ('+d.workerCount+' עובדים) — '+d.period+'</div>';
-  h += '<table><thead><tr><th>#</th><th>עובד</th><th>תפקיד</th><th>שעות</th><th>עלות מעסיק</th><th>₪/שעה</th></tr></thead><tbody>';
-  d.workers.forEach(function(w,i){
-    var rate = w.hours>0 ? Math.round(w.cost/w.hours) : 0;
-    h += '<tr><td>'+(i+1)+'</td><td>'+w.name+'</td><td>'+w.role+'</td><td>'+w.hours+'</td><td style="font-weight:700">'+fmt(w.cost)+'</td><td>'+(rate>0?fmt(rate):'—')+'</td></tr>';
-  });
-  h += '<tr style="background:#f9fafb"><td colspan="3" style="font-weight:700">סה"כ</td><td style="font-weight:700">'+d.workerHours+'</td><td style="font-weight:700">'+fmt(d.labor)+'</td><td></td></tr>';
-  h += '</tbody></table></div>';
-
-  // Top items
-  h += '<div class="section"><div class="section-title">מנות מובילות — דוח רווחיות מנות (MarketMan) — '+d.period+'</div>';
-  h += '<table><thead><tr><th>#</th><th>פריט</th><th>כמות</th><th>מכירות</th><th>עלות מזון</th><th>רווח ליחידה</th><th>רווח כולל</th></tr></thead><tbody>';
-  d.items.forEach(function(item,i){
-    h += '<tr><td>'+(i+1)+'</td><td>'+item.name+'</td><td>'+item.qty.toLocaleString('he-IL')+'</td><td>'+fmt(item.sales)+'</td><td>'+fmt(item.fc)+'</td><td>'+fmt(item.profit_per)+'</td><td style="font-weight:700;color:#059669">'+fmt(item.profit)+'</td></tr>';
+// Quadrant sections
+['star','plowhorse','puzzle','dog'].forEach(function(qkey) {
+  var q = QUADS[qkey];
+  var items = q.items;
+  items.sort(function(a,b){return b.profit - a.profit;});
+  
+  h += '<div class="section"><div class="section-title"><span class="badge '+qkey+'">'+q.name+'</span> <span style="font-size:13px;color:#6b7280">'+q.desc+'</span> <span style="font-size:12px;color:#9ca3af;margin-right:auto">'+items.length+' פריטים</span></div>';
+  h += '<table><thead><tr><th>#</th><th>פריט</th><th>כמות</th><th>רווח/יחידה</th><th>רווח כולל</th><th>עלות מזון/יח</th></tr></thead><tbody>';
+  items.forEach(function(item,i) {
+    var fcColor = item.fc_per > 5 ? '#dc2626' : item.fc_per > 3 ? '#d97706' : '#059669';
+    var profitColor = item.profit < 0 ? '#dc2626' : '#059669';
+    h += '<tr><td>'+(i+1)+'</td><td style="font-weight:600">'+item.name+'</td><td>'+item.qty.toLocaleString('he-IL')+'</td><td style="color:'+profitColor+'">'+fmt2(item.profit_per)+'</td><td style="font-weight:700;color:'+profitColor+'">'+fmt(item.profit)+'</td><td style="color:'+fcColor+'">'+fmt2(item.fc_per)+'</td></tr>';
   });
   h += '</tbody></table></div>';
+});
 
-  // P&L summary
-  h += '<div class="section"><div class="section-title">סיכום פיננסי — '+d.period+'</div><table><tbody>';
-  h += '<tr><td>מכירות (נטו)</td><td style="font-weight:700">'+fmt(d.sales)+'</td></tr>';
-  h += '<tr><td>עלות מזון</td><td style="color:#dc2626">-'+fmt(d.food)+'</td><td>'+d.foodPct+'%</td></tr>';
-  h += '<tr><td>עלות שכר</td><td style="color:#dc2626">-'+fmt(d.labor)+'</td><td>'+d.laborPct+'%</td></tr>';
-  if (isJul) {
-    h += '<tr><td>פער מלאי</td><td style="color:#dc2626">'+fmtNeg(VARIANCE.varianceValue)+'</td><td>'+VARIANCE.variancePct+'%</td></tr>';
-  }
-  h += '<tr style="background:#f0fdf4"><td style="font-weight:700">רווח תפעולי</td><td style="font-weight:700;color:'+(profit>0?'#059669':'#dc2626')+'">'+(profit<0?fmtNeg(profit):fmt(profit))+'</td><td>'+profitPct+'%</td></tr>';
-  h += '</tbody></table></div>';
-
-  document.getElementById('content').innerHTML = h;
-}
-
-function switchMonth(m, btn) {
-  document.querySelectorAll('.toggle-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  render(m);
-}
-
-render('jul');
+document.getElementById('content').innerHTML = h;
 </script>
-
 </body>
 </html>
