@@ -12,7 +12,7 @@ body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans
 .logo span { color: #d97706; }
 .sub-logo { font-size: 13px; color: #6b7280; margin-top: 2px; }
 .main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
-.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 24px; }
 .kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
 .kpi-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
 .kpi-value { font-size: 22px; font-weight: 800; color: #111827; }
@@ -22,50 +22,79 @@ body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans
 .kpi.purple .kpi-value { color: #7c3aed; }
 .kpi.orange .kpi-value { color: #ea580c; }
 .kpi.red .kpi-value { color: #dc2626; }
-.section { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-.section-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-.badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
-.badge.star { background: #dbeafe; color: #1e40af; }
-.badge.plowhorse { background: #d1fae5; color: #065f46; }
-.badge.puzzle { background: #fef3c7; color: #92400e; }
-.badge.dog { background: #fee2e2; color: #991b1b; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.search { padding: 8px 14px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 13px; width: 220px; }
+.btn { padding: 8px 16px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 13px; font-weight: 600; color: #374151; transition: all 0.15s; }
+.btn:hover { background: #f9fafb; }
+.btn.active { background: #111827; color: #fff; border-color: #111827; }
+.table-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
 table { width: 100%; border-collapse: collapse; }
-th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; white-space: nowrap; }
-td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
-tr:last-child td { border-bottom: none; }
+th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; white-space: nowrap; position: sticky; top: 0; background: #fff; z-index: 10; }
+td { padding: 8px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
 tr:hover td { background: #f9fafb; }
 tr.flash td { animation: flash 1.2s; }
 @keyframes flash { 0% { background: #fef3c7; } 100% { background: transparent; } }
-.price-input { width: 80px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; text-align: center; color: #1f2937; background: #fff; font-weight: 600; }
-.price-input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
-.price-input.changed { border-color: #d97706; background: #fffbeb; }
-.fc-pct { font-weight: 700; font-size: 13px; }
+.input-cell { width: 80px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; text-align: center; color: #1f2937; background: #fff; font-weight: 600; }
+.input-cell:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+.input-cell.changed { border-color: #d97706; background: #fffbeb; }
+.fc-pct { font-weight: 700; }
 .fc-low { color: #059669; }
 .fc-mid { color: #d97706; }
 .fc-high { color: #dc2626; }
 .tip { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; font-size: 12px; color: #92400e; }
-.reset-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 12px; font-weight: 600; color: #6b7280; transition: all 0.15s; }
-.reset-btn:hover { background: #f9fafb; border-color: #9ca3af; }
-.moved-tag { font-size: 10px; padding: 1px 6px; border-radius: 10px; background: #ede9fe; color: #6d28d9; margin-right: 4px; font-weight: 600; white-space: nowrap; }
-.vat-note { font-size: 10px; color: #9ca3af; margin-top: 2px; text-align: center; }
+.reset-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 12px; font-weight: 600; color: #6b7280; }
+.reset-btn:hover { background: #f9fafb; }
+.tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; white-space: nowrap; }
+.tag.star { background: #dbeafe; color: #1e40af; }
+.tag.plowhorse { background: #d1fae5; color: #065f46; }
+.tag.puzzle { background: #fef3c7; color: #92400e; }
+.tag.dog { background: #fee2e2; color: #991b1b; }
 .net-cell { font-size: 12px; color: #6b7280; }
+.moved-tag { font-size: 9px; padding: 1px 5px; border-radius: 10px; background: #ede9fe; color: #6d28d9; font-weight: 600; white-space: nowrap; }
+.legend { display: flex; gap: 16px; font-size: 11px; color: #6b7280; flex-wrap: wrap; }
 </style>
 </head>
 <body>
 <div class="header">
   <div>
     <div class="logo">Breda <span>Coffee Shop</span></div>
-    <div class="sub-logo">Menu Engineering | דוח רווחיות מנות — POS Sales | 162 פריטים פעילים</div>
+    <div class="sub-logo">Menu Engineering | 162 פריטים | מחיר כולל מע"מ | % עלות מזון מחושב מנטו</div>
   </div>
   <div style="display:flex;align-items:center;gap:12px">
     <button class="reset-btn" onclick="resetAll()">↺ אפס שינויים</button>
-    <div style="font-size:12px;color:#9ca3af">מקור: Google Sheets | מע"מ: 18%</div>
   </div>
 </div>
 <div class="main">
-  <div class="tip">💡 מחיר התפריט כולל מע"מ (18%). שנה את המחיר כדי לראות את % עלות המזון מחושב מהמחיר נטו (ללא מע"מ), ואיך הפריט עובר בין רבעי המטריצה.</div>
+  <div class="tip">💡 שנה <b>מחיר כולל מע"מ</b> או <b>כמות</b> — % עלות המזון והרווח מתחשבים מחדש, והתג (סטאר/פלואורס/פאזל/דוג) מתעדכן אוטומטית.</div>
   <div class="kpi-grid" id="kpis"></div>
-  <div id="sections"></div>
+  <div class="toolbar">
+    <input class="search" id="search" placeholder="חיפוש פריט..." oninput="render()">
+    <div class="legend">
+      <span><span class="tag star">Star</span> רווח+כמות גבוה</span>
+      <span><span class="tag plowhorse">Plowhorse</span> כמות גבוה, רווח נמוך</span>
+      <span><span class="tag puzzle">Puzzle</span> רווח גבוה, כמות נמוכה</span>
+      <span><span class="tag dog">Dog</span> שקול הסרה</span>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>פריט</th>
+          <th>תג</th>
+          <th>כמות</th>
+          <th>מחיר כולל מע"מ</th>
+          <th>מחיר נטו</th>
+          <th>עלות/יח</th>
+          <th>% עלות מזון</th>
+          <th>רווח/יח</th>
+          <th>רווח כולל</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
 </div>
 
 <script>
@@ -73,22 +102,18 @@ function fmt(n) { return '₪' + Math.round(n).toLocaleString('he-IL'); }
 function fmt2(n) { return '₪' + n.toFixed(2); }
 
 var VAT = 1.18;
-var ORIGINAL = [{"name": "קפה קר", "qty": 3568, "vat_price": 17.23, "recipe_cost": 2.28, "fc_total": 8143, "profit": 43965, "profit_per": 12.32}, {"name": "הפוך קטן", "qty": 2502, "vat_price": 14.28, "recipe_cost": 2.6, "fc_total": 6505, "profit": 23771, "profit_per": 9.5}, {"name": "פרצל ביצים", "qty": 2066, "vat_price": 16.89, "recipe_cost": 4.44, "fc_total": 9163, "profit": 20416, "profit_per": 9.88}, {"name": "הפוך גדול", "qty": 1981, "vat_price": 16.19, "recipe_cost": 3.07, "fc_total": 6086, "profit": 21095, "profit_per": 10.65}, {"name": "פרצל סלמון", "qty": 1837, "vat_price": 18.92, "recipe_cost": 5.36, "fc_total": 9840, "profit": 19612, "profit_per": 10.68}, {"name": "פרצל מוצרלה", "qty": 1790, "vat_price": 16.85, "recipe_cost": 5.49, "fc_total": 9820, "profit": 15741, "profit_per": 8.79}, {"name": "פרצל טונה", "qty": 1612, "vat_price": 16.91, "recipe_cost": 3.49, "fc_total": 5619, "profit": 17484, "profit_per": 10.85}, {"name": "שיבולת שועל", "qty": 1565, "vat_price": 0.91, "recipe_cost": 1.72, "fc_total": 2692, "profit": -1486, "profit_per": -0.95}, {"name": "fresh orange juice", "qty": 1478, "vat_price": 20.97, "recipe_cost": 1.98, "fc_total": 2919, "profit": 23347, "profit_per": 15.8}, {"name": "אמריקנו קר", "qty": 1433, "vat_price": 14.34, "recipe_cost": 1.63, "fc_total": 2336, "profit": 15074, "profit_per": 10.52}, {"name": "פרצל סלמי גאודה", "qty": 1231, "vat_price": 17.81, "recipe_cost": 6.16, "fc_total": 7577, "profit": 11002, "profit_per": 8.94}, {"name": "פרצל כרובית", "qty": 994, "vat_price": 16.94, "recipe_cost": 5.11, "fc_total": 5080, "profit": 9191, "profit_per": 9.25}, {"name": "סויה", "qty": 940, "vat_price": 0.94, "recipe_cost": 0.0, "fc_total": 0, "profit": 748, "profit_per": 0.8}, {"name": "פ. בולגרית", "qty": 896, "vat_price": 16.91, "recipe_cost": 5.21, "fc_total": 4672, "profit": 8171, "profit_per": 9.12}, {"name": "גבינה מתוקה", "qty": 798, "vat_price": 20.85, "recipe_cost": 4.42, "fc_total": 3527, "profit": 10574, "profit_per": 13.25}, {"name": "סינבון", "qty": 772, "vat_price": 20.93, "recipe_cost": 6.8, "fc_total": 5250, "profit": 8445, "profit_per": 10.94}, {"name": "פ. גאודה", "qty": 712, "vat_price": 16.93, "recipe_cost": 5.36, "fc_total": 3818, "profit": 6398, "profit_per": 8.99}, {"name": "ספיישל היום", "qty": 700, "vat_price": 25.48, "recipe_cost": 0.0, "fc_total": 0, "profit": 15117, "profit_per": 21.6}, {"name": "קרואסון פירות", "qty": 695, "vat_price": 28.96, "recipe_cost": 6.98, "fc_total": 4850, "profit": 12207, "profit_per": 17.56}, {"name": "מים בינוני", "qty": 692, "vat_price": 12.02, "recipe_cost": 3.71, "fc_total": 2567, "profit": 4482, "profit_per": 6.48}, {"name": "קרואסון שקדים", "qty": 678, "vat_price": 20.89, "recipe_cost": 8.0, "fc_total": 5424, "profit": 6578, "profit_per": 9.7}, {"name": "מאצ'ה קר", "qty": 500, "vat_price": 21.24, "recipe_cost": 2.04, "fc_total": 1019, "profit": 7982, "profit_per": 15.96}, {"name": "סודה", "qty": 487, "vat_price": 11.87, "recipe_cost": 5.3, "fc_total": 2583, "profit": 2318, "profit_per": 4.76}, {"name": "אמריקנו", "qty": 465, "vat_price": 12.13, "recipe_cost": 1.53, "fc_total": 711, "profit": 4069, "profit_per": 8.75}, {"name": "קרואסון שוקולד", "qty": 458, "vat_price": 17.86, "recipe_cost": 6.4, "fc_total": 2931, "profit": 4003, "profit_per": 8.74}, {"name": "קרואסון לאבנה שרי", "qty": 456, "vat_price": 22.0, "recipe_cost": 7.62, "fc_total": 3475, "profit": 5026, "profit_per": 11.02}, {"name": "אספרסו כפול", "qty": 452, "vat_price": 11.79, "recipe_cost": 0.93, "fc_total": 420, "profit": 4097, "profit_per": 9.07}, {"name": "עוגיה שוקולד צ'יפס", "qty": 438, "vat_price": 12.85, "recipe_cost": 4.4, "fc_total": 1927, "profit": 2844, "profit_per": 6.49}, {"name": "קרואסון פיסטוק שוקולד", "qty": 406, "vat_price": 18.9, "recipe_cost": 8.8, "fc_total": 3573, "profit": 2932, "profit_per": 7.22}, {"name": "קרואסון שוקולד לבן פטל", "qty": 394, "vat_price": 18.0, "recipe_cost": 6.4, "fc_total": 2522, "profit": 3487, "profit_per": 8.85}, {"name": "שוקו קר", "qty": 382, "vat_price": 17.73, "recipe_cost": 1.9, "fc_total": 726, "profit": 5013, "profit_per": 13.12}, {"name": "גזר", "qty": 379, "vat_price": 16.95, "recipe_cost": 5.14, "fc_total": 1949, "profit": 3497, "profit_per": 9.23}, {"name": "פוקצ^ה גדול", "qty": 356, "vat_price": 31.88, "recipe_cost": 5.7, "fc_total": 2030, "profit": 7587, "profit_per": 21.31}, {"name": "עגול אוכמניות", "qty": 349, "vat_price": 29.83, "recipe_cost": 16.0, "fc_total": 5584, "profit": 3239, "profit_per": 9.28}, {"name": "קרואסון פטיסייר שוקולד", "qty": 343, "vat_price": 14.9, "recipe_cost": 8.0, "fc_total": 2744, "profit": 1586, "profit_per": 4.62}, {"name": "תרד בולגרית", "qty": 337, "vat_price": 20.17, "recipe_cost": 6.4, "fc_total": 2157, "profit": 3604, "profit_per": 10.69}, {"name": "שום פרמזן", "qty": 328, "vat_price": 18.02, "recipe_cost": 12.0, "fc_total": 3936, "profit": 1073, "profit_per": 3.27}, {"name": "קרואסון חמאה", "qty": 320, "vat_price": 16.77, "recipe_cost": 5.6, "fc_total": 1792, "profit": 2755, "profit_per": 8.61}, {"name": "בורקס בולגרית זיתים", "qty": 316, "vat_price": 16.92, "recipe_cost": 6.4, "fc_total": 2022, "profit": 2508, "profit_per": 7.94}, {"name": "מיני שוקולד", "qty": 312, "vat_price": 15.76, "recipe_cost": 4.0, "fc_total": 1248, "profit": 2919, "profit_per": 9.35}, {"name": "גבינית", "qty": 304, "vat_price": 16.88, "recipe_cost": 8.8, "fc_total": 2675, "profit": 1673, "profit_per": 5.5}, {"name": "פוקצ'יה סלמי", "qty": 297, "vat_price": 37.74, "recipe_cost": 8.28, "fc_total": 2459, "profit": 7040, "profit_per": 23.7}, {"name": "לחם מוצרלה פסטו", "qty": 294, "vat_price": 28.9, "recipe_cost": 4.43, "fc_total": 1302, "profit": 5900, "profit_per": 20.07}, {"name": "אספרסו ארוך", "qty": 290, "vat_price": 8.05, "recipe_cost": 0.77, "fc_total": 222, "profit": 1757, "profit_per": 6.06}, {"name": "סלט טונה", "qty": 269, "vat_price": 28.85, "recipe_cost": 4.76, "fc_total": 1281, "profit": 5296, "profit_per": 19.69}, {"name": "לחם סלט ביצים", "qty": 256, "vat_price": 28.89, "recipe_cost": 7.05, "fc_total": 1804, "profit": 4463, "profit_per": 17.44}, {"name": "פרוסה בבקה 17", "qty": 249, "vat_price": 17.0, "recipe_cost": 7.2, "fc_total": 1793, "profit": 1795, "profit_per": 7.21}, {"name": "עגול לימון", "qty": 244, "vat_price": 26.85, "recipe_cost": 0.0, "fc_total": 0, "profit": 5553, "profit_per": 22.76}, {"name": "לחם כרובית", "qty": 244, "vat_price": 28.97, "recipe_cost": 8.37, "fc_total": 2042, "profit": 3947, "profit_per": 16.18}, {"name": "פרצל כרובית וטחינה", "qty": 238, "vat_price": 17.0, "recipe_cost": 5.11, "fc_total": 1216, "profit": 2213, "profit_per": 9.3}, {"name": "הל וקינמון", "qty": 237, "vat_price": 17.0, "recipe_cost": 9.6, "fc_total": 2275, "profit": 1139, "profit_per": 4.81}, {"name": "תפוח", "qty": 234, "vat_price": 17.0, "recipe_cost": 7.94, "fc_total": 1858, "profit": 1514, "profit_per": 6.47}, {"name": "קרואסון פיסטוק", "qty": 231, "vat_price": 18.92, "recipe_cost": 8.0, "fc_total": 1848, "profit": 1855, "profit_per": 8.03}, {"name": "פס לבנה זעתר", "qty": 225, "vat_price": 18.67, "recipe_cost": 9.6, "fc_total": 2160, "profit": 1399, "profit_per": 6.22}, {"name": "פס פטיסייר שוקולד", "qty": 225, "vat_price": 21.0, "recipe_cost": 15.2, "fc_total": 3420, "profit": 585, "profit_per": 2.6}, {"name": "בגט", "qty": 224, "vat_price": 16.84, "recipe_cost": 10.0, "fc_total": 2240, "profit": 957, "profit_per": 4.27}, {"name": "גאודה עיזים ריבה", "qty": 221, "vat_price": 20.89, "recipe_cost": 8.5, "fc_total": 1878, "profit": 2034, "profit_per": 9.2}, {"name": "לחם בולגרית", "qty": 216, "vat_price": 28.96, "recipe_cost": 7.62, "fc_total": 1646, "profit": 3656, "profit_per": 16.93}, {"name": "קולה זירו", "qty": 213, "vat_price": 11.98, "recipe_cost": 4.93, "fc_total": 1050, "profit": 1113, "profit_per": 5.22}, {"name": "כפרי", "qty": 211, "vat_price": 22.54, "recipe_cost": 13.04, "fc_total": 2751, "profit": 1280, "profit_per": 6.06}, {"name": "לחם גאודה", "qty": 204, "vat_price": 28.23, "recipe_cost": 5.45, "fc_total": 1111, "profit": 3770, "profit_per": 18.48}, {"name": "צ'דר חריף", "qty": 202, "vat_price": 19.0, "recipe_cost": 9.6, "fc_total": 1939, "profit": 1313, "profit_per": 6.5}, {"name": "אספרסו קצר", "qty": 184, "vat_price": 8.68, "recipe_cost": 0.77, "fc_total": 141, "profit": 1213, "profit_per": 6.59}, {"name": "פרוסה עוגה תפוז", "qty": 168, "vat_price": 15.69, "recipe_cost": 7.2, "fc_total": 1210, "profit": 1024, "profit_per": 6.1}, {"name": "קורטדו", "qty": 160, "vat_price": 12.43, "recipe_cost": 1.05, "fc_total": 168, "profit": 1517, "profit_per": 9.48}, {"name": "תה קר", "qty": 153, "vat_price": 15.75, "recipe_cost": 0.0, "fc_total": 0, "profit": 2042, "profit_per": 13.35}, {"name": "עוגיה פקאן", "qty": 141, "vat_price": 13.63, "recipe_cost": 4.4, "fc_total": 620, "profit": 1008, "profit_per": 7.15}, {"name": "לחמניה פרעצל", "qty": 138, "vat_price": 6.0, "recipe_cost": 2.8, "fc_total": 386, "profit": 315, "profit_per": 2.28}, {"name": "חלה", "qty": 135, "vat_price": 22.75, "recipe_cost": 8.24, "fc_total": 1112, "profit": 1491, "profit_per": 11.04}, {"name": "חיטה מלאה", "qty": 133, "vat_price": 26.47, "recipe_cost": 15.24, "fc_total": 2027, "profit": 957, "profit_per": 7.19}, {"name": "סירופ תות", "qty": 132, "vat_price": 3.85, "recipe_cost": 0.0, "fc_total": 0, "profit": 431, "profit_per": 3.27}, {"name": "פרצל קלאסי", "qty": 125, "vat_price": 11.81, "recipe_cost": 0.0, "fc_total": 0, "profit": 1251, "profit_per": 10.01}, {"name": "בננה מאפין", "qty": 125, "vat_price": 14.96, "recipe_cost": 5.6, "fc_total": 700, "profit": 885, "profit_per": 7.08}, {"name": "שיפון פרג אגוזים", "qty": 119, "vat_price": 26.56, "recipe_cost": 13.04, "fc_total": 1552, "profit": 1126, "profit_per": 9.47}, {"name": "טארט תפוח", "qty": 111, "vat_price": 23.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 2163, "profit_per": 19.49}, {"name": "כפרי זיתים", "qty": 104, "vat_price": 26.35, "recipe_cost": 13.04, "fc_total": 1356, "profit": 966, "profit_per": 9.29}, {"name": "שיפון זיתים", "qty": 91, "vat_price": 26.2, "recipe_cost": 13.04, "fc_total": 1187, "profit": 834, "profit_per": 9.17}, {"name": "קוקה קולה", "qty": 90, "vat_price": 11.6, "recipe_cost": 4.65, "fc_total": 418, "profit": 466, "profit_per": 5.18}, {"name": "לחם כוסמין מלא פרוס", "qty": 86, "vat_price": 29.0, "recipe_cost": 16.24, "fc_total": 1397, "profit": 717, "profit_per": 8.34}, {"name": "קראפין פטיסייר", "qty": 85, "vat_price": 16.0, "recipe_cost": 8.0, "fc_total": 680, "profit": 473, "profit_per": 5.56}, {"name": "כפרי צימוקים אגוזים", "qty": 84, "vat_price": 26.19, "recipe_cost": 13.04, "fc_total": 1095, "profit": 769, "profit_per": 9.16}, {"name": "פריט יבוא", "qty": 83, "vat_price": 30.41, "recipe_cost": 0.0, "fc_total": 0, "profit": 2139, "profit_per": 25.77}, {"name": "סודה לימון\\תפוז", "qty": 83, "vat_price": 11.93, "recipe_cost": 3.65, "fc_total": 303, "profit": 536, "profit_per": 6.46}, {"name": "עוגיה מאציה", "qty": 82, "vat_price": 12.0, "recipe_cost": 4.4, "fc_total": 361, "profit": 473, "profit_per": 5.77}, {"name": "כוסמין גדול", "qty": 80, "vat_price": 28.06, "recipe_cost": 16.24, "fc_total": 1299, "profit": 603, "profit_per": 7.54}, {"name": "שוקו חם", "qty": 75, "vat_price": 13.57, "recipe_cost": 1.52, "fc_total": 114, "profit": 748, "profit_per": 9.98}, {"name": "כפרי זעתר", "qty": 74, "vat_price": 25.53, "recipe_cost": 13.04, "fc_total": 965, "profit": 636, "profit_per": 8.6}, {"name": "קרואסונ סלמון", "qty": 70, "vat_price": 38.11, "recipe_cost": 10.43, "fc_total": 730, "profit": 1530, "profit_per": 21.86}, {"name": "תוספת אספרסו", "qty": 70, "vat_price": 4.0, "recipe_cost": 0.68, "fc_total": 47, "profit": 190, "profit_per": 2.71}, {"name": "כפרי בצל", "qty": 69, "vat_price": 25.15, "recipe_cost": 13.04, "fc_total": 900, "profit": 571, "profit_per": 8.28}, {"name": "שוקו חם גדול", "qty": 68, "vat_price": 13.85, "recipe_cost": 1.9, "fc_total": 129, "profit": 669, "profit_per": 9.84}, {"name": "קרואסון שוקולד שקדים", "qty": 68, "vat_price": 21.0, "recipe_cost": 10.0, "fc_total": 680, "profit": 530, "profit_per": 7.8}, {"name": "עוגיה פיסטוק", "qty": 68, "vat_price": 13.73, "recipe_cost": 4.4, "fc_total": 299, "profit": 492, "profit_per": 7.24}, {"name": "בורודינסקי", "qty": 65, "vat_price": 20.76, "recipe_cost": 0.0, "fc_total": 0, "profit": 1143, "profit_per": 17.59}, {"name": "אריזה עוגיות שוקולד ציפס", "qty": 65, "vat_price": 47.48, "recipe_cost": 36.0, "fc_total": 2340, "profit": 275, "profit_per": 4.24}, {"name": "קרואסון סלמי", "qty": 64, "vat_price": 12.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 651, "profit_per": 10.17}, {"name": "מקיאטו כפול", "qty": 64, "vat_price": 13.78, "recipe_cost": 1.59, "fc_total": 102, "profit": 646, "profit_per": 10.09}, {"name": "שיפון מלא בורודינסקי", "qty": 57, "vat_price": 22.4, "recipe_cost": 0.0, "fc_total": 0, "profit": 1082, "profit_per": 18.98}, {"name": "קדור שוקולד", "qty": 56, "vat_price": 14.73, "recipe_cost": 0.0, "fc_total": 0, "profit": 699, "profit_per": 12.48}, {"name": "עוגה פרג שמרים", "qty": 52, "vat_price": 15.9, "recipe_cost": 0.0, "fc_total": 0, "profit": 701, "profit_per": 13.48}, {"name": "מקיאטו", "qty": 51, "vat_price": 12.47, "recipe_cost": 0.82, "fc_total": 42, "profit": 497, "profit_per": 9.75}, {"name": "שיפון", "qty": 47, "vat_price": 21.88, "recipe_cost": 13.04, "fc_total": 613, "profit": 258, "profit_per": 5.5}, {"name": "קרואסון בשר", "qty": 45, "vat_price": 38.0, "recipe_cost": 9.29, "fc_total": 418, "profit": 1031, "profit_per": 22.91}, {"name": "בראוניס", "qty": 45, "vat_price": 18.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 686, "profit_per": 15.25}, {"name": "Kombucha", "qty": 41, "vat_price": 23.54, "recipe_cost": 0.0, "fc_total": 0, "profit": 818, "profit_per": 19.95}, {"name": "פרצל אבוקדו", "qty": 41, "vat_price": 17.0, "recipe_cost": 4.68, "fc_total": 192, "profit": 399, "profit_per": 9.73}, {"name": "סלק אדום תפוח", "qty": 37, "vat_price": 17.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 533, "profit_per": 14.41}, {"name": "מאפין טבעוני", "qty": 36, "vat_price": 17.99, "recipe_cost": 0.0, "fc_total": 0, "profit": 549, "profit_per": 15.25}, {"name": "סירופ קרמל", "qty": 34, "vat_price": 3.23, "recipe_cost": 0.0, "fc_total": 0, "profit": 93, "profit_per": 2.74}, {"name": "תה נענע", "qty": 33, "vat_price": 9.39, "recipe_cost": 0.0, "fc_total": 0, "profit": 263, "profit_per": 7.96}, {"name": "לחם עגבניות", "qty": 30, "vat_price": 26.31, "recipe_cost": 13.04, "fc_total": 391, "profit": 278, "profit_per": 9.26}, {"name": "קרואסון רול קינמון", "qty": 28, "vat_price": 18.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 427, "profit_per": 15.25}, {"name": "סודה גדול", "qty": 26, "vat_price": 24.0, "recipe_cost": 8.74, "fc_total": 227, "profit": 302, "profit_per": 11.6}, {"name": "לחם כתף בקר", "qty": 25, "vat_price": 37.24, "recipe_cost": 9.78, "fc_total": 245, "profit": 544, "profit_per": 21.77}, {"name": "ריבה", "qty": 25, "vat_price": 25.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 530, "profit_per": 21.19}, {"name": "צ'אי קר", "qty": 25, "vat_price": 20.01, "recipe_cost": 0.0, "fc_total": 0, "profit": 424, "profit_per": 16.96}, {"name": "דאבל", "qty": 25, "vat_price": 21.0, "recipe_cost": 12.0, "fc_total": 300, "profit": 145, "profit_per": 5.8}, {"name": "גזר תפוח", "qty": 24, "vat_price": 17.0, "recipe_cost": 7.94, "fc_total": 191, "profit": 155, "profit_per": 6.47}, {"name": "מאציה קטן", "qty": 23, "vat_price": 17.5, "recipe_cost": 1.36, "fc_total": 31, "profit": 310, "profit_per": 13.47}, {"name": "לחם חיטה מלאה עם עגבניות מיובשות", "qty": 23, "vat_price": 27.0, "recipe_cost": 12.8, "fc_total": 294, "profit": 232, "profit_per": 10.08}, {"name": "טארט דובדבן", "qty": 23, "vat_price": 20.74, "recipe_cost": 16.0, "fc_total": 368, "profit": 36, "profit_per": 1.58}, {"name": "זיתים", "qty": 22, "vat_price": 28.0, "recipe_cost": 15.39, "fc_total": 339, "profit": 183, "profit_per": 8.34}, {"name": "אריזה עוגיות ריבה", "qty": 19, "vat_price": 47.69, "recipe_cost": 0.0, "fc_total": 0, "profit": 768, "profit_per": 40.41}, {"name": "קרואסון גבינה מתוקה אפויה עם פירות עונה", "qty": 19, "vat_price": 29.0, "recipe_cost": 12.0, "fc_total": 228, "profit": 239, "profit_per": 12.58}, {"name": "אריזה עוגיות פקאן", "qty": 19, "vat_price": 49.0, "recipe_cost": 36.0, "fc_total": 684, "profit": 105, "profit_per": 5.53}, {"name": "שקית קפה", "qty": 18, "vat_price": 110.66, "recipe_cost": 75.0, "fc_total": 1350, "profit": 338, "profit_per": 18.78}, {"name": "מאציה גדול", "qty": 18, "vat_price": 21.68, "recipe_cost": 0.0, "fc_total": 0, "profit": 331, "profit_per": 18.37}, {"name": "מים גדול", "qty": 18, "vat_price": 22.0, "recipe_cost": 6.18, "fc_total": 111, "profit": 224, "profit_per": 12.46}, {"name": "סאן פלגרינו תפוז", "qty": 18, "vat_price": 12.0, "recipe_cost": 3.65, "fc_total": 66, "profit": 117, "profit_per": 6.52}, {"name": "תה", "qty": 17, "vat_price": 10.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 144, "profit_per": 8.47}, {"name": "מיני חמאה", "qty": 16, "vat_price": 8.0, "recipe_cost": 3.2, "fc_total": 51, "profit": 57, "profit_per": 3.58}, {"name": "אסטריה", "qty": 15, "vat_price": 24.0, "recipe_cost": 6.94, "fc_total": 104, "profit": 201, "profit_per": 13.4}, {"name": "עוגיה קטנה", "qty": 15, "vat_price": 4.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 51, "profit_per": 3.39}, {"name": "תפוזים", "qty": 14, "vat_price": 17.0, "recipe_cost": 6.9, "fc_total": 97, "profit": 105, "profit_per": 7.5}, {"name": "לחם אבוקדו", "qty": 13, "vat_price": 29.0, "recipe_cost": 7.07, "fc_total": 92, "profit": 228, "profit_per": 17.51}, {"name": "סאן פלגרינו לימון", "qty": 11, "vat_price": 11.99, "recipe_cost": 0.0, "fc_total": 0, "profit": 112, "profit_per": 10.16}, {"name": "עוגה בבקה שלמה", "qty": 10, "vat_price": 65.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 551, "profit_per": 55.08}, {"name": "ריבה חריפה", "qty": 10, "vat_price": 25.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 212, "profit_per": 21.18}, {"name": "דאבל גדול", "qty": 9, "vat_price": 29.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 221, "profit_per": 24.57}, {"name": "מיני סלט עובדים", "qty": 9, "vat_price": 0.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 0, "profit_per": 0.0}, {"name": "גאודה עגבניות", "qty": 8, "vat_price": 29.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 197, "profit_per": 24.58}, {"name": "קמבוצ׳ה אורגני", "qty": 8, "vat_price": 24.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 163, "profit_per": 20.34}, {"name": "קרואסון לימון", "qty": 7, "vat_price": 18.0, "recipe_cost": 8.0, "fc_total": 56, "profit": 51, "profit_per": 7.25}, {"name": "שמן זית", "qty": 5, "vat_price": 75.0, "recipe_cost": 45.0, "fc_total": 225, "profit": 93, "profit_per": 18.56}, {"name": "קונפיטור משמש", "qty": 4, "vat_price": 25.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 85, "profit_per": 21.19}, {"name": "שמן זית אורגני קורונייקי של מקורה", "qty": 3, "vat_price": 75.0, "recipe_cost": 45.0, "fc_total": 135, "profit": 56, "profit_per": 18.56}, {"name": "סנדביץ' קרואסון", "qty": 3, "vat_price": 20.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 51, "profit_per": 16.95}, {"name": "סאן פלגרינו גדול", "qty": 2, "vat_price": 25.99, "recipe_cost": 0.0, "fc_total": 0, "profit": 44, "profit_per": 22.02}, {"name": "קמבוצ'ה Acai VIGO", "qty": 2, "vat_price": 24.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 41, "profit_per": 20.34}, {"name": "קמבוצ'ה Schisandra VIGO", "qty": 2, "vat_price": 24.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 41, "profit_per": 20.34}, {"name": "סיידר תפוח", "qty": 2, "vat_price": 11.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 19, "profit_per": 9.32}, {"name": "עוגיה ריבה גדולה", "qty": 2, "vat_price": 9.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 15, "profit_per": 7.62}, {"name": "כוס חלב רגיל", "qty": 2, "vat_price": 5.99, "recipe_cost": 0.0, "fc_total": 0, "profit": 10, "profit_per": 5.08}, {"name": "שמן זית 500", "qty": 1, "vat_price": 52.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 44, "profit_per": 44.07}, {"name": "פוקאציה קטנה בשר", "qty": 1, "vat_price": 27.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 23, "profit_per": 22.88}, {"name": "צ'אי קטן", "qty": 1, "vat_price": 17.99, "recipe_cost": 0.0, "fc_total": 0, "profit": 15, "profit_per": 15.25}, {"name": "כריך בגט", "qty": 1, "vat_price": 16.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 14, "profit_per": 13.56}, {"name": "מיני שקדים", "qty": 1, "vat_price": 12.0, "recipe_cost": 0.0, "fc_total": 0, "profit": 10, "profit_per": 10.17}, {"name": "מים", "qty": 1, "vat_price": 7.99, "recipe_cost": 0.0, "fc_total": 0, "profit": 7, "profit_per": 6.77}, {"name": "כוס חלב שיבולת שועל", "qty": 1, "vat_price": 5.99, "recipe_cost": 0.0, "fc_total": 0, "profit": 5, "profit_per": 5.08}, {"name": "רוגלך", "qty": 1, "vat_price": 5.99, "recipe_cost": 0.0, "fc_total": 0, "profit": 5, "profit_per": 5.08}, {"name": "בורקס בשר", "qty": 1, "vat_price": 26.0, "recipe_cost": 25.0, "fc_total": 25, "profit": -3, "profit_per": -2.97}];
+var ORIGINAL = [{"name": "קפה קר", "qty": 3568, "vat_price": 17.23, "recipe_cost": 2.28}, {"name": "הפוך קטן", "qty": 2502, "vat_price": 14.28, "recipe_cost": 2.6}, {"name": "פרצל ביצים", "qty": 2066, "vat_price": 16.89, "recipe_cost": 4.44}, {"name": "הפוך גדול", "qty": 1981, "vat_price": 16.19, "recipe_cost": 3.07}, {"name": "פרצל סלמון", "qty": 1837, "vat_price": 18.92, "recipe_cost": 5.36}, {"name": "פרצל מוצרלה", "qty": 1790, "vat_price": 16.85, "recipe_cost": 5.49}, {"name": "פרצל טונה", "qty": 1612, "vat_price": 16.91, "recipe_cost": 3.49}, {"name": "שיבולת שועל", "qty": 1565, "vat_price": 0.91, "recipe_cost": 1.72}, {"name": "fresh orange juice", "qty": 1478, "vat_price": 20.97, "recipe_cost": 1.98}, {"name": "אמריקנו קר", "qty": 1433, "vat_price": 14.34, "recipe_cost": 1.63}, {"name": "פרצל סלמי גאודה", "qty": 1231, "vat_price": 17.81, "recipe_cost": 6.16}, {"name": "פרצל כרובית", "qty": 994, "vat_price": 16.94, "recipe_cost": 5.11}, {"name": "סויה", "qty": 940, "vat_price": 0.94, "recipe_cost": 0.0}, {"name": "פ. בולגרית", "qty": 896, "vat_price": 16.91, "recipe_cost": 5.21}, {"name": "גבינה מתוקה", "qty": 798, "vat_price": 20.85, "recipe_cost": 4.42}, {"name": "סינבון", "qty": 772, "vat_price": 20.93, "recipe_cost": 6.8}, {"name": "פ. גאודה", "qty": 712, "vat_price": 16.93, "recipe_cost": 5.36}, {"name": "ספיישל היום", "qty": 700, "vat_price": 25.48, "recipe_cost": 0.0}, {"name": "קרואסון פירות", "qty": 695, "vat_price": 28.96, "recipe_cost": 6.98}, {"name": "מים בינוני", "qty": 692, "vat_price": 12.02, "recipe_cost": 3.71}, {"name": "קרואסון שקדים", "qty": 678, "vat_price": 20.89, "recipe_cost": 8.0}, {"name": "מאצ'ה קר", "qty": 500, "vat_price": 21.24, "recipe_cost": 2.04}, {"name": "סודה", "qty": 487, "vat_price": 11.87, "recipe_cost": 5.3}, {"name": "אמריקנו", "qty": 465, "vat_price": 12.13, "recipe_cost": 1.53}, {"name": "קרואסון שוקולד", "qty": 458, "vat_price": 17.86, "recipe_cost": 6.4}, {"name": "קרואסון לאבנה שרי", "qty": 456, "vat_price": 22.0, "recipe_cost": 7.62}, {"name": "אספרסו כפול", "qty": 452, "vat_price": 11.79, "recipe_cost": 0.93}, {"name": "עוגיה שוקולד צ'יפס", "qty": 438, "vat_price": 12.85, "recipe_cost": 4.4}, {"name": "קרואסון פיסטוק שוקולד", "qty": 406, "vat_price": 18.9, "recipe_cost": 8.8}, {"name": "קרואסון שוקולד לבן פטל", "qty": 394, "vat_price": 18.0, "recipe_cost": 6.4}, {"name": "שוקו קר", "qty": 382, "vat_price": 17.73, "recipe_cost": 1.9}, {"name": "גזר", "qty": 379, "vat_price": 16.95, "recipe_cost": 5.14}, {"name": "פוקצ^ה גדול", "qty": 356, "vat_price": 31.88, "recipe_cost": 5.7}, {"name": "עגול אוכמניות", "qty": 349, "vat_price": 29.83, "recipe_cost": 16.0}, {"name": "קרואסון פטיסייר שוקולד", "qty": 343, "vat_price": 14.9, "recipe_cost": 8.0}, {"name": "תרד בולגרית", "qty": 337, "vat_price": 20.17, "recipe_cost": 6.4}, {"name": "שום פרמזן", "qty": 328, "vat_price": 18.02, "recipe_cost": 12.0}, {"name": "קרואסון חמאה", "qty": 320, "vat_price": 16.77, "recipe_cost": 5.6}, {"name": "בורקס בולגרית זיתים", "qty": 316, "vat_price": 16.92, "recipe_cost": 6.4}, {"name": "מיני שוקולד", "qty": 312, "vat_price": 15.76, "recipe_cost": 4.0}, {"name": "גבינית", "qty": 304, "vat_price": 16.88, "recipe_cost": 8.8}, {"name": "פוקצ'יה סלמי", "qty": 297, "vat_price": 37.74, "recipe_cost": 8.28}, {"name": "לחם מוצרלה פסטו", "qty": 294, "vat_price": 28.9, "recipe_cost": 4.43}, {"name": "אספרסו ארוך", "qty": 290, "vat_price": 8.05, "recipe_cost": 0.77}, {"name": "סלט טונה", "qty": 269, "vat_price": 28.85, "recipe_cost": 4.76}, {"name": "לחם סלט ביצים", "qty": 256, "vat_price": 28.89, "recipe_cost": 7.05}, {"name": "פרוסה בבקה 17", "qty": 249, "vat_price": 17.0, "recipe_cost": 7.2}, {"name": "עגול לימון", "qty": 244, "vat_price": 26.85, "recipe_cost": 0.0}, {"name": "לחם כרובית", "qty": 244, "vat_price": 28.97, "recipe_cost": 8.37}, {"name": "פרצל כרובית וטחינה", "qty": 238, "vat_price": 17.0, "recipe_cost": 5.11}, {"name": "הל וקינמון", "qty": 237, "vat_price": 17.0, "recipe_cost": 9.6}, {"name": "תפוח", "qty": 234, "vat_price": 17.0, "recipe_cost": 7.94}, {"name": "קרואסון פיסטוק", "qty": 231, "vat_price": 18.92, "recipe_cost": 8.0}, {"name": "פס לבנה זעתר", "qty": 225, "vat_price": 18.67, "recipe_cost": 9.6}, {"name": "פס פטיסייר שוקולד", "qty": 225, "vat_price": 21.0, "recipe_cost": 15.2}, {"name": "בגט", "qty": 224, "vat_price": 16.84, "recipe_cost": 10.0}, {"name": "גאודה עיזים ריבה", "qty": 221, "vat_price": 20.89, "recipe_cost": 8.5}, {"name": "לחם בולגרית", "qty": 216, "vat_price": 28.96, "recipe_cost": 7.62}, {"name": "קולה זירו", "qty": 213, "vat_price": 11.98, "recipe_cost": 4.93}, {"name": "כפרי", "qty": 211, "vat_price": 22.54, "recipe_cost": 13.04}, {"name": "לחם גאודה", "qty": 204, "vat_price": 28.23, "recipe_cost": 5.45}, {"name": "צ'דר חריף", "qty": 202, "vat_price": 19.0, "recipe_cost": 9.6}, {"name": "אספרסו קצר", "qty": 184, "vat_price": 8.68, "recipe_cost": 0.77}, {"name": "פרוסה עוגה תפוז", "qty": 168, "vat_price": 15.69, "recipe_cost": 7.2}, {"name": "קורטדו", "qty": 160, "vat_price": 12.43, "recipe_cost": 1.05}, {"name": "תה קר", "qty": 153, "vat_price": 15.75, "recipe_cost": 0.0}, {"name": "עוגיה פקאן", "qty": 141, "vat_price": 13.63, "recipe_cost": 4.4}, {"name": "לחמניה פרעצל", "qty": 138, "vat_price": 6.0, "recipe_cost": 2.8}, {"name": "חלה", "qty": 135, "vat_price": 22.75, "recipe_cost": 8.24}, {"name": "חיטה מלאה", "qty": 133, "vat_price": 26.47, "recipe_cost": 15.24}, {"name": "סירופ תות", "qty": 132, "vat_price": 3.85, "recipe_cost": 0.0}, {"name": "פרצל קלאסי", "qty": 125, "vat_price": 11.81, "recipe_cost": 0.0}, {"name": "בננה מאפין", "qty": 125, "vat_price": 14.96, "recipe_cost": 5.6}, {"name": "שיפון פרג אגוזים", "qty": 119, "vat_price": 26.56, "recipe_cost": 13.04}, {"name": "טארט תפוח", "qty": 111, "vat_price": 23.0, "recipe_cost": 0.0}, {"name": "כפרי זיתים", "qty": 104, "vat_price": 26.35, "recipe_cost": 13.04}, {"name": "שיפון זיתים", "qty": 91, "vat_price": 26.2, "recipe_cost": 13.04}, {"name": "קוקה קולה", "qty": 90, "vat_price": 11.6, "recipe_cost": 4.65}, {"name": "לחם כוסמין מלא פרוס", "qty": 86, "vat_price": 29.0, "recipe_cost": 16.24}, {"name": "קראפין פטיסייר", "qty": 85, "vat_price": 16.0, "recipe_cost": 8.0}, {"name": "כפרי צימוקים אגוזים", "qty": 84, "vat_price": 26.19, "recipe_cost": 13.04}, {"name": "פריט יבוא", "qty": 83, "vat_price": 30.41, "recipe_cost": 0.0}, {"name": "סודה לימון\\תפוז", "qty": 83, "vat_price": 11.93, "recipe_cost": 3.65}, {"name": "עוגיה מאציה", "qty": 82, "vat_price": 12.0, "recipe_cost": 4.4}, {"name": "כוסמין גדול", "qty": 80, "vat_price": 28.06, "recipe_cost": 16.24}, {"name": "שוקו חם", "qty": 75, "vat_price": 13.57, "recipe_cost": 1.52}, {"name": "כפרי זעתר", "qty": 74, "vat_price": 25.53, "recipe_cost": 13.04}, {"name": "קרואסונ סלמון", "qty": 70, "vat_price": 38.11, "recipe_cost": 10.43}, {"name": "תוספת אספרסו", "qty": 70, "vat_price": 4.0, "recipe_cost": 0.68}, {"name": "כפרי בצל", "qty": 69, "vat_price": 25.15, "recipe_cost": 13.04}, {"name": "שוקו חם גדול", "qty": 68, "vat_price": 13.85, "recipe_cost": 1.9}, {"name": "קרואסון שוקולד שקדים", "qty": 68, "vat_price": 21.0, "recipe_cost": 10.0}, {"name": "עוגיה פיסטוק", "qty": 68, "vat_price": 13.73, "recipe_cost": 4.4}, {"name": "בורודינסקי", "qty": 65, "vat_price": 20.76, "recipe_cost": 0.0}, {"name": "אריזה עוגיות שוקולד ציפס", "qty": 65, "vat_price": 47.48, "recipe_cost": 36.0}, {"name": "קרואסון סלמי", "qty": 64, "vat_price": 12.0, "recipe_cost": 0.0}, {"name": "מקיאטו כפול", "qty": 64, "vat_price": 13.78, "recipe_cost": 1.59}, {"name": "שיפון מלא בורודינסקי", "qty": 57, "vat_price": 22.4, "recipe_cost": 0.0}, {"name": "קדור שוקולד", "qty": 56, "vat_price": 14.73, "recipe_cost": 0.0}, {"name": "עוגה פרג שמרים", "qty": 52, "vat_price": 15.9, "recipe_cost": 0.0}, {"name": "מקיאטו", "qty": 51, "vat_price": 12.47, "recipe_cost": 0.82}, {"name": "שיפון", "qty": 47, "vat_price": 21.88, "recipe_cost": 13.04}, {"name": "קרואסון בשר", "qty": 45, "vat_price": 38.0, "recipe_cost": 9.29}, {"name": "בראוניס", "qty": 45, "vat_price": 18.0, "recipe_cost": 0.0}, {"name": "Kombucha", "qty": 41, "vat_price": 23.54, "recipe_cost": 0.0}, {"name": "פרצל אבוקדו", "qty": 41, "vat_price": 17.0, "recipe_cost": 4.68}, {"name": "סלק אדום תפוח", "qty": 37, "vat_price": 17.0, "recipe_cost": 0.0}, {"name": "מאפין טבעוני", "qty": 36, "vat_price": 17.99, "recipe_cost": 0.0}, {"name": "סירופ קרמל", "qty": 34, "vat_price": 3.23, "recipe_cost": 0.0}, {"name": "תה נענע", "qty": 33, "vat_price": 9.39, "recipe_cost": 0.0}, {"name": "לחם עגבניות", "qty": 30, "vat_price": 26.31, "recipe_cost": 13.04}, {"name": "קרואסון רול קינמון", "qty": 28, "vat_price": 18.0, "recipe_cost": 0.0}, {"name": "סודה גדול", "qty": 26, "vat_price": 24.0, "recipe_cost": 8.74}, {"name": "לחם כתף בקר", "qty": 25, "vat_price": 37.24, "recipe_cost": 9.78}, {"name": "ריבה", "qty": 25, "vat_price": 25.0, "recipe_cost": 0.0}, {"name": "צ'אי קר", "qty": 25, "vat_price": 20.01, "recipe_cost": 0.0}, {"name": "דאבל", "qty": 25, "vat_price": 21.0, "recipe_cost": 12.0}, {"name": "גזר תפוח", "qty": 24, "vat_price": 17.0, "recipe_cost": 7.94}, {"name": "מאציה קטן", "qty": 23, "vat_price": 17.5, "recipe_cost": 1.36}, {"name": "לחם חיטה מלאה עם עגבניות מיובשות", "qty": 23, "vat_price": 27.0, "recipe_cost": 12.8}, {"name": "טארט דובדבן", "qty": 23, "vat_price": 20.74, "recipe_cost": 16.0}, {"name": "זיתים", "qty": 22, "vat_price": 28.0, "recipe_cost": 15.39}, {"name": "אריזה עוגיות ריבה", "qty": 19, "vat_price": 47.69, "recipe_cost": 0.0}, {"name": "קרואסון גבינה מתוקה אפויה עם פירות עונה", "qty": 19, "vat_price": 29.0, "recipe_cost": 12.0}, {"name": "אריזה עוגיות פקאן", "qty": 19, "vat_price": 49.0, "recipe_cost": 36.0}, {"name": "שקית קפה", "qty": 18, "vat_price": 110.66, "recipe_cost": 75.0}, {"name": "מאציה גדול", "qty": 18, "vat_price": 21.68, "recipe_cost": 0.0}, {"name": "מים גדול", "qty": 18, "vat_price": 22.0, "recipe_cost": 6.18}, {"name": "סאן פלגרינו תפוז", "qty": 18, "vat_price": 12.0, "recipe_cost": 3.65}, {"name": "תה", "qty": 17, "vat_price": 10.0, "recipe_cost": 0.0}, {"name": "מיני חמאה", "qty": 16, "vat_price": 8.0, "recipe_cost": 3.2}, {"name": "אסטריה", "qty": 15, "vat_price": 24.0, "recipe_cost": 6.94}, {"name": "עוגיה קטנה", "qty": 15, "vat_price": 4.0, "recipe_cost": 0.0}, {"name": "תפוזים", "qty": 14, "vat_price": 17.0, "recipe_cost": 6.9}, {"name": "לחם אבוקדו", "qty": 13, "vat_price": 29.0, "recipe_cost": 7.07}, {"name": "סאן פלגרינו לימון", "qty": 11, "vat_price": 11.99, "recipe_cost": 0.0}, {"name": "עוגה בבקה שלמה", "qty": 10, "vat_price": 65.0, "recipe_cost": 0.0}, {"name": "ריבה חריפה", "qty": 10, "vat_price": 25.0, "recipe_cost": 0.0}, {"name": "דאבל גדול", "qty": 9, "vat_price": 29.0, "recipe_cost": 0.0}, {"name": "מיני סלט עובדים", "qty": 9, "vat_price": 0.0, "recipe_cost": 0.0}, {"name": "גאודה עגבניות", "qty": 8, "vat_price": 29.0, "recipe_cost": 0.0}, {"name": "קמבוצ׳ה אורגני", "qty": 8, "vat_price": 24.0, "recipe_cost": 0.0}, {"name": "קרואסון לימון", "qty": 7, "vat_price": 18.0, "recipe_cost": 8.0}, {"name": "שמן זית", "qty": 5, "vat_price": 75.0, "recipe_cost": 45.0}, {"name": "קונפיטור משמש", "qty": 4, "vat_price": 25.0, "recipe_cost": 0.0}, {"name": "שמן זית אורגני קורונייקי של מקורה", "qty": 3, "vat_price": 75.0, "recipe_cost": 45.0}, {"name": "סנדביץ' קרואסון", "qty": 3, "vat_price": 20.0, "recipe_cost": 0.0}, {"name": "סאן פלגרינו גדול", "qty": 2, "vat_price": 25.99, "recipe_cost": 0.0}, {"name": "קמבוצ'ה Acai VIGO", "qty": 2, "vat_price": 24.0, "recipe_cost": 0.0}, {"name": "קמבוצ'ה Schisandra VIGO", "qty": 2, "vat_price": 24.0, "recipe_cost": 0.0}, {"name": "סיידר תפוח", "qty": 2, "vat_price": 11.0, "recipe_cost": 0.0}, {"name": "עוגיה ריבה גדולה", "qty": 2, "vat_price": 9.0, "recipe_cost": 0.0}, {"name": "כוס חלב רגיל", "qty": 2, "vat_price": 5.99, "recipe_cost": 0.0}, {"name": "שמן זית 500", "qty": 1, "vat_price": 52.0, "recipe_cost": 0.0}, {"name": "פוקאציה קטנה בשר", "qty": 1, "vat_price": 27.0, "recipe_cost": 0.0}, {"name": "צ'אי קטן", "qty": 1, "vat_price": 17.99, "recipe_cost": 0.0}, {"name": "כריך בגט", "qty": 1, "vat_price": 16.0, "recipe_cost": 0.0}, {"name": "מיני שקדים", "qty": 1, "vat_price": 12.0, "recipe_cost": 0.0}, {"name": "מים", "qty": 1, "vat_price": 7.99, "recipe_cost": 0.0}, {"name": "כוס חלב שיבולת שועל", "qty": 1, "vat_price": 5.99, "recipe_cost": 0.0}, {"name": "רוגלך", "qty": 1, "vat_price": 5.99, "recipe_cost": 0.0}, {"name": "בורקס בשר", "qty": 1, "vat_price": 26.0, "recipe_cost": 25.0}];
 var ITEMS = JSON.parse(JSON.stringify(ORIGINAL));
-var movedItems = {};
 var changedPrices = {};
+var changedQtys = {};
 
 function calcMedians() {
-  var qtys = ITEMS.map(function(i) { return i.qty; }).sort(function(a,b) { return a-b; });
-  var profits = ITEMS.map(function(i) { return i.profit_per; }).sort(function(a,b) { return a-b; });
-  return {
-    medQty: qtys[Math.floor(qtys.length / 2)],
-    medProfit: profits[Math.floor(profits.length / 2)]
-  };
+  var qtys = ITEMS.map(function(i) { return i.qty; }).sort(function(a,b){return a-b;});
+  var profits = ITEMS.map(function(i) { return i.profit_per; }).sort(function(a,b){return a-b;});
+  return { medQty: qtys[Math.floor(qtys.length/2)], medProfit: profits[Math.floor(profits.length/2)] };
 }
 
 function recalcItem(item) {
-  // User enters VAT-inclusive price. Net = VAT_price / 1.18
   item.net_price = item.vat_price / VAT;
   item.fc_pct = item.net_price > 0 ? (item.recipe_cost / item.net_price * 100) : 0;
   item.profit_per = item.net_price - item.recipe_cost;
@@ -99,24 +124,11 @@ function recalcItem(item) {
 function classifyAll() {
   var m = calcMedians();
   ITEMS.forEach(function(i) {
-    var oldQ = i.q || '';
     var hv = i.qty >= m.medQty;
     var hp = i.profit_per >= m.medProfit;
-    var newQ;
-    if (hv && hp) newQ = 'star';
-    else if (hv && !hp) newQ = 'plowhorse';
-    else if (!hv && hp) newQ = 'puzzle';
-    else newQ = 'dog';
-    if (oldQ && oldQ !== newQ) {
-      movedItems[i.name] = oldQ + '→' + newQ;
-    }
-    i.q = newQ;
+    i.q = (hv && hp) ? 'star' : (hv && !hp) ? 'plowhorse' : (!hv && hp) ? 'puzzle' : 'dog';
   });
 }
-
-// Initialize
-ITEMS.forEach(function(i) { recalcItem(i); });
-classifyAll();
 
 function fcClass(pct) {
   if (pct <= 25) return 'fc-low';
@@ -124,99 +136,111 @@ function fcClass(pct) {
   return 'fc-high';
 }
 
-function renderKPIs() {
-  var totalSalesNet = ITEMS.reduce(function(s,i) { return s + i.sales_net; }, 0);
-  var totalFC = ITEMS.reduce(function(s,i) { return s + i.recipe_cost * i.qty; }, 0);
-  var totalProfit = ITEMS.reduce(function(s,i) { return s + i.profit; }, 0);
-  var stars = ITEMS.filter(function(i) { return i.q === 'star'; }).length;
-  var plow = ITEMS.filter(function(i) { return i.q === 'plowhorse'; }).length;
-  var puzz = ITEMS.filter(function(i) { return i.q === 'puzzle'; }).length;
-  var dogs = ITEMS.filter(function(i) { return i.q === 'dog'; }).length;
-
-  document.getElementById('kpis').innerHTML =
-    '<div class="kpi"><div class="kpi-label">סה"כ מכירות (נטו)</div><div class="kpi-value">' + fmt(totalSalesNet) + '</div><div class="kpi-sub">162 פריטים</div></div>' +
-    '<div class="kpi orange"><div class="kpi-label">עלות מזון</div><div class="kpi-value">' + fmt(totalFC) + '</div><div class="kpi-sub">' + (totalFC/totalSalesNet*100).toFixed(1) + '% ממכירות נטו</div></div>' +
-    '<div class="kpi green"><div class="kpi-label">סה"כ רווח</div><div class="kpi-value">' + fmt(totalProfit) + '</div><div class="kpi-sub">' + (totalProfit/totalSalesNet*100).toFixed(1) + '% רווחיות</div></div>' +
-    '<div class="kpi blue"><div class="kpi-label">Stars</div><div class="kpi-value">' + stars + '</div><div class="kpi-sub">רווח+כמות גבוה</div></div>' +
-    '<div class="kpi purple"><div class="kpi-label">Plowhorses</div><div class="kpi-value">' + plow + '</div><div class="kpi-sub">כמות גבוה, רווח נמוך</div></div>' +
-    '<div class="kpi"><div class="kpi-label">Puzzles</div><div class="kpi-value">' + puzz + '</div><div class="kpi-sub">רווח גבוה, כמות נמוכה</div></div>' +
-    '<div class="kpi red"><div class="kpi-label">Dogs</div><div class="kpi-value">' + dogs + '</div><div class="kpi-sub">שקול הסרה</div></div>';
+function quadName(q) {
+  return {star:'⭐ Star', plowhorse:'🐴 Plowhorse', puzzle:'🧩 Puzzle', dog:'🐕 Dog'}[q];
 }
 
-function renderSections() {
-  var quads = {
-    star: { name: 'Stars ⭐', desc: 'רווח גבוה + כמות גבוהה — השאר כמו שהם', items: [] },
-    plowhorse: { name: 'Plowhorses 🐴', desc: 'רווח נמוך + כמות גבוהה — העלה מחיר או הורד עלות', items: [] },
-    puzzle: { name: 'Puzzles 🧩', desc: 'רווח גבוה + כמות נמוכה — קדם יותר', items: [] },
-    dog: { name: 'Dogs 🐕', desc: 'רווח נמוך + כמות נמוכה — שקול להסיר', items: [] }
-  };
-  ITEMS.forEach(function(i) { quads[i.q].items.push(i); });
-  ['star','plowhorse','puzzle','dog'].forEach(function(k) { quads[k].items.sort(function(a,b) { return b.profit - a.profit; }); });
+ITEMS.forEach(function(i) { recalcItem(i); });
+classifyAll();
 
-  var h = '';
-  ['star','plowhorse','puzzle','dog'].forEach(function(k) {
-    var q = quads[k];
-    h += '<div class="section" id="sec-' + k + '">';
-    h += '<div class="section-title"><span class="badge ' + k + '">' + q.name + '</span> <span style="font-size:13px;color:#6b7280">' + q.desc + '</span> <span style="font-size:12px;color:#9ca3af;margin-right:auto">' + q.items.length + ' פריטים</span></div>';
-    h += '<table><thead><tr><th>#</th><th>פריט</th><th>כמות</th><th>מחיר כולל מע"מ</th><th>מחיר נטו</th><th>עלות מזון/יח</th><th>% עלות מזון</th><th>רווח/יח</th><th>רווח כולל</th></tr></thead><tbody>';
-    q.items.forEach(function(item, idx) {
-      var safeName = item.name.replace(/'/g, "\\'");
-      var moved = movedItems[item.name];
-      var movedTag = moved ? '<span class="moved-tag">' + moved + '</span>' : '';
-      var profitColor = item.profit_per < 0 ? '#dc2626' : '#059669';
-      var changedClass = changedPrices[item.name] ? 'changed' : '';
-      h += '<tr id="row-' + item.name.replace(/[^א-תa-zA-Z0-9]/g,'_') + '">';
-      h += '<td>' + (idx+1) + '</td>';
-      h += '<td style="font-weight:600">' + movedTag + item.name + '</td>';
-      h += '<td>' + item.qty.toLocaleString('he-IL') + '</td>';
-      h += '<td style="text-align:center"><input class="price-input ' + changedClass + '" type="number" step="0.1" value="' + item.vat_price.toFixed(2) + '" onchange="onPriceChange(this, \'' + safeName + '\')" onfocus="this.select()"></td>';
-      h += '<td class="net-cell">' + fmt2(item.net_price) + '</td>';
-      h += '<td>' + fmt2(item.recipe_cost) + '</td>';
-      h += '<td><span class="fc-pct ' + fcClass(item.fc_pct) + '">' + item.fc_pct.toFixed(1) + '%</span></td>';
-      h += '<td style="color:' + profitColor + ';font-weight:600">' + fmt2(item.profit_per) + '</td>';
-      h += '<td style="font-weight:700;color:' + profitColor + '">' + fmt(item.profit) + '</td>';
-      h += '</tr>';
-    });
-    h += '</tbody></table></div>';
+function renderKPIs() {
+  var ts = ITEMS.reduce(function(s,i){return s+i.sales_net;},0);
+  var tfc = ITEMS.reduce(function(s,i){return s+i.recipe_cost*i.qty;},0);
+  var tp = ITEMS.reduce(function(s,i){return s+i.profit;},0);
+  var st = ITEMS.filter(function(i){return i.q==='star';}).length;
+  var pl = ITEMS.filter(function(i){return i.q==='plowhorse';}).length;
+  var pu = ITEMS.filter(function(i){return i.q==='puzzle';}).length;
+  var dg = ITEMS.filter(function(i){return i.q==='dog';}).length;
+  document.getElementById('kpis').innerHTML =
+    '<div class="kpi"><div class="kpi-label">מכירות נטו</div><div class="kpi-value">'+fmt(ts)+'</div><div class="kpi-sub">162 פריטים</div></div>'+
+    '<div class="kpi orange"><div class="kpi-label">עלות מזון</div><div class="kpi-value">'+fmt(tfc)+'</div><div class="kpi-sub">'+(tfc/ts*100).toFixed(1)+'% מנטו</div></div>'+
+    '<div class="kpi green"><div class="kpi-label">סה"כ רווח</div><div class="kpi-value">'+fmt(tp)+'</div><div class="kpi-sub">'+(tp/ts*100).toFixed(1)+'% רווחיות</div></div>'+
+    '<div class="kpi blue"><div class="kpi-label">Stars</div><div class="kpi-value">'+st+'</div></div>'+
+    '<div class="kpi purple"><div class="kpi-label">Plowhorses</div><div class="kpi-value">'+pl+'</div></div>'+
+    '<div class="kpi"><div class="kpi-label">Puzzles</div><div class="kpi-value">'+pu+'</div></div>'+
+    '<div class="kpi red"><div class="kpi-label">Dogs</div><div class="kpi-value">'+dg+'</div></div>';
+}
+
+function safeId(name) { return name.replace(/[^א-תa-zA-Z0-9]/g,'_'); }
+
+function render() {
+  var search = document.getElementById('search').value.toLowerCase();
+  var sorted = ITEMS.slice().sort(function(a,b) { return b.profit - a.profit; });
+  var filtered = sorted.filter(function(i) {
+    return !search || i.name.toLowerCase().indexOf(search) >= 0;
   });
-  document.getElementById('sections').innerHTML = h;
+  var h = '';
+  filtered.forEach(function(item, idx) {
+    var sid = safeId(item.name);
+    var sname = item.name.replace(/'/g, "\\'");
+    var pc = item.profit_per < 0 ? '#dc2626' : '#059669';
+    var priceClass = changedPrices[item.name] ? 'input-cell changed' : 'input-cell';
+    var qtyClass = changedQtys[item.name] ? 'input-cell changed' : 'input-cell';
+    h += '<tr id="row-'+sid+'">';
+    h += '<td style="color:#9ca3af">'+(idx+1)+'</td>';
+    h += '<td style="font-weight:600">'+item.name+'</td>';
+    h += '<td><span class="tag '+item.q+'">'+quadName(item.q)+'</span></td>';
+    h += '<td style="text-align:center"><input class="'+qtyClass+'" type="number" step="1" value="'+item.qty+'" onchange="onQtyChange(this,\''+sname+'\')" onfocus="this.select()"></td>';
+    h += '<td style="text-align:center"><input class="'+priceClass+'" type="number" step="0.1" value="'+item.vat_price.toFixed(2)+'" onchange="onPriceChange(this,\''+sname+'\')" onfocus="this.select()"></td>';
+    h += '<td class="net-cell">'+fmt2(item.net_price)+'</td>';
+    h += '<td>'+fmt2(item.recipe_cost)+'</td>';
+    h += '<td><span class="fc-pct '+fcClass(item.fc_pct)+'">'+item.fc_pct.toFixed(1)+'%</span></td>';
+    h += '<td style="color:'+pc+';font-weight:600">'+fmt2(item.profit_per)+'</td>';
+    h += '<td style="font-weight:700;color:'+pc+'">'+fmt(item.profit)+'</td>';
+    h += '</tr>';
+  });
+  document.getElementById('tbody').innerHTML = h;
 }
 
 function onPriceChange(input, name) {
-  var newPrice = parseFloat(input.value);
-  if (isNaN(newPrice) || newPrice < 0) return;
+  var v = parseFloat(input.value);
+  if (isNaN(v) || v < 0) return;
   var item = ITEMS.find(function(i) { return i.name === name; });
   if (!item) return;
-  // Check if different from original
   var orig = ORIGINAL.find(function(i) { return i.name === name; });
-  if (orig && Math.abs(newPrice - orig.vat_price) > 0.01) {
-    changedPrices[name] = true;
-  } else {
-    delete changedPrices[name];
-  }
-  item.vat_price = newPrice;
+  if (orig && Math.abs(v - orig.vat_price) > 0.01) changedPrices[name] = true; else delete changedPrices[name];
+  item.vat_price = v;
   recalcItem(item);
   classifyAll();
   renderKPIs();
-  renderSections();
+  render();
+  flashRow(name);
+}
+
+function onQtyChange(input, name) {
+  var v = parseInt(input.value);
+  if (isNaN(v) || v < 0) return;
+  var item = ITEMS.find(function(i) { return i.name === name; });
+  if (!item) return;
+  var orig = ORIGINAL.find(function(i) { return i.name === name; });
+  if (orig && v !== orig.qty) changedQtys[name] = true; else delete changedQtys[name];
+  item.qty = v;
+  recalcItem(item);
+  classifyAll();
+  renderKPIs();
+  render();
+  flashRow(name);
+}
+
+function flashRow(name) {
   setTimeout(function() {
-    var row = document.getElementById('row-' + name.replace(/[^א-תa-zA-Z0-9]/g,'_'));
+    var row = document.getElementById('row-'+safeId(name));
     if (row) row.classList.add('flash');
-  }, 50);
+  }, 30);
 }
 
 function resetAll() {
   ITEMS = JSON.parse(JSON.stringify(ORIGINAL));
-  movedItems = {};
   changedPrices = {};
+  changedQtys = {};
   ITEMS.forEach(function(i) { recalcItem(i); });
   classifyAll();
   renderKPIs();
-  renderSections();
+  render();
 }
 
 renderKPIs();
-renderSections();
+render();
 </script>
 </body>
 </html>
