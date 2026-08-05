@@ -27,10 +27,12 @@ body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans
 .search { padding: 8px 14px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 13px; width: 220px; }
 .btn { padding: 8px 16px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 13px; font-weight: 600; color: #374151; transition: all 0.15s; }
 .btn:hover { background: #f9fafb; }
-.btn.active { background: #111827; color: #fff; border-color: #111827; }
 .table-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
 table { width: 100%; border-collapse: collapse; }
-th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; white-space: nowrap; position: sticky; top: 0; background: #fff; z-index: 10; }
+th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; white-space: nowrap; position: sticky; top: 0; background: #fff; z-index: 10; cursor: pointer; user-select: none; }
+th:hover { color: #2563eb; }
+th.sorted { color: #2563eb; }
+th .arrow { font-size: 9px; margin-right: 3px; }
 td { padding: 8px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
 tr:hover td { background: #f9fafb; }
 tr.flash td { animation: flash 1.2s; }
@@ -50,7 +52,6 @@ tr.flash td { animation: flash 1.2s; }
 .tag-select.plowhorse { background: #d1fae5; color: #065f46; }
 .tag-select.puzzle { background: #fef3c7; color: #92400e; }
 .tag-select.dog { background: #fee2e2; color: #991b1b; }
-.tag-select option { font-weight: 600; }
 .tag-select.manual { border-style: dashed; border-width: 2px; }
 .tag-select.manual.star { border-color: #1e40af; }
 .tag-select.manual.plowhorse { border-color: #065f46; }
@@ -69,24 +70,33 @@ tr.flash td { animation: flash 1.2s; }
   <button class="reset-btn" onclick="resetAll()">↺ אפס שינויים</button>
 </div>
 <div class="main">
-  <div class="tip">💡 שנה <b>מחיר</b>, <b>כמות</b> או <b>תג</b> — התגים מתחשבים אוטומטית לפי רווח וכמות, אבל אתה יכול לשנות אותם ידנית (מסגרת מקווקוות = שינוי ידני).</div>
+  <div class="tip">💡 שנה <b>מחיר</b>, <b>כמות</b> או <b>תג</b> — לחץ על כותרת כדי למיין לפי כל עמודה (↑↓).</div>
   <div class="kpi-grid" id="kpis"></div>
   <div class="toolbar">
     <div class="toolbar-left">
       <input class="search" id="search" placeholder="חיפוש פריט..." oninput="render()">
     </div>
     <div class="legend">
-      <span><select class="tag-select star" style="pointer-events:none"><option>⭐ Star</option></select> רווח+כמות גבוה</span>
-      <span><select class="tag-select plowhorse" style="pointer-events:none"><option>🐴 Plowhorse</option></select> כמות גבוה, רווח נמוך</span>
-      <span><select class="tag-select puzzle" style="pointer-events:none"><option>🧩 Puzzle</option></select> רווח גבוה, כמות נמוכה</span>
-      <span><select class="tag-select dog" style="pointer-events:none"><option>🐕 Dog</option></select> שקול הסרה</span>
+      <span style="color:#1e40af;font-weight:700">⭐ Star</span> רווח+כמות גבוה
+      <span style="color:#065f46;font-weight:700">🐴 Plowhorse</span> כמות גבוה, רווח נמוך
+      <span style="color:#92400e;font-weight:700">🧩 Puzzle</span> רווח גבוה, כמות נמוכה
+      <span style="color:#991b1b;font-weight:700">🐕 Dog</span> שקול הסרה
     </div>
   </div>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th>#</th><th>פריט</th><th>תג</th><th>כמות</th><th>מחיר כולל מע"מ</th><th>מחיר נטו</th><th>עלות/יח</th><th>% עלות מזון</th><th>רווח/יח</th><th>רווח כולל</th>
+          <th data-col="rank" style="cursor:default">#</th>
+          <th data-col="name">פריט</th>
+          <th data-col="q">תג</th>
+          <th data-col="qty" class="sorted">כמות <span class="arrow">↓</span></th>
+          <th data-col="vat_price">מחיר כולל מע"מ</th>
+          <th data-col="net_price">מחיר נטו</th>
+          <th data-col="recipe_cost">עלות/יח</th>
+          <th data-col="fc_pct">% עלות מזון</th>
+          <th data-col="profit_per">רווח/יח</th>
+          <th data-col="profit">רווח כולל</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -103,7 +113,9 @@ var ORIGINAL = [{"name": "קפה קר", "qty": 3568, "vat_price": 17.23, "recipe
 var ITEMS = JSON.parse(JSON.stringify(ORIGINAL));
 var changedPrices = {};
 var changedQtys = {};
-var manualTags = {};  // name -> manually set tag
+var manualTags = {};
+var sortCol = 'qty';
+var sortDir = 'desc';
 
 function calcMedians() {
   var qtys = ITEMS.map(function(i) { return i.qty; }).sort(function(a,b){return a-b;});
@@ -129,7 +141,6 @@ function classifyAll() {
   var m = calcMedians();
   ITEMS.forEach(function(i) {
     i.autoQ = autoClassify(i, m.medQty, m.medProfit);
-    // Use manual tag if set, otherwise auto
     i.q = manualTags[i.name] || i.autoQ;
   });
 }
@@ -140,9 +151,7 @@ function fcClass(pct) {
   return 'fc-high';
 }
 
-function quadLabel(q) {
-  return {star:'⭐ Star', plowhorse:'🐴 Plowhorse', puzzle:'🧩 Puzzle', dog:'🐕 Dog'}[q];
-}
+var quadOrder = {star:0, plowhorse:1, puzzle:2, dog:3};
 
 ITEMS.forEach(function(i) { recalcItem(i); });
 classifyAll();
@@ -168,8 +177,30 @@ function renderKPIs() {
 function safeId(name) { return name.replace(/[^א-תa-zA-Z0-9]/g,'_'); }
 
 function render() {
+  // Update sort arrows in headers
+  document.querySelectorAll('th').forEach(function(th) {
+    var col = th.dataset.col;
+    if (!col || col === 'rank') return;
+    var arrow = th.querySelector('.arrow');
+    if (col === sortCol) {
+      th.classList.add('sorted');
+      if (arrow) arrow.textContent = sortDir === 'desc' ? '↓' : '↑';
+      else th.innerHTML += ' <span class="arrow">' + (sortDir === 'desc' ? '↓' : '↑') + '</span>';
+    } else {
+      th.classList.remove('sorted');
+      if (arrow) arrow.remove();
+    }
+  });
+
   var search = document.getElementById('search').value.toLowerCase();
-  var sorted = ITEMS.slice().sort(function(a,b) { return b.profit - a.profit; });
+  var sorted = ITEMS.slice().sort(function(a,b) {
+    var va = a[sortCol], vb = b[sortCol];
+    if (sortCol === 'q') { va = quadOrder[a.q]; vb = quadOrder[b.q]; }
+    if (sortCol === 'name') {
+      return sortDir === 'desc' ? vb.localeCompare(va) : va.localeCompare(vb);
+    }
+    return sortDir === 'desc' ? (vb - va) : (va - vb);
+  });
   var filtered = sorted.filter(function(i) {
     return !search || i.name.toLowerCase().indexOf(search) >= 0;
   });
@@ -204,13 +235,24 @@ function render() {
   document.getElementById('tbody').innerHTML = h;
 }
 
+// Sort on header click
+document.querySelectorAll('th').forEach(function(th) {
+  th.addEventListener('click', function() {
+    var col = th.dataset.col;
+    if (!col || col === 'rank') return;
+    if (sortCol === col) {
+      sortDir = sortDir === 'desc' ? 'asc' : 'desc';
+    } else {
+      sortCol = col;
+      sortDir = 'desc';
+    }
+    render();
+  });
+});
+
 function onTagChange(select, name) {
   var val = select.value;
-  if (val === 'auto') {
-    delete manualTags[name];
-  } else {
-    manualTags[name] = val;
-  }
+  if (val === 'auto') delete manualTags[name]; else manualTags[name] = val;
   classifyAll();
   renderKPIs();
   render();
@@ -259,6 +301,8 @@ function resetAll() {
   changedPrices = {};
   changedQtys = {};
   manualTags = {};
+  sortCol = 'qty';
+  sortDir = 'desc';
   ITEMS.forEach(function(i) { recalcItem(i); });
   classifyAll();
   renderKPIs();
