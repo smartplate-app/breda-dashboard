@@ -25,11 +25,9 @@ body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans
 .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
 .toolbar-left { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .search { padding: 8px 14px; border-radius: 8px; border: 1px solid #e5e7eb; font-size: 13px; width: 220px; }
-.btn { padding: 8px 16px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 13px; font-weight: 600; color: #374151; transition: all 0.15s; }
-.btn:hover { background: #f9fafb; }
 .table-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
 table { width: 100%; border-collapse: collapse; }
-th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; white-space: nowrap; position: sticky; top: 0; background: #fff; z-index: 10; cursor: pointer; user-select: none; }
+th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; white-space: nowrap; position: sticky; top: 0; background: #fff; z-index: 10; cursor: pointer; user-select: none; transition: color 0.15s; }
 th:hover { color: #2563eb; }
 th.sorted { color: #2563eb; }
 th .arrow { font-size: 9px; margin-right: 3px; }
@@ -70,7 +68,7 @@ tr.flash td { animation: flash 1.2s; }
   <button class="reset-btn" onclick="resetAll()">↺ אפס שינויים</button>
 </div>
 <div class="main">
-  <div class="tip">💡 שנה <b>מחיר</b>, <b>כמות</b> או <b>תג</b> — לחץ על כותרת כדי למיין לפי כל עמודה (↑↓).</div>
+  <div class="tip">💡 לחץ על כותרת כדי למיין — <b>% עלות מזון</b> הוא החשוב ביותר. שנה מחיר או כמות והכל מתחשבן מחדש.</div>
   <div class="kpi-grid" id="kpis"></div>
   <div class="toolbar">
     <div class="toolbar-left">
@@ -86,11 +84,11 @@ tr.flash td { animation: flash 1.2s; }
   <div class="table-wrap">
     <table>
       <thead>
-        <tr>
+        <tr id="thead-row">
           <th data-col="rank" style="cursor:default">#</th>
           <th data-col="name">פריט</th>
           <th data-col="q">תג</th>
-          <th data-col="qty" class="sorted">כמות <span class="arrow">↓</span></th>
+          <th data-col="qty">כמות</th>
           <th data-col="vat_price">מחיר כולל מע"מ</th>
           <th data-col="net_price">מחיר נטו</th>
           <th data-col="recipe_cost">עלות/יח</th>
@@ -114,7 +112,7 @@ var ITEMS = JSON.parse(JSON.stringify(ORIGINAL));
 var changedPrices = {};
 var changedQtys = {};
 var manualTags = {};
-var sortCol = 'qty';
+var sortCol = 'fc_pct';
 var sortDir = 'desc';
 
 function calcMedians() {
@@ -176,29 +174,33 @@ function renderKPIs() {
 
 function safeId(name) { return name.replace(/[^א-תa-zA-Z0-9]/g,'_'); }
 
-function render() {
-  // Update sort arrows in headers
-  document.querySelectorAll('th').forEach(function(th) {
+function updateArrows() {
+  var ths = document.querySelectorAll('#thead-row th');
+  ths.forEach(function(th) {
     var col = th.dataset.col;
     if (!col || col === 'rank') return;
-    var arrow = th.querySelector('.arrow');
+    // Remove existing arrow
+    var existing = th.querySelector('.arrow');
+    if (existing) existing.remove();
+    th.classList.remove('sorted');
     if (col === sortCol) {
       th.classList.add('sorted');
-      if (arrow) arrow.textContent = sortDir === 'desc' ? '↓' : '↑';
-      else th.innerHTML += ' <span class="arrow">' + (sortDir === 'desc' ? '↓' : '↑') + '</span>';
-    } else {
-      th.classList.remove('sorted');
-      if (arrow) arrow.remove();
+      var arrow = document.createElement('span');
+      arrow.className = 'arrow';
+      arrow.textContent = sortDir === 'desc' ? ' ↓' : ' ↑';
+      th.appendChild(arrow);
     }
   });
+}
 
+function render() {
+  updateArrows();
   var search = document.getElementById('search').value.toLowerCase();
   var sorted = ITEMS.slice().sort(function(a,b) {
-    var va = a[sortCol], vb = b[sortCol];
+    var va, vb;
     if (sortCol === 'q') { va = quadOrder[a.q]; vb = quadOrder[b.q]; }
-    if (sortCol === 'name') {
-      return sortDir === 'desc' ? vb.localeCompare(va) : va.localeCompare(vb);
-    }
+    else if (sortCol === 'name') { return sortDir === 'desc' ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name); }
+    else { va = a[sortCol]; vb = b[sortCol]; }
     return sortDir === 'desc' ? (vb - va) : (va - vb);
   });
   var filtered = sorted.filter(function(i) {
@@ -235,8 +237,8 @@ function render() {
   document.getElementById('tbody').innerHTML = h;
 }
 
-// Sort on header click
-document.querySelectorAll('th').forEach(function(th) {
+// Sort on header click — bound once, never re-created
+document.querySelectorAll('#thead-row th').forEach(function(th) {
   th.addEventListener('click', function() {
     var col = th.dataset.col;
     if (!col || col === 'rank') return;
@@ -301,7 +303,7 @@ function resetAll() {
   changedPrices = {};
   changedQtys = {};
   manualTags = {};
-  sortCol = 'qty';
+  sortCol = 'fc_pct';
   sortDir = 'desc';
   ITEMS.forEach(function(i) { recalcItem(i); });
   classifyAll();
