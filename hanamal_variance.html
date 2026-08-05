@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breda HaNamal — Recipe FC vs Actual Usage | SmartPlate</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; }
+
+  .header { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .logo { font-size: 22px; font-weight: 800; color: #111827; }
+  .logo span { color: #d97706; }
+  .sub-logo { font-size: 13px; color: #6b7280; margin-top: 2px; }
+  .last-sync { font-size: 12px; color: #9ca3af; }
+
+  .main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .kpi { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+  .kpi-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .kpi-value { font-size: 24px; font-weight: 800; color: #111827; }
+  .kpi-sub { font-size: 12px; color: #6b7280; margin-top: 4px; }
+  .kpi.green .kpi-value { color: #059669; }
+  .kpi.yellow .kpi-value { color: #d97706; }
+  .kpi.red .kpi-value { color: #dc2626; }
+  .kpi.orange .kpi-value { color: #ea580c; }
+  .kpi.purple .kpi-value { color: #7c3aed; }
+
+  .section { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+  .section-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 14px; display:flex; align-items:center; gap:8px; }
+  .section-title .badge { font-size: 11px; padding: 2px 8px; border-radius: 6px; margin-right: 8px; background: #ede9fe; color: #7c3aed; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: 600; }
+  td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f9fafb; }
+
+  .gauge-wrap { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .gauge { width: 100%; max-width: 400px; height: 10px; background: #e5e7eb; border-radius: 5px; overflow: hidden; position: relative; }
+  .gauge-fill { height: 100%; border-radius: 5px; }
+  .gauge-label { font-size: 12px; color: #6b7280; margin-top: 8px; }
+
+  .note { font-size: 13px; color: #6b7280; padding: 12px; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; margin-top: 14px; }
+  .note.blue { background: #dbeafe; border-color: #93c5fd; color: #1e40af; }
+  .note.red { background: #fee2e2; border-color: #fecaca; color: #991b1b; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">Breda <span>HaNamal</span></div>
+    <div class="sub-logo">SmartPlate | MarketMan — Recipe FC% vs Actual Usage — הנמל (בית קפה)</div>
+  </div>
+  <div class="last-sync" id="lastSync">יולי 2026 · מקור: MarketMan (Menu Profitability + Actual vs. Theoretical)</div>
+</div>
+
+<div class="main" id="app"></div>
+
+<script>
+var ITEMS = [{"name": "סינבון", "qty": 1903, "sales": 16175.5, "recipe_cost": 3428.43, "profit": 12747.07}, {"name": "קרואסון חמאה", "qty": 2229, "sales": 15603.0, "recipe_cost": 3466.74, "profit": 12136.26}, {"name": "קרואסון שקדים", "qty": 1522, "sales": 15220.0, "recipe_cost": 5239.13, "profit": 9980.87}, {"name": "בריוש הל", "qty": 791, "sales": 9492.0, "recipe_cost": 588.72, "profit": 8903.28}, {"name": "קרואסון פיסטוק שוקולד", "qty": 1061, "sales": 11182.0, "recipe_cost": 3369.39, "profit": 7812.61}, {"name": "קרואסון שוקולד", "qty": 1351, "sales": 10808.0, "recipe_cost": 3077.71, "profit": 7730.29}, {"name": "גבינה מתוקה אפויה קטן", "qty": 614, "sales": 9210.0, "recipe_cost": 1493.84, "profit": 7716.16}, {"name": "קרואסון פטל", "qty": 1174, "sales": 9392.0, "recipe_cost": 2431.99, "profit": 6960.01}, {"name": "קרואסון עגול צ'יזקייק", "qty": 392, "sales": 7840.0, "recipe_cost": 1067.87, "profit": 6772.13}, {"name": "פאן סוויס", "qty": 404, "sales": 7606.0, "recipe_cost": 982.59, "profit": 6623.41}, {"name": "קרואסון שוקולד שקדים", "qty": 779, "sales": 9737.5, "recipe_cost": 3244.6, "profit": 6492.9}, {"name": "בורקס", "qty": 952, "sales": 7616.0, "recipe_cost": 1980.95, "profit": 5635.05}, {"name": "עוגה בבקה", "qty": 153, "sales": 6885.0, "recipe_cost": 1527.61, "profit": 5357.39}, {"name": "קרואסון פתוח", "qty": 947, "sales": 6629.0, "recipe_cost": 1509.25, "profit": 5119.75}, {"name": "קרואסון שום", "qty": 418, "sales": 6270.0, "recipe_cost": 1193.01, "profit": 5076.99}, {"name": "גבינה תרד בצק עלים", "qty": 819, "sales": 6576.0, "recipe_cost": 1507.74, "profit": 5068.26}, {"name": "אריזה עוגיות שוקולד צ'יפס", "qty": 122, "sales": 5490.0, "recipe_cost": 804.43, "profit": 4685.57}, {"name": "גבינית קראמבל", "qty": 470, "sales": 5170.0, "recipe_cost": 554.63, "profit": 4615.37}, {"name": "מאפין קיפודים", "qty": 507, "sales": 5070.0, "recipe_cost": 666.25, "profit": 4403.75}, {"name": "קרואסון פיסטוק", "qty": 580, "sales": 5800.0, "recipe_cost": 1567.79, "profit": 4232.21}, {"name": "מיני קרואסון חמאה", "qty": 1280, "sales": 5120.0, "recipe_cost": 899.37, "profit": 4220.63}, {"name": "עוגה גזר", "qty": 132, "sales": 5940.0, "recipe_cost": 1932.8, "profit": 4007.2}, {"name": "קרואסון מרובע", "qty": 634, "sales": 4469.7, "recipe_cost": 763.01, "profit": 3706.69}, {"name": "קרואסון פס לבנה זעתר", "qty": 367, "sales": 4404.0, "recipe_cost": 853.63, "profit": 3550.37}, {"name": "קרואסון לימון עגול", "qty": 413, "sales": 4130.0, "recipe_cost": 974.49, "profit": 3155.51}, {"name": "קרואסון רול צ'דר חריף", "qty": 333, "sales": 3996.0, "recipe_cost": 952.95, "profit": 3043.05}, {"name": "עוגיה שוקולד צ'יפס", "qty": 657, "sales": 3613.5, "recipe_cost": 787.36, "profit": 2826.14}, {"name": "מיני קרואסון שוקולד", "qty": 706, "sales": 3530.0, "recipe_cost": 897.93, "profit": 2632.07}, {"name": "בננה מאפין", "qty": 415, "sales": 2905.0, "recipe_cost": 325.53, "profit": 2579.47}, {"name": "עוגה תפוז", "qty": 59, "sales": 2655.0, "recipe_cost": 524.22, "profit": 2130.78}, {"name": "עוגיה פקאן", "qty": 380, "sales": 2090.0, "recipe_cost": 416.99, "profit": 1673.01}, {"name": "עוגיה מאצ'יה", "qty": 344, "sales": 1892.0, "recipe_cost": 445.45, "profit": 1446.55}, {"name": "עוגת פרג לימון", "qty": 41, "sales": 1845.0, "recipe_cost": 568.72, "profit": 1276.28}, {"name": "מארז עוגיות פקאן", "qty": 30, "sales": 1350.0, "recipe_cost": 185.68, "profit": 1164.32}, {"name": "עוגה טארט תפוחים", "qty": 55, "sales": 1237.5, "recipe_cost": 452.11, "profit": 785.39}, {"name": "קרואסון פטיסייר פתוח", "qty": 43, "sales": 860.0, "recipe_cost": 115.6, "profit": 744.4}, {"name": "עוגיה פיסטוק", "qty": 90, "sales": 495.0, "recipe_cost": 126.15, "profit": 368.85}, {"name": "קרואסון גבינה מתוקה", "qty": 20, "sales": 300.0, "recipe_cost": 37.79, "profit": 262.21}, {"name": "שקית פטיסייר 1 ליטר", "qty": 27, "sales": 486.0, "recipe_cost": 235.62, "profit": 250.38}, {"name": "מאפין טבעוני", "qty": 20, "sales": 200.0, "recipe_cost": 13.43, "profit": 186.57}, {"name": "שקית גבינה מתוקה לברדא 1 קג", "qty": 8, "sales": 195.84, "recipe_cost": 195.91, "profit": 0.07}, {"name": "שקית פטיסייר לברדא 1 ליטר", "qty": 8, "sales": 69.76, "recipe_cost": 69.81, "profit": 0.05}];
+
+var RECIPE = {
+  netSales: 229556.30,
+  recipeCost: 51477.22,
+  recipeFcPct: 22.42,
+  profit: 178079.32,
+  itemCount: ITEMS.length
+};
+
+// MarketMan "Actual vs. Theoretical" report, filtered to Category = "Sales Items pastry" (56 inventory rows), July 2026
+var VARIANCE = {
+  period: '01/07/2026 - 31/07/2026',
+  category: 'Sales Items pastry',
+  itemCount: 56,
+  actualUsage: 1674.66,
+  theoreticalUsage: 59686.91,
+  varianceValue: 58012.24,
+  varianceExclWaste: 58055.17
+};
+
+function fmt(n){ return '₪' + Math.round(n).toLocaleString('he-IL'); }
+function fmtNeg(n){ return (n<0?'-':'') + '₪' + Math.round(Math.abs(n)).toLocaleString('he-IL'); }
+function pct(n){ return (Math.round(n*10)/10) + '%'; }
+
+var actualUsagePct = RECIPE.netSales ? (VARIANCE.actualUsage / RECIPE.netSales * 100) : 0;
+var theoUsagePct = RECIPE.netSales ? (VARIANCE.theoreticalUsage / RECIPE.netSales * 100) : 0;
+var recipeVsActualGap = VARIANCE.actualUsage - RECIPE.recipeCost;
+var recipeVsActualGapPct = recipeVsActualGap / RECIPE.netSales * 100;
+var mmVariancePct = (VARIANCE.actualUsage - VARIANCE.theoreticalUsage) / RECIPE.netSales * 100;
+
+var h = '';
+
+h += '<div class="kpi-grid">';
+h += '<div class="kpi"><div class="kpi-label">מכירות נטו (MarketMan)</div><div class="kpi-value">'+fmt(RECIPE.netSales)+'</div><div class="kpi-sub">'+RECIPE.itemCount+' פריטים | דוח רווחיות מנות</div></div>';
+h += '<div class="kpi green"><div class="kpi-label">עלות מתכון (Recipe FC)</div><div class="kpi-value">'+fmt(RECIPE.recipeCost)+'</div><div class="kpi-sub">'+pct(RECIPE.recipeFcPct)+' ממכירות נטו</div></div>';
+h += '<div class="kpi"><div class="kpi-label">עלות שימוש בפועל (MarketMan)</div><div class="kpi-value">'+fmt(VARIANCE.actualUsage)+'</div><div class="kpi-sub">'+pct(actualUsagePct)+' ממכירות | פער מלאי בפועל</div></div>';
+h += '<div class="kpi purple"><div class="kpi-label">עלות תיאורטית (MarketMan)</div><div class="kpi-value">'+fmt(VARIANCE.theoreticalUsage)+'</div><div class="kpi-sub">'+pct(theoUsagePct)+' ממכירות | לפי מתכונים</div></div>';
+h += '<div class="kpi green"><div class="kpi-label">רווח גולמי (Recipe)</div><div class="kpi-value">'+fmt(RECIPE.profit)+'</div><div class="kpi-sub">'+pct(100-RECIPE.recipeFcPct)+' ממכירות נטו</div></div>';
+h += '</div>';
+
+h += '<div class="section"><div class="section-title">Recipe FC% — עלות מתכון מול מכירות נטו</div><div class="gauge-wrap">';
+h += '<div class="gauge"><div class="gauge-fill" style="width:'+Math.min(RECIPE.recipeFcPct,100)+'%;background:#059669"></div></div>';
+h += '<div style="font-size:24px;font-weight:800;color:#059669">'+pct(RECIPE.recipeFcPct)+'</div></div>';
+h += '<div class="gauge-label">עלות מתכון: '+fmt(RECIPE.recipeCost)+' מתוך מכירות נטו: '+fmt(RECIPE.netSales)+' — מקור: MarketMan דוח רווחיות מנות (42 פריטים, קטגוריית Sales Items pastry)</div></div>';
+
+h += '<div class="section" style="border-color:#ddd6fe"><div class="section-title">דוח פער מלאי — MarketMan Actual vs. Theoretical <span class="badge">'+VARIANCE.category+' · '+VARIANCE.period+'</span></div>';
+h += '<div class="kpi-grid" style="margin-bottom:16px">';
+h += '<div class="kpi red"><div class="kpi-label">פער מלאי (Variance Value)</div><div class="kpi-value">'+fmtNeg(-VARIANCE.varianceValue)+'</div><div class="kpi-sub">'+pct(-mmVariancePct)+' ממכירות</div></div>';
+h += '<div class="kpi red"><div class="kpi-label">פער ללא בזבוז</div><div class="kpi-value">'+fmtNeg(-VARIANCE.varianceExclWaste)+'</div><div class="kpi-sub">מקור: MarketMan</div></div>';
+h += '<div class="kpi"><div class="kpi-label">עלות שימוש בפועל</div><div class="kpi-value">'+fmt(VARIANCE.actualUsage)+'</div><div class="kpi-sub">Actual (ספירת מלאי)</div></div>';
+h += '<div class="kpi purple"><div class="kpi-label">עלות תיאורטית</div><div class="kpi-value">'+fmt(VARIANCE.theoreticalUsage)+'</div><div class="kpi-sub">Theoretical (לפי מתכון)</div></div>';
+h += '<div class="kpi"><div class="kpi-label">פריטים נספרו</div><div class="kpi-value">'+VARIANCE.itemCount+'</div><div class="kpi-sub">קטגוריית '+VARIANCE.category+'</div></div>';
+h += '</div>';
+h += '<div class="note red">⚠️ <b>שים לב:</b> ב-הנמל פריטי המאפייה מגיעים מוכנים מהמפעל (ברדא Factory) ולא עוברים ספירת מלאי גולמי מקומית מסודרת. לכן "עלות שימוש בפועל" של MarketMan (מבוססת ספירות פתיחה/סגירה) יוצאת נמוכה משמעותית ('+fmt(VARIANCE.actualUsage)+', כ-'+pct(actualUsagePct)+' ממכירות) בהשוואה לעלות המתכון האמיתית ('+fmt(RECIPE.recipeCost)+', '+pct(RECIPE.recipeFcPct)+'). המדד האמין להנמל הוא <b>Recipe FC% = '+pct(RECIPE.recipeFcPct)+'</b> (מדוח רווחיות מנות), לא "עלות שימוש בפועל" של MarketMan.</div>';
+h += '</div>';
+
+h += '<div class="section"><div class="section-title">פירוט לפי פריט — Recipe Cost (מ-MarketMan דוח רווחיות מנות)</div>';
+h += '<table><thead><tr><th>#</th><th>פריט</th><th>כמות נמכרה</th><th>מכירות</th><th>עלות מתכון</th><th>% עלות</th><th>רווח</th></tr></thead><tbody>';
+ITEMS.forEach(function(it,i){
+  var fcp = it.sales ? (it.recipe_cost/it.sales*100) : 0;
+  var fcColor = fcp<=20?'#059669':fcp<=35?'#d97706':'#dc2626';
+  h += '<tr><td>'+(i+1)+'</td><td>'+it.name+'</td><td>'+it.qty.toLocaleString('he-IL')+'</td><td>'+fmt(it.sales)+'</td><td>'+fmt(it.recipe_cost)+'</td><td style="color:'+fcColor+';font-weight:700">'+pct(fcp)+'</td><td style="color:#059669">'+fmt(it.profit)+'</td></tr>';
+});
+h += '<tr style="font-weight:800;background:#f9fafb"><td colspan="2">סה"כ</td><td>—</td><td>'+fmt(RECIPE.netSales)+'</td><td>'+fmt(RECIPE.recipeCost)+'</td><td>'+pct(RECIPE.recipeFcPct)+'</td><td style="color:#059669">'+fmt(RECIPE.profit)+'</td></tr>';
+h += '</tbody></table></div>';
+
+document.getElementById('app').innerHTML = h;
+</script>
+</body>
+</html>
