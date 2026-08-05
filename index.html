@@ -3,49 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Breda Dashboard | SmartPlate</title>
+<title>Breda Factory — הנמל | SmartPlate</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #0f1117; color: #e2e8f0; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; }
 
-  /* Paywall */
-  #paywall { position: fixed; inset: 0; background: rgba(10,10,20,0.97); z-index: 1000; display: flex; align-items: center; justify-content: center; }
-  .pw-box { background: #1a1d2e; border: 1px solid #2d3056; border-radius: 16px; padding: 48px 40px; text-align: center; max-width: 420px; width: 90%; }
-  .pw-logo { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-  .pw-logo span { color: #6c63ff; }
-  .pw-sub { color: #8892a4; font-size: 14px; margin-bottom: 32px; }
-  .pw-input { width: 100%; padding: 14px 16px; background: #0f1117; border: 1px solid #2d3056; border-radius: 10px; color: #fff; font-size: 16px; text-align: center; letter-spacing: 2px; margin-bottom: 12px; outline: none; }
-  .pw-input:focus { border-color: #6c63ff; }
-  .pw-btn { width: 100%; padding: 14px; background: #6c63ff; border: none; border-radius: 10px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
-  .pw-btn:hover { background: #5a52e0; }
-  .pw-err { color: #f87171; font-size: 13px; margin-top: 8px; display: none; }
-
   /* Header */
   .header { background: #1a1d2e; border-bottom: 1px solid #2d3056; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
   .logo { font-size: 22px; font-weight: 800; color: #fff; }
-  .logo span { color: #6c63ff; }
-  .sync-btn { background: #6c63ff; color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s; }
-  .sync-btn:hover { background: #5a52e0; }
-  .sync-btn:disabled { background: #3d3d5c; cursor: not-allowed; }
+  .logo span { color: #f59e0b; }
+  .sub-logo { font-size: 14px; color: #8892a4; margin-top: 2px; }
   .last-sync { font-size: 12px; color: #64748b; }
 
   /* Tabs */
   .tabs { display: flex; gap: 0; background: #1a1d2e; border-bottom: 1px solid #2d3056; padding: 0 32px; }
   .tab { padding: 14px 28px; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: #8892a4; transition: all 0.2s; }
-  .tab.active { color: #6c63ff; border-bottom-color: #6c63ff; }
+  .tab.active { color: #f59e0b; border-bottom-color: #f59e0b; }
 
   /* Main */
   .main { padding: 28px 32px; max-width: 1400px; margin: 0 auto; }
   .month-panel { display: none; }
   .month-panel.active { display: block; }
 
-  /* Store tabs */
-  .store-tabs { display: flex; gap: 12px; margin-bottom: 24px; }
-  .store-tab { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; background: #1a1d2e; color: #8892a4; border: 1px solid #2d3056; transition: all 0.2s; }
-  .store-tab.active { background: #6c63ff; color: #fff; border-color: #6c63ff; }
-
   /* KPI Grid */
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 28px; }
   .kpi { background: #1a1d2e; border: 1px solid #2d3056; border-radius: 12px; padding: 20px; }
   .kpi-label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
   .kpi-value { font-size: 26px; font-weight: 800; color: #fff; }
@@ -53,23 +34,23 @@
   .kpi.green .kpi-value { color: #34d399; }
   .kpi.yellow .kpi-value { color: #fbbf24; }
   .kpi.red .kpi-value { color: #f87171; }
-  .kpi.purple .kpi-value { color: #a78bfa; }
+  .kpi.orange .kpi-value { color: #f59e0b; }
 
   /* Section */
   .section { background: #1a1d2e; border: 1px solid #2d3056; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
-  .section-title { font-size: 15px; font-weight: 700; color: #a0aec0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title { font-size: 15px; font-weight: 700; color: #a0aec0; margin-bottom: 16px; }
 
   /* Table */
   table { width: 100%; border-collapse: collapse; }
   th { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; text-align: right; border-bottom: 1px solid #2d3056; }
   td { padding: 10px 12px; font-size: 14px; border-bottom: 1px solid #1e2235; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(108, 99, 255, 0.04); }
+  tr:hover td { background: rgba(245, 158, 11, 0.04); }
 
   /* Bar */
   .bar-wrap { display: flex; align-items: center; gap: 10px; }
   .bar-bg { flex: 1; height: 6px; background: #2d3056; border-radius: 3px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 3px; background: #6c63ff; transition: width 0.4s; }
+  .bar-fill { height: 100%; border-radius: 3px; background: #f59e0b; transition: width 0.4s; }
   .bar-fill.green { background: #34d399; }
   .bar-fill.yellow { background: #fbbf24; }
   .bar-fill.red { background: #f87171; }
@@ -80,1420 +61,259 @@
   .badge.yellow { background: rgba(251,191,36,0.15); color: #fbbf24; }
   .badge.red { background: rgba(248,113,113,0.15); color: #f87171; }
 
-  /* Total row */
-  .total-row { background: rgba(108,99,255,0.08); }
-  .total-row td { font-weight: 700; color: #fff; }
-
-  /* Spinner */
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
-
-  /* Loading overlay */
-  #loading { position: fixed; inset: 0; background: rgba(10,10,20,0.85); z-index: 900; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
-  #loading.show { display: flex; }
-  .load-spinner { width: 40px; height: 40px; border: 3px solid rgba(108,99,255,0.3); border-top-color: #6c63ff; border-radius: 50%; animation: spin 0.8s linear infinite; }
-  .load-text { color: #8892a4; font-size: 14px; }
-
   /* Daily chart */
   .chart-container { overflow-x: auto; }
-  .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 100px; padding-bottom: 4px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding-bottom: 4px; min-width: 600px; }
   .chart-day { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; min-width: 22px; }
-  .chart-bar { width: 100%; background: #6c63ff; border-radius: 3px 3px 0 0; transition: height 0.4s; }
+  .chart-bar { width: 100%; background: #f59e0b; border-radius: 3px 3px 0 0; transition: height 0.4s; }
+  .chart-bar.wolt { background: #6c63ff; }
   .chart-label { font-size: 9px; color: #64748b; }
+  .chart-legend { display: flex; gap: 20px; margin-top: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #8892a4; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* Prime cost gauge */
+  .gauge-wrap { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; }
+  .gauge { width: 180px; height: 12px; background: #2d3056; border-radius: 6px; overflow: hidden; position: relative; }
+  .gauge-fill { height: 100%; border-radius: 6px; transition: width 0.5s; }
+  .gauge-mark { position: absolute; top: -3px; width: 2px; height: 18px; background: #475569; }
+  .gauge-label { font-size: 11px; color: #64748b; position: absolute; top: 20px; transform: translateX(-50%); }
 </style>
 </head>
 <body>
 
-<!-- Paywall -->
-<div id="paywall">
-  <div class="pw-box">
-    <div class="pw-logo">Smart<span>Plate</span></div>
-    <div class="pw-sub">Breda Dashboard — הכנס קוד גישה</div>
-    <input class="pw-input" id="pw-input" type="password" placeholder="קוד גישה" />
-    <button class="pw-btn" onclick="checkCode()">כניסה</button>
-    <div class="pw-err" id="pw-err">קוד שגוי, נסה שוב</div>
-  </div>
-</div>
-
-<!-- Loading -->
-<div id="loading">
-  <div class="load-spinner"></div>
-  <div class="load-text">מסנכרן נתונים חיים... MarketMan + Tabit</div>
-</div>
-
 <!-- Header -->
-<div class="header" id="main-header" style="display:none">
+<div class="header">
   <div>
-    <div class="logo">Smart<span>Plate</span> | Breda Dashboard</div>
-    <div class="last-sync" id="last-sync">טוען...</div>
+    <div class="logo">Breda <span>Factory</span> — הנמל</div>
+    <div class="sub-logo">SmartPlate Dashboard | נתונים מ-Tabit API + MarketMan Menu Engineering</div>
   </div>
-  <button class="sync-btn" id="sync-btn" onclick="syncNow()">
-    <span id="sync-icon">🔄</span> סנכרן עכשיו
-  </button>
+  <div class="last-sync" id="last-sync">עודכן: 05.08.2026 12:43</div>
 </div>
 
 <!-- Tabs -->
-<div class="tabs" id="main-tabs" style="display:none">
+<div class="tabs">
   <div class="tab active" onclick="switchTab('aug')">אוגוסט 2026 — MTD</div>
   <div class="tab" onclick="switchTab('jul')">יולי 2026</div>
-  <div class="tab" onclick="switchTab('jun')">יוני 2026</div>
 </div>
 
-<!-- Main content -->
-<div class="main" id="main-content" style="display:none">
+<!-- Main -->
+<div class="main">
 
   <!-- AUG panel -->
   <div class="month-panel active" id="panel-aug">
-    <div class="store-tabs">
-      <div class="store-tab active" onclick="switchStore('aug','combined')">🏢 שני הסניפים</div>
-      <div class="store-tab" onclick="switchStore('aug','hanmal')">📍 הנמל</div>
-      <div class="store-tab" onclick="switchStore('aug','hatib')">📍 חטיב</div>
-    </div>
     <div id="aug-content"></div>
   </div>
 
   <!-- JUL panel -->
   <div class="month-panel" id="panel-jul">
-    <div class="store-tabs">
-      <div class="store-tab active" onclick="switchStore('jul','combined')">🏢 שני הסניפים</div>
-      <div class="store-tab" onclick="switchStore('jul','hanmal')">📍 הנמל</div>
-      <div class="store-tab" onclick="switchStore('jul','hatib')">📍 חטיב</div>
-    </div>
-    <div id="jul-content"></div>
-  </div>
-
-  <!-- JUN panel -->
-  <div class="month-panel" id="panel-jun">
-    <div class="store-tabs">
-      <div class="store-tab active" onclick="switchStore('jun','combined')">🏢 שני הסניפים</div>
-      <div class="store-tab" onclick="switchStore('jun','hanmal')">📍 הנמל</div>
-      <div class="store-tab" onclick="switchStore('jun','hatib')">📍 חטיב</div>
-    </div>
-    <div id="jun-content"></div>
-  </div>
-
-</div>
-      <div class="store-tab" onclick="switchStore('jul','hatib')">📍 חטיב</div>
-    </div>
     <div id="jul-content"></div>
   </div>
 
 </div>
 
 <script>
-const CODES = ['BREDA2026','BREADA2026','SMARTPLATE'];
-const SYNC_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/breadaSync';
-
-let DATA = {
-  "months": {
-    "jun": {
-      "month": "2026-06",
-      "stores": [
-        {
-          "store": "הנמל",
-          "sales_gross": 739124,
-          "sales_net": 626376,
-          "tips": 0,
-          "tips_pct": 0,
-          "wolt_sales": 83981,
-          "wolt_pct": 11.4,
-          "labor_cost": 160333,
-          "labor_pct": 25.6,
-          "labor_hours": 2750,
-          "food_cost_net": 139412.24,
-          "food_cost_pct": 22.3,
-          "total_pct": 47.9,
-          "workers": [
-            {
-              "name": "43 דילארה איסמאילובה",
-              "role": "מנהל חנות",
-              "hours": 10,
-              "cost": 23400
-            },
-            {
-              "name": "Abraham 347",
-              "role": "שטיפה בוקר",
-              "hours": 187.8,
-              "cost": 12177
-            },
-            {
-              "name": "317 Anastasiya Kurnosov",
-              "role": "מטבח בוקר",
-              "hours": 181,
-              "cost": 9370
-            },
-            {
-              "name": "396 אמליה סריאן",
-              "role": "קופה",
-              "hours": 180,
-              "cost": 9235
-            },
-            {
-              "name": "312 יוליה סקורנינה",
-              "role": "מטבח בוקר",
-              "hours": 143.6,
-              "cost": 8557
-            },
-            {
-              "name": "366 אנסטסיה אוסנייה",
-              "role": "בריסטה",
-              "hours": 127.4,
-              "cost": 7270
-            },
-            {
-              "name": "90 נטליה קוסקובסקי",
-              "role": "משרד",
-              "hours": 139.1,
-              "cost": 7000
-            },
-            {
-              "name": "394 איתי ברכמן",
-              "role": "קופה",
-              "hours": 141.4,
-              "cost": 6874
-            },
-            {
-              "name": "360 איוון פאוקמן",
-              "role": "שטיפה בוקר",
-              "hours": 111.6,
-              "cost": 6802
-            },
-            {
-              "name": "406 איגור אנטיפייב",
-              "role": "מטבח בוקר",
-              "hours": 126.8,
-              "cost": 6641
-            },
-            {
-              "name": "403  מיאר מטר",
-              "role": "קופה",
-              "hours": 118.4,
-              "cost": 6173
-            },
-            {
-              "name": "377 מוקדס איסלמוב",
-              "role": "קופה",
-              "hours": 89,
-              "cost": 5796
-            },
-            {
-              "name": "272 מריה אברמוב",
-              "role": "קופה",
-              "hours": 102.5,
-              "cost": 5564
-            },
-            {
-              "name": "332 ראן כיאל",
-              "role": "בריסטה",
-              "hours": 91.8,
-              "cost": 5077
-            },
-            {
-              "name": "378 לובאנא סמארה",
-              "role": "קופה",
-              "hours": 86.2,
-              "cost": 4670
-            },
-            {
-              "name": "184 נרדין בשותי",
-              "role": "בריסטה",
-              "hours": 60.3,
-              "cost": 4180
-            },
-            {
-              "name": "219 אנגי מורגן",
-              "role": "מטבח בוקר",
-              "hours": 66.5,
-              "cost": 3964
-            },
-            {
-              "name": "358 קארלא גובראן",
-              "role": "ראנר בוקר",
-              "hours": 73,
-              "cost": 3676
-            },
-            {
-              "name": "395 דימה שיתי",
-              "role": "קופה",
-              "hours": 55.7,
-              "cost": 2994
-            },
-            {
-              "name": "366 אנסטסיה אוסנייה",
-              "role": "קופה",
-              "hours": 47.2,
-              "cost": 2442
-            }
-          ],
-          "vendors": [
-            {
-              "name": "הנמל 6",
-              "amount": 106554.24,
-              "orders": 16
-            },
-            {
-              "name": "גן המלך",
-              "amount": 7251.8,
-              "orders": 15
-            },
-            {
-              "name": "ישרקו",
-              "amount": 6424.41,
-              "orders": 2
-            }
-          ],
-          "daily_sales": [
-            {
-              "date": "2026-06-01",
-              "sales": 18683
-            },
-            {
-              "date": "2026-06-02",
-              "sales": 19356
-            },
-            {
-              "date": "2026-06-03",
-              "sales": 21344
-            },
-            {
-              "date": "2026-06-04",
-              "sales": 21605
-            },
-            {
-              "date": "2026-06-05",
-              "sales": 42958
-            },
-            {
-              "date": "2026-06-06",
-              "sales": 36072
-            },
-            {
-              "date": "2026-06-07",
-              "sales": 20181
-            },
-            {
-              "date": "2026-06-08",
-              "sales": 15758
-            },
-            {
-              "date": "2026-06-09",
-              "sales": 18684
-            },
-            {
-              "date": "2026-06-10",
-              "sales": 20179
-            },
-            {
-              "date": "2026-06-11",
-              "sales": 21879
-            },
-            {
-              "date": "2026-06-12",
-              "sales": 39871
-            },
-            {
-              "date": "2026-06-13",
-              "sales": 37660
-            },
-            {
-              "date": "2026-06-14",
-              "sales": 20927
-            },
-            {
-              "date": "2026-06-15",
-              "sales": 18518
-            },
-            {
-              "date": "2026-06-16",
-              "sales": 17372
-            },
-            {
-              "date": "2026-06-17",
-              "sales": 19656
-            },
-            {
-              "date": "2026-06-18",
-              "sales": 20744
-            },
-            {
-              "date": "2026-06-19",
-              "sales": 41691
-            },
-            {
-              "date": "2026-06-20",
-              "sales": 31700
-            },
-            {
-              "date": "2026-06-21",
-              "sales": 20201
-            },
-            {
-              "date": "2026-06-22",
-              "sales": 19819
-            },
-            {
-              "date": "2026-06-23",
-              "sales": 17933
-            },
-            {
-              "date": "2026-06-24",
-              "sales": 20892
-            },
-            {
-              "date": "2026-06-25",
-              "sales": 19383
-            },
-            {
-              "date": "2026-06-26",
-              "sales": 41437
-            },
-            {
-              "date": "2026-06-27",
-              "sales": 37072
-            },
-            {
-              "date": "2026-06-28",
-              "sales": 20339
-            },
-            {
-              "date": "2026-06-29",
-              "sales": 17844
-            },
-            {
-              "date": "2026-06-30",
-              "sales": 19366
-            }
-          ]
-        },
-        {
-          "store": "חטיב",
-          "sales_gross": 119055,
-          "sales_net": 100894,
-          "tips": 0,
-          "tips_pct": 0,
-          "wolt_sales": 0,
-          "wolt_pct": 0,
-          "labor_cost": 24840,
-          "labor_pct": 24.6,
-          "labor_hours": 538.3,
-          "food_cost_net": 10653.88,
-          "food_cost_pct": 10.6,
-          "total_pct": 35.2,
-          "workers": [
-            {
-              "name": "gilai tsorom 79",
-              "role": "בלת\"מ",
-              "hours": 247.3,
-              "cost": 12869
-            },
-            {
-              "name": "216 דן איגרא",
-              "role": "בלת\"מ",
-              "hours": 149.1,
-              "cost": 6108
-            },
-            {
-              "name": "400 עלא חורי",
-              "role": "בלת\"מ",
-              "hours": 111.5,
-              "cost": 4635
-            },
-            {
-              "name": "216 דן איגרא",
-              "role": "מטבח",
-              "hours": 21.5,
-              "cost": 858
-            },
-            {
-              "name": "400 עלא חורי",
-              "role": "מטבח",
-              "hours": 9,
-              "cost": 370
-            }
-          ],
-          "vendors": [
-            {
-              "name": "הנמל 6",
-              "amount": 8842.33,
-              "orders": 11
-            },
-            {
-              "name": "מחלבות גד",
-              "amount": 955.23,
-              "orders": 1
-            }
-          ],
-          "daily_sales": [
-            {
-              "date": "2026-06-01",
-              "sales": 3456
-            },
-            {
-              "date": "2026-06-02",
-              "sales": 4550
-            },
-            {
-              "date": "2026-06-03",
-              "sales": 2765
-            },
-            {
-              "date": "2026-06-04",
-              "sales": 3802
-            },
-            {
-              "date": "2026-06-05",
-              "sales": 8664
-            },
-            {
-              "date": "2026-06-07",
-              "sales": 4596
-            },
-            {
-              "date": "2026-06-08",
-              "sales": 2795
-            },
-            {
-              "date": "2026-06-09",
-              "sales": 3767
-            },
-            {
-              "date": "2026-06-10",
-              "sales": 3896
-            },
-            {
-              "date": "2026-06-11",
-              "sales": 3137
-            },
-            {
-              "date": "2026-06-12",
-              "sales": 10805
-            },
-            {
-              "date": "2026-06-14",
-              "sales": 3130
-            },
-            {
-              "date": "2026-06-15",
-              "sales": 3489
-            },
-            {
-              "date": "2026-06-16",
-              "sales": 3818
-            },
-            {
-              "date": "2026-06-17",
-              "sales": 4673
-            },
-            {
-              "date": "2026-06-18",
-              "sales": 5231
-            },
-            {
-              "date": "2026-06-19",
-              "sales": 9344
-            },
-            {
-              "date": "2026-06-21",
-              "sales": 3043
-            },
-            {
-              "date": "2026-06-22",
-              "sales": 3645
-            },
-            {
-              "date": "2026-06-23",
-              "sales": 4590
-            },
-            {
-              "date": "2026-06-24",
-              "sales": 3751
-            },
-            {
-              "date": "2026-06-25",
-              "sales": 4331
-            },
-            {
-              "date": "2026-06-26",
-              "sales": 8093
-            },
-            {
-              "date": "2026-06-28",
-              "sales": 3425
-            },
-            {
-              "date": "2026-06-29",
-              "sales": 3779
-            },
-            {
-              "date": "2026-06-30",
-              "sales": 2480
-            }
-          ]
-        }
-      ],
-      "combined": {
-        "sales_gross": 858179,
-        "sales_net": 727270,
-        "labor_cost": 185173,
-        "labor_pct": 25.5,
-        "food_cost_net": 150066.12,
-        "food_pct": 20.6,
-        "wolt_sales": 83981,
-        "total_pct": 46.1,
-        "covers": 0
-      },
-      "food_vendors": [
-        {
-          "name": "הנמל 6",
-          "amount": 115396.57
-        },
-        {
-          "name": "גן המלך",
-          "amount": 7251.8
-        },
-        {
-          "name": "ישרקו",
-          "amount": 6424.41
-        },
-        {
-          "name": "מחלבות גד",
-          "amount": 955.23
-        }
-      ]
-    },
-    "jul": {
-      "month": "2026-07",
-      "stores": [
-        {
-          "store": "הנמל",
-          "sales_gross": 811478,
-          "sales_net": 687693,
-          "tips": 0,
-          "tips_pct": 0,
-          "wolt_sales": 94439,
-          "wolt_pct": 11.6,
-          "labor_cost": 141343,
-          "labor_pct": 20.6,
-          "labor_hours": 2774.9,
-          "food_cost_net": 139412.24,
-          "food_cost_pct": 20.3,
-          "total_pct": 40.9,
-          "workers": [
-            {
-              "name": "317 Anastasiya Kurnosov",
-              "role": "מטבח בוקר",
-              "hours": 173.9,
-              "cost": 9100
-            },
-            {
-              "name": "396 אמליה סריאן",
-              "role": "קופה",
-              "hours": 173.8,
-              "cost": 9098
-            },
-            {
-              "name": "332 ראן כיאל",
-              "role": "בריסטה",
-              "hours": 163.7,
-              "cost": 9071
-            },
-            {
-              "name": "377 מוקדס איסלמוב",
-              "role": "קופה",
-              "hours": 136,
-              "cost": 8871
-            },
-            {
-              "name": "Abraham 347",
-              "role": "שטיפה בוקר",
-              "hours": 133.6,
-              "cost": 8463
-            },
-            {
-              "name": "406 איגור אנטיפייב",
-              "role": "מטבח בוקר",
-              "hours": 145.5,
-              "cost": 7575
-            },
-            {
-              "name": "394 איתי ברכמן",
-              "role": "קופה",
-              "hours": 151.5,
-              "cost": 7331
-            },
-            {
-              "name": "312 יוליה סקורנינה",
-              "role": "מטבח בוקר",
-              "hours": 106.3,
-              "cost": 6342
-            },
-            {
-              "name": "403  מיאר מטר",
-              "role": "קופה",
-              "hours": 120.5,
-              "cost": 6196
-            },
-            {
-              "name": "366 אנסטסיה אוסנייה",
-              "role": "בריסטה",
-              "hours": 110.9,
-              "cost": 6024
-            },
-            {
-              "name": "272 מריה אברמוב",
-              "role": "קופה",
-              "hours": 114.4,
-              "cost": 5838
-            },
-            {
-              "name": "358 קארלא גובראן",
-              "role": "ראנר בוקר",
-              "hours": 100.7,
-              "cost": 5465
-            },
-            {
-              "name": "90 נטליה קוסקובסקי",
-              "role": "משרד",
-              "hours": 171.2,
-              "cost": 5169
-            },
-            {
-              "name": "378 לובאנא סמארה",
-              "role": "קופה",
-              "hours": 72.8,
-              "cost": 4664
-            },
-            {
-              "name": "414 ערין קסיס",
-              "role": "קופה",
-              "hours": 87.2,
-              "cost": 4510
-            },
-            {
-              "name": "360 איוון פאוקמן",
-              "role": "שטיפה בוקר",
-              "hours": 70.9,
-              "cost": 4493
-            },
-            {
-              "name": "395 דימה שיתי",
-              "role": "קופה",
-              "hours": 85,
-              "cost": 4417
-            },
-            {
-              "name": "219 אנגי מורגן",
-              "role": "מטבח בוקר",
-              "hours": 75.3,
-              "cost": 4396
-            },
-            {
-              "name": "311 יליזבטה וילינסקיה",
-              "role": "מטבח בוקר",
-              "hours": 74.4,
-              "cost": 3797
-            },
-            {
-              "name": "184 נרדין בשותי",
-              "role": "בריסטה",
-              "hours": 47.3,
-              "cost": 3433
-            }
-          ],
-          "vendors": [
-            {
-              "name": "הנמל 6",
-              "amount": 106554.24,
-              "orders": 16
-            },
-            {
-              "name": "גן המלך",
-              "amount": 7251.8,
-              "orders": 15
-            },
-            {
-              "name": "ישרקו",
-              "amount": 6424.41,
-              "orders": 2
-            }
-          ],
-          "daily_sales": [
-            {
-              "date": "2026-07-01",
-              "sales": 20167
-            },
-            {
-              "date": "2026-07-02",
-              "sales": 22515
-            },
-            {
-              "date": "2026-07-03",
-              "sales": 41942
-            },
-            {
-              "date": "2026-07-04",
-              "sales": 36750
-            },
-            {
-              "date": "2026-07-05",
-              "sales": 18920
-            },
-            {
-              "date": "2026-07-06",
-              "sales": 17550
-            },
-            {
-              "date": "2026-07-07",
-              "sales": 19474
-            },
-            {
-              "date": "2026-07-08",
-              "sales": 18542
-            },
-            {
-              "date": "2026-07-09",
-              "sales": 24412
-            },
-            {
-              "date": "2026-07-10",
-              "sales": 43449
-            },
-            {
-              "date": "2026-07-11",
-              "sales": 36923
-            },
-            {
-              "date": "2026-07-12",
-              "sales": 20461
-            },
-            {
-              "date": "2026-07-13",
-              "sales": 20259
-            },
-            {
-              "date": "2026-07-14",
-              "sales": 20032
-            },
-            {
-              "date": "2026-07-15",
-              "sales": 21786
-            },
-            {
-              "date": "2026-07-16",
-              "sales": 21226
-            },
-            {
-              "date": "2026-07-17",
-              "sales": 40805
-            },
-            {
-              "date": "2026-07-18",
-              "sales": 37598
-            },
-            {
-              "date": "2026-07-19",
-              "sales": 22525
-            },
-            {
-              "date": "2026-07-20",
-              "sales": 18596
-            },
-            {
-              "date": "2026-07-21",
-              "sales": 19520
-            },
-            {
-              "date": "2026-07-22",
-              "sales": 20598
-            },
-            {
-              "date": "2026-07-23",
-              "sales": 22358
-            },
-            {
-              "date": "2026-07-24",
-              "sales": 43758
-            },
-            {
-              "date": "2026-07-25",
-              "sales": 36919
-            },
-            {
-              "date": "2026-07-26",
-              "sales": 20907
-            },
-            {
-              "date": "2026-07-27",
-              "sales": 21243
-            },
-            {
-              "date": "2026-07-28",
-              "sales": 19397
-            },
-            {
-              "date": "2026-07-29",
-              "sales": 16712
-            }
-          ]
-        },
-        {
-          "store": "חטיב",
-          "sales_gross": 126375,
-          "sales_net": 107097,
-          "tips": 0,
-          "tips_pct": 0,
-          "wolt_sales": 0,
-          "wolt_pct": 0,
-          "labor_cost": 26106,
-          "labor_pct": 24.4,
-          "labor_hours": 567.5,
-          "food_cost_net": 10653.88,
-          "food_cost_pct": 9.9,
-          "total_pct": 34.3,
-          "workers": [
-            {
-              "name": "gilai tsorom 79",
-              "role": "בלת\"מ",
-              "hours": 249,
-              "cost": 12988
-            },
-            {
-              "name": "400 עלא חורי",
-              "role": "בלת\"מ",
-              "hours": 171,
-              "cost": 7065
-            },
-            {
-              "name": "216 דן איגרא",
-              "role": "בלת\"מ",
-              "hours": 147.5,
-              "cost": 6053
-            }
-          ],
-          "vendors": [
-            {
-              "name": "הנמל 6",
-              "amount": 8842.33,
-              "orders": 11
-            },
-            {
-              "name": "מחלבות גד",
-              "amount": 955.23,
-              "orders": 1
-            }
-          ],
-          "daily_sales": [
-            {
-              "date": "2026-07-01",
-              "sales": 3869
-            },
-            {
-              "date": "2026-07-02",
-              "sales": 4932
-            },
-            {
-              "date": "2026-07-03",
-              "sales": 9674
-            },
-            {
-              "date": "2026-07-05",
-              "sales": 3094
-            },
-            {
-              "date": "2026-07-06",
-              "sales": 3031
-            },
-            {
-              "date": "2026-07-07",
-              "sales": 3527
-            },
-            {
-              "date": "2026-07-08",
-              "sales": 3505
-            },
-            {
-              "date": "2026-07-09",
-              "sales": 4174
-            },
-            {
-              "date": "2026-07-10",
-              "sales": 9667
-            },
-            {
-              "date": "2026-07-12",
-              "sales": 3606
-            },
-            {
-              "date": "2026-07-13",
-              "sales": 3637
-            },
-            {
-              "date": "2026-07-14",
-              "sales": 3547
-            },
-            {
-              "date": "2026-07-15",
-              "sales": 4597
-            },
-            {
-              "date": "2026-07-16",
-              "sales": 4359
-            },
-            {
-              "date": "2026-07-17",
-              "sales": 8804
-            },
-            {
-              "date": "2026-07-19",
-              "sales": 3189
-            },
-            {
-              "date": "2026-07-20",
-              "sales": 3695
-            },
-            {
-              "date": "2026-07-21",
-              "sales": 2504
-            },
-            {
-              "date": "2026-07-22",
-              "sales": 3606
-            },
-            {
-              "date": "2026-07-23",
-              "sales": 4056
-            },
-            {
-              "date": "2026-07-24",
-              "sales": 7480
-            },
-            {
-              "date": "2026-07-26",
-              "sales": 4191
-            },
-            {
-              "date": "2026-07-27",
-              "sales": 3414
-            },
-            {
-              "date": "2026-07-28",
-              "sales": 3461
-            },
-            {
-              "date": "2026-07-29",
-              "sales": 3687
-            }
-          ]
-        }
-      ],
-      "combined": {
-        "sales_gross": 937853,
-        "sales_net": 794790,
-        "labor_cost": 167449,
-        "labor_pct": 21.1,
-        "food_cost_net": 150066.12,
-        "food_pct": 20.6,
-        "wolt_sales": 94439,
-        "total_pct": 40,
-        "covers": 0,
-        "labor_hours": 3342.4,
-        "wolt_pct": 10.1,
-        "food_cost_pct": 18.9
-      },
-      "food_vendors": [
-        {
-          "name": "הנמל 6",
-          "amount": 115396.57
-        },
-        {
-          "name": "גן המלך",
-          "amount": 7251.8
-        },
-        {
-          "name": "ישרקו",
-          "amount": 6424.41
-        },
-        {
-          "name": "מחלבות גד",
-          "amount": 955.23
-        }
-      ]
-    },
-    "aug": {
-      "month": "2026-08",
-      "stores": [
-        {
-          "store": "הנמל",
-          "food_cost_net": 0,
-          "vendors": [],
-          "sales_gross": 0,
-          "sales_net": 0,
-          "wolt_sales": 0,
-          "wolt_pct": 0,
-          "labor_cost": 0,
-          "labor_pct": 0,
-          "labor_hours": 0,
-          "workers": [],
-          "food_cost_pct": 0,
-          "total_pct": 0
-        },
-        {
-          "store": "חטיב",
-          "food_cost_net": 0,
-          "vendors": [],
-          "sales_gross": 0,
-          "sales_net": 0,
-          "wolt_sales": 0,
-          "wolt_pct": 0,
-          "labor_cost": 0,
-          "labor_pct": 0,
-          "labor_hours": 0,
-          "workers": [],
-          "food_cost_pct": 0,
-          "total_pct": 0
-        }
-      ],
-      "combined": {
-        "sales_gross": 0,
-        "sales_net": 0,
-        "labor_cost": 0,
-        "labor_hours": 0,
-        "wolt_sales": 0,
-        "food_cost_net": 0,
-        "labor_pct": 0,
-        "wolt_pct": 0,
-        "food_cost_pct": 0,
-        "total_pct": 0
-      }
-    }
-  },
-  "last_updated": "2026-07-31T21:34:41.823Z"
-};
-let currentStore = { jun: 'combined', jul: 'combined', aug: 'combined' };
-
-function checkCode() {
-  const v = document.getElementById('pw-input').value.trim().toUpperCase();
-  if (CODES.includes(v)) {
-    document.getElementById('paywall').style.display = 'none';
-    document.getElementById('main-header').style.display = 'flex';
-    document.getElementById('main-tabs').style.display = 'flex';
-    document.getElementById('main-content').style.display = 'block';
-    loadDashboard();
-  } else {
-    const err = document.getElementById('pw-err');
-    err.style.display = 'block';
-    setTimeout(() => err.style.display = 'none', 2000);
-  }
-}
-document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') checkCode(); });
-
-function fmt(n) { return '₪' + Math.round(n).toLocaleString('he-IL'); }
-function pct(n) { return n.toFixed(1) + '%'; }
-function pctClass(p, low, high) { return p < low ? 'green' : p < high ? 'yellow' : 'red'; }
-function kpiClass(p, low, high) { return p < low ? 'green' : p < high ? 'yellow' : 'red'; }
-
-function buildContent(month, storeKey, d) {
-  const stores = d.months[month].stores;
-  const hanmal = stores.find(s => s.store === 'הנמל');
-  const hatib  = stores.find(s => s.store === 'חטיב');
-  const comb   = d.months[month].combined;
-  const label  = month === 'jun' ? 'יוני 2026' : 'יולי 2026 MTD';
-
-  let s, vendors, workers, dailySales;
-  if (storeKey === 'combined') {
-    s = { sales_gross: comb.sales_gross, sales_net: comb.sales_net,
-          labor_cost: comb.labor_cost, labor_pct: comb.labor_pct,
-          food_cost_net: comb.food_cost_net, food_cost_pct: comb.food_pct,
-          wolt_sales: comb.wolt_sales, wolt_pct: Math.round(comb.wolt_sales/(comb.sales_gross||1)*1000)/10,
-          total_pct: comb.total_pct, covers: comb.covers };
-    vendors = d.months[month].food_vendors;
-    workers = [...(hanmal.workers||[]), ...(hatib.workers||[])].sort((a,b)=>b.cost-a.cost).slice(0,15);
-    dailySales = null;
-  } else {
-    s = storeKey === 'hanmal' ? hanmal : hatib;
-    vendors = s.vendors || [];
-    workers = s.workers || [];
-    dailySales = s.daily_sales || [];
-  }
-
-  const storeName = storeKey === 'combined' ? 'שני הסניפים' : s.store;
-  const woltComm = Math.round((s.wolt_sales||0) * 0.24);
-  const woltCommPct = s.sales_net > 0 ? (woltComm/s.sales_net*100).toFixed(1) : '0.0';
-  const lc = kpiClass(s.labor_pct, 25, 32);
-  const fc = kpiClass(s.food_cost_pct, 25, 35);
-  const tc = kpiClass(s.total_pct, 50, 60);
-
-  // Daily chart
-  let chartHtml = '';
-  if (dailySales && dailySales.length > 0) {
-    const maxSale = Math.max(...dailySales.map(d=>d.sales));
-    chartHtml = `
-    <div class="section">
-      <div class="section-title">📈 מכירות יומיות — ${storeName}</div>
-      <div class="chart-container">
-        <div class="chart-bars">
-          ${dailySales.map(d => {
-            const h = Math.round((d.sales/maxSale)*90);
-            const day = d.date.split('-')[2];
-            return `<div class="chart-day">
-              <div class="chart-bar" style="height:${h}px" title="${fmt(d.sales)}"></div>
-              <div class="chart-label">${parseInt(day)}</div>
-            </div>`;
-          }).join('')}
-        </div>
-      </div>
-    </div>`;
-  }
-
-  // Vendors table
-  const maxVendor = vendors.length > 0 ? Math.max(...vendors.map(v=>v.amount||0)) : 1;
-  const vendorRows = vendors.slice(0,10).map(v => {
-    const pctOfFood = s.food_cost_net > 0 ? (v.amount/s.food_cost_net*100).toFixed(1) : '0';
-    const barPct = maxVendor > 0 ? Math.round(v.amount/maxVendor*100) : 0;
-    return `<tr>
-      <td>${v.name}</td>
-      <td>${fmt(v.amount)}</td>
-      <td>${pctOfFood}%</td>
-      <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:${barPct}%"></div></div></div></td>
-    </tr>`;
-  }).join('');
-
-  // Workers table
-  const workerRows = workers.slice(0,12).map(w => `<tr>
-    <td>${w.name}</td>
-    <td>${w.role||''}</td>
-    <td>${w.hours}h</td>
-    <td>${fmt(w.cost)}</td>
-  </tr>`).join('');
-
-  return `
-  <div class="kpi-grid">
-    <div class="kpi">
-      <div class="kpi-label">💰 מכירות ברוטו</div>
-      <div class="kpi-value">${fmt(s.sales_gross)}</div>
-      <div class="kpi-sub">נטו ${fmt(s.sales_net)}</div>
-    </div>
-    <div class="kpi ${lc}">
-      <div class="kpi-label">👷 עלות עבודה</div>
-      <div class="kpi-value">${fmt(s.labor_cost)}</div>
-      <div class="kpi-sub">${pct(s.labor_pct)} מהמכירות נטו</div>
-    </div>
-    <div class="kpi ${fc}">
-      <div class="kpi-label">🍔 עלות מזון (MarketMan)</div>
-      <div class="kpi-value">${fmt(s.food_cost_net)}</div>
-      <div class="kpi-sub">${pct(s.food_cost_pct)} מהמכירות נטו</div>
-    </div>
-    <div class="kpi purple">
-      <div class="kpi-label">🛵 וולט</div>
-      <div class="kpi-value">${fmt(s.wolt_sales)}</div>
-      <div class="kpi-sub">עמלה ${fmt(woltComm)} (${woltCommPct}%)</div>
-    </div>
-    <div class="kpi ${tc}">
-      <div class="kpi-label">📊 סה"כ עלויות</div>
-      <div class="kpi-value">${pct(s.total_pct)}</div>
-      <div class="kpi-sub">עבודה + מזון</div>
-    </div>
-  </div>
-
-  ${chartHtml}
-
-  <div class="section">
-    <div class="section-title">🧾 ספקים — עלות מזון ${label}</div>
-    <table>
-      <thead><tr><th>ספק</th><th>סכום</th><th>% ממזון</th><th>יחסי</th></tr></thead>
-      <tbody>${vendorRows}</tbody>
-      <tbody><tr class="total-row"><td>סה"כ</td><td>${fmt(s.food_cost_net)}</td><td>100%</td><td></td></tr></tbody>
-    </table>
-  </div>
-
-  <div class="section">
-    <div class="section-title">👷 עובדים — עלות שכר ${label}</div>
-    <table>
-      <thead><tr><th>שם</th><th>תפקיד</th><th>שעות</th><th>עלות</th></tr></thead>
-      <tbody>${workerRows}</tbody>
-      <tbody><tr class="total-row"><td>סה"כ</td><td></td><td></td><td>${fmt(s.labor_cost)}</td></tr></tbody>
-    </table>
-  </div>`;
-}
-
-function switchTab(month) {
-  let idx = month === 'aug' ? 0 : (month === 'jul' ? 1 : 2);
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === idx));
-  document.querySelectorAll('.month-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(`panel-${month}`).classList.add('active');
-}
-
-function switchStore(month, storeKey) {
-  currentStore[month] = storeKey;
-  document.querySelectorAll(`#panel-${month} .store-tab`).forEach((t,i) => {
-    t.classList.toggle('active', ['combined','hanmal','hatib'][i] === storeKey);
-  });
-  if (DATA) {
-    document.getElementById(`${month}-content`).innerHTML = buildContent(month, storeKey, DATA);
-  }
-}
-
-async function loadDashboard() {
-  document.getElementById('loading').classList.add('show');
-  
-  // By-passing failing Rosa backend — data is statically injected by the agent nightly
-  setTimeout(() => {
-    if (DATA) {
-      renderAll();
-      let lastUp = DATA.last_updated || DATA.months?.aug?.last_updated || DATA.months?.jul?.last_updated || Date.now();
-      document.getElementById('last-sync').textContent = 'עדכון אחרון: ' + new Date(lastUp).toLocaleString('he-IL');
-    } else {
-      document.getElementById('last-sync').textContent = 'אין נתונים זמינים';
-    }
-    document.getElementById('loading').classList.remove('show');
-  }, 100);
-}
-
-function buildFallbackData(raw) {
-  // Raw is June-only data from old breadaSync
-  // We embed May data that was fetched manually
-  const mayEmbedded = {
-    month: '2026-05', from: '2026-05-01', to: '2026-05-31',
-    stores: [
-      {
-        store: 'הנמל', month: '2026-05',
-        sales_gross: 879472, sales_net: 745315,
-        labor_cost: 160077, labor_pct: 21.5,
-        labor_hours: 0,
-        food_cost_net: 216790, food_cost_pct: 29.1,
-        wolt_sales: 92996, wolt_pct: 10.6,
-        total_pct: 50.6, covers: 0,
-        vendors: [
-          {name:'הנמל 6', amount:108740},
-          {name:'בריוסו פתרונות קפה בע"מ', amount:18178},
-          {name:'ישרקו שיווק מותגי מזון בינלאומיים בע"מ', amount:15739},
-          {name:'גן המלך לפרי וירק בע"מ', amount:15264},
-          {name:'טיב פאק (י.י.2010) בע"מ', amount:8290},
-          {name:'בר בכפר בע"מ - מחלבת כפר תבור', amount:7529},
-        ],
-        workers: [],
-        daily_sales: []
-      },
-      {
-        store: 'חטיב', month: '2026-05',
-        sales_gross: 122918, sales_net: 104168,
-        labor_cost: 23501, labor_pct: 22.6,
-        labor_hours: 0,
-        food_cost_net: 17560, food_cost_pct: 16.9,
-        wolt_sales: 0, wolt_pct: 0,
-        total_pct: 39.5, covers: 0,
-        vendors: [
-          {name:'הנמל 6', amount:12344},
-          {name:'ישרקו שיווק מותגי מזון בינלאומיים בע"מ', amount:2004},
-          {name:'מחלבות גד שחר', amount:1610},
-          {name:'טיב פאק (י.י.2010) בע"מ', amount:1602},
-        ],
-        workers: [],
-        daily_sales: []
-      }
+const DATA = {
+  "aug": {
+    "month": "2026-08",
+    "label": "אוגוסט 2026 — MTD",
+    "sales_vat": 114352,
+    "sales_net": 96908,
+    "wolt_vat": 10714,
+    "wolt_pct": 9.4,
+    "wolt_commission": 2571,
+    "labor_cost": 21451,
+    "labor_pct": 22.1,
+    "labor_hours": 379.6,
+    "days_collected": 5,
+    "food_cost": 0,
+    "food_cost_pct": 0,
+    "daily_sales": [
+      {"date": "01/08", "sales": 37027, "wolt": 0},
+      {"date": "02/08", "sales": 21813, "wolt": 0},
+      {"date": "03/08", "sales": 21450, "wolt": 0},
+      {"date": "04/08", "sales": 19710, "wolt": 0},
+      {"date": "05/08", "sales": 14352, "wolt": 0}
     ],
-    combined: {
-      sales_gross: 1002390, sales_net: 849483,
-      labor_cost: 183578, labor_pct: 21.6,
-      food_cost_net: 234350, food_pct: 27.6,
-      wolt_sales: 92996, total_pct: 49.2, covers: 0
-    },
-    food_vendors: [
-      {name:'הנמל 6', amount:121084},
-      {name:'בריוסו פתרונות קפה בע"מ', amount:18178},
-      {name:'ישרקו שיווק מותגי מזון בינלאומיים בע"מ', amount:17743},
-      {name:'גן המלך לפרי וירק בע"מ', amount:15264},
-      {name:'טיב פאק (י.י.2010) בע"מ', amount:9892},
-      {name:'בר בכפר בע"מ - מחלבת כפר תבור', amount:7529},
-      {name:'מחלבות גד שחר', amount:1610},
+    "top_items": []
+  },
+  "jul": {
+    "month": "2026-07",
+    "label": "יולי 2026",
+    "sales_vat": 811478,
+    "sales_net": 687693,
+    "wolt_vat": 94439,
+    "wolt_pct": 11.6,
+    "wolt_commission": 22665,
+    "labor_cost": 178613,
+    "labor_pct": 26.0,
+    "labor_hours": 2983.6,
+    "days_collected": 31,
+    "food_cost": 79465,
+    "food_cost_pct": 11.6,
+    "daily_sales": [
+      {"date": "01/07", "sales": 20167, "wolt": 0},
+      {"date": "02/07", "sales": 22515, "wolt": 0},
+      {"date": "03/07", "sales": 41942, "wolt": 0},
+      {"date": "04/07", "sales": 36750, "wolt": 0},
+      {"date": "05/07", "sales": 18920, "wolt": 0},
+      {"date": "06/07", "sales": 17550, "wolt": 0},
+      {"date": "07/07", "sales": 19474, "wolt": 0},
+      {"date": "08/07", "sales": 18542, "wolt": 0},
+      {"date": "09/07", "sales": 24412, "wolt": 0},
+      {"date": "10/07", "sales": 43449, "wolt": 0},
+      {"date": "11/07", "sales": 36923, "wolt": 0},
+      {"date": "12/07", "sales": 20461, "wolt": 0},
+      {"date": "13/07", "sales": 20259, "wolt": 0},
+      {"date": "14/07", "sales": 20032, "wolt": 0},
+      {"date": "15/07", "sales": 21786, "wolt": 0},
+      {"date": "16/07", "sales": 21226, "wolt": 0},
+      {"date": "17/07", "sales": 40805, "wolt": 0},
+      {"date": "18/07", "sales": 37598, "wolt": 0},
+      {"date": "19/07", "sales": 22525, "wolt": 0},
+      {"date": "20/07", "sales": 18596, "wolt": 0},
+      {"date": "21/07", "sales": 19520, "wolt": 0},
+      {"date": "22/07", "sales": 20598, "wolt": 0},
+      {"date": "23/07", "sales": 22358, "wolt": 0},
+      {"date": "24/07", "sales": 43758, "wolt": 0},
+      {"date": "25/07", "sales": 36919, "wolt": 0},
+      {"date": "26/07", "sales": 20907, "wolt": 0},
+      {"date": "27/07", "sales": 21243, "wolt": 0},
+      {"date": "28/07", "sales": 19397, "wolt": 0},
+      {"date": "29/07", "sales": 16712, "wolt": 0},
+      {"date": "30/07", "sales": 24275, "wolt": 0},
+      {"date": "31/07", "sales": 41859, "wolt": 0}
+    ],
+    "top_items": [
+      {"name": "לחמניה פרעצל", "qty": 16108, "sales": 65539, "fc": 5540, "profit": 59999, "profit_per": 3.72},
+      {"name": "ג'בטה רגילה", "qty": 4612, "sales": 18448, "fc": 1913, "profit": 16535, "profit_per": 3.59},
+      {"name": "לחם כפרי בלי תוספות", "qty": 1089, "sales": 16082, "fc": 1947, "profit": 14135, "profit_per": 12.98},
+      {"name": "לחם כוסמין", "qty": 891, "sales": 15523, "fc": 2221, "profit": 13302, "profit_per": 14.93},
+      {"name": "סינבון", "qty": 1647, "sales": 14000, "fc": 2962, "profit": 11037, "profit_per": 6.70},
+      {"name": "קרואסון חמאה", "qty": 1907, "sales": 13349, "fc": 2966, "profit": 10383, "profit_per": 5.44},
+      {"name": "לחם חיטה מלאה", "qty": 704, "sales": 12041, "fc": 1779, "profit": 10262, "profit_per": 14.58},
+      {"name": "לחם שיפון פרג אגוזים", "qty": 791, "sales": 12012, "fc": 1986, "profit": 10026, "profit_per": 12.68},
+      {"name": "קרואסון שקדים", "qty": 1315, "sales": 13150, "fc": 4527, "profit": 8623, "profit_per": 6.56},
+      {"name": "בריוש הל", "qty": 696, "sales": 8352, "fc": 518, "profit": 7834, "profit_per": 11.26},
+      {"name": "גבינה מתוקה אפויה קטן", "qty": 556, "sales": 8340, "fc": 1353, "profit": 6987, "profit_per": 12.57},
+      {"name": "מגש פוקאצ'יה", "qty": 318, "sales": 8586, "fc": 1631, "profit": 6955, "profit_per": 21.87},
+      {"name": "קרואסון שוקולד", "qty": 1213, "sales": 9704, "fc": 2763, "profit": 6941, "profit_per": 5.72},
+      {"name": "קרואסון פיסטוק שוקולד", "qty": 926, "sales": 9765, "fc": 2985, "profit": 6780, "profit_per": 7.32},
+      {"name": "לחמניה בורגר דלעת", "qty": 3080, "sales": 7700, "fc": 1565, "profit": 6135, "profit_per": 1.99}
     ]
-  };
-
-  // Build June from raw
-  const junStores = (raw.stores || []).map(s => ({
-    ...s,
-    food_cost_net: s.food_cost_net || 0,
-    food_cost_pct: s.food_cost_pct || 0,
-    vendors: s.vendors || []
-  }));
-
-  const junComb = raw.combined || {};
-
-  const junVendors = [];
-  const vmap = {};
-  for (const s of junStores)
-    for (const v of (s.vendors || []))
-      vmap[v.name] = (vmap[v.name]||0) + v.amount;
-  for (const [name, amount] of Object.entries(vmap).sort((a,b)=>b[1]-a[1]))
-    junVendors.push({name, amount});
-
-  return {
-    months: {
-      may: mayEmbedded,
-      jun: {
-        month: '2026-06', from: raw.from, to: raw.to,
-        stores: junStores,
-        combined: {
-          sales_gross: junComb.sales_gross||0, sales_net: junComb.sales_net||0,
-          labor_cost: junComb.labor_cost||0, labor_pct: junComb.labor_pct||0,
-          food_cost_net: junStores.reduce((s,r)=>s+(r.food_cost_net||0),0),
-          food_pct: 0, wolt_sales: junComb.wolt_sales||0, total_pct: junComb.total_pct||0, covers: 0
-        },
-        food_vendors: junVendors
-      }
-    },
-    last_updated: raw.last_updated || new Date().toISOString()
-  };
-}
-
-function renderAll() {
-  document.getElementById('jun-content').innerHTML = buildContent('jun', currentStore.jun, DATA);
-  document.getElementById('jul-content').innerHTML = buildContent('jul', currentStore.jul, DATA);
-  document.getElementById('aug-content').innerHTML = buildContent('aug', currentStore.aug, DATA);
-}
-
-async function syncNow() {
-  const btn = document.getElementById('sync-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spinner"></div> מסנכרן...';
-  await loadDashboard();
-  btn.disabled = false;
-  btn.innerHTML = '<span>🔄</span> סנכרן עכשיו';
-}
-
-const JUN_2026 = {
-  "הנמל": {
-    "sales_gross": 504838,
-    "sales_net": 427829,
-    "labor_cost": 78163,
-    "labor_pct": 18.3,
-    "food_cost_net": 221582.39,
-    "food_cost_pct": 51.8,
-    "wolt_sales": 55386,
-    "wolt_pct": 11,
-    "total_pct": 70.1
-  },
-  "חטיב": {
-    "sales_gross": 81918,
-    "sales_net": 69422,
-    "labor_cost": 14516,
-    "labor_pct": 20.9,
-    "food_cost_net": 19846.56,
-    "food_cost_pct": 28.6,
-    "wolt_sales": 0,
-    "wolt_pct": 0,
-    "total_pct": 49.5
-  },
-  "combined": {
-    "sales_gross": 586756,
-    "sales_net": 497251,
-    "labor_cost": 92679,
-    "food_cost": 241428.95,
-    "wolt_sales": 55386,
-    "total_pct": 67.2
-  },
-  "updated": "2026-06-21T21:31:21Z"
+  }
 };
+
+function fmt(n) {
+  return '₪' + Math.round(n).toLocaleString('he-IL');
+}
+
+function pctClass(p) {
+  if (p <= 45) return 'green';
+  if (p <= 55) return 'yellow';
+  return 'red';
+}
+
+function renderMonth(key) {
+  const d = DATA[key];
+  const nonWolt = d.sales_vat - d.wolt_vat;
+  const primeCost = d.labor_pct + d.food_cost_pct;
+  const primeClass = pctClass(primeCost);
+  
+  let html = '';
+
+  // KPI Grid
+  html += '<div class="kpi-grid">';
+  
+  html += `<div class="kpi"><div class="kpi-label">מכירות ברוטו (כולל מע"מ)</div><div class="kpi-value">${fmt(d.sales_vat)}</div><div class="kpi-sub">נטו: ${fmt(d.sales_net)} | ${d.days_collected} ימים</div></div>`;
+  
+  html += `<div class="kpi orange"><div class="kpi-label">Wolt</div><div class="kpi-value">${fmt(d.wolt_vat)}</div><div class="kpi-sub">${d.wolt_pct}% ממכירות | עמלה: ${fmt(d.wolt_commission)}</div></div>`;
+  
+  html += `<div class="kpi"><div class="kpi-label">מכירות עצמיות (ללא Wolt)</div><div class="kpi-value">${fmt(nonWolt)}</div><div class="kpi-sub">${round1(nonWolt / d.sales_vat * 100)}% מסה"כ</div></div>`;
+
+  const laborClass = d.labor_pct <= 25 ? 'green' : d.labor_pct <= 35 ? 'yellow' : 'red';
+  html += `<div class="kpi ${laborClass}"><div class="kpi-label">עלות שכר (נטו)</div><div class="kpi-value">${fmt(d.labor_cost)}</div><div class="kpi-sub">${d.labor_pct}% ממכירות נטו | ${d.labor_hours} שעות</div></div>`;
+
+  if (d.food_cost > 0) {
+    const foodClass = d.food_cost_pct <= 25 ? 'green' : d.food_cost_pct <= 35 ? 'yellow' : 'red';
+    html += `<div class="kpi ${foodClass}"><div class="kpi-label">עלות מזון (נטו)</div><div class="kpi-value">${fmt(d.food_cost)}</div><div class="kpi-sub">${d.food_cost_pct}% ממכירות נטו</div></div>`;
+  } else {
+    html += `<div class="kpi"><div class="kpi-label">עלות מזון</div><div class="kpi-value">—</div><div class="kpi-sub">טרם עודכן לחודש זה</div></div>`;
+  }
+
+  html += `<div class="kpi ${primeClass}"><div class="kpi-label">Prime Cost (שכר + מזון)</div><div class="kpi-value">${round1(primeCost)}%</div><div class="kpi-sub">יעד: ≤60% | ${primeClass === 'green' ? 'ירוק ✅' : primeClass === 'yellow' ? 'צהוב ⚠️' : 'אדום 🔴'}</div></div>`;
+
+  html += `<div class="kpi"><div class="kpi-label">ממוצע יומי</div><div class="kpi-value">${fmt(d.sales_vat / d.days_collected)}</div><div class="kpi-sub">ברוטו ליום</div></div>`;
+
+  html += '</div>';
+
+  // Daily sales chart
+  html += '<div class="section">';
+  html += '<div class="section-title">מכירות יומיות (ברוטו)</div>';
+  html += '<div class="chart-container"><div class="chart-bars">';
+  const maxSales = Math.max(...d.daily_sales.map(x => x.sales));
+  for (const day of d.daily_sales) {
+    const h = (day.sales / maxSales * 100).toFixed(0);
+    html += `<div class="chart-day"><div class="chart-bar" style="height:${h}%"></div><div class="chart-label">${day.date}</div></div>`;
+  }
+  html += '</div></div>';
+  html += `<div class="chart-legend"><div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>מכירות יומיות</div></div>`;
+  html += '</div>';
+
+  // Top items table
+  if (d.top_items.length > 0) {
+    html += '<div class="section">';
+    html += '<div class="section-title">מנות מובילות — Menu Engineering (MarketMan)</div>';
+    html += '<table><thead><tr><th>#</th><th>פריט</th><th>כמות</th><th>מכירות</th><th>עלות מזון</th><th>רווח ליחידה</th><th>רווח כולל</th></tr></thead><tbody>';
+    d.top_items.forEach((item, i) => {
+      html += `<tr><td>${i+1}</td><td>${item.name}</td><td>${item.qty.toLocaleString('he-IL')}</td><td>${fmt(item.sales)}</td><td>${fmt(item.fc)}</td><td>${fmt(item.profit_per)}</td><td style="font-weight:700">${fmt(item.profit)}</td></tr>`;
+    });
+    html += '</tbody></table>';
+    html += '</div>';
+  }
+
+  // Wolt breakdown
+  html += '<div class="section">';
+  html += '<div class="section-title">פירוט Wolt</div>';
+  html += '<table><tbody>';
+  html += `<tr><td>מכירות Wolt (ברוטו)</td><td style="font-weight:700">${fmt(d.wolt_vat)}</td></tr>`;
+  html += `<tr><td>אחוז מסה"כ מכירות</td><td>${d.wolt_pct}%</td></tr>`;
+  html += `<tr><td>עמלת Wolt (24%)</td><td style="color:#f87171">${fmt(d.wolt_commission)}</td></tr>`;
+  html += `<tr><td>מכירות עצמיות (ללא Wolt)</td><td style="font-weight:700">${fmt(nonWolt)}</td></tr>`;
+  html += `<tr><td>מכירות נטו (ללא מע"מ)</td><td>${fmt(d.sales_net)}</td></tr>`;
+  html += '</tbody></table>';
+  html += '</div>';
+
+  // Prime cost gauge
+  html += '<div class="section">';
+  html += '<div class="section-title">Prime Cost — שכר + מזון (% ממכירות נטו)</div>';
+  html += '<div class="gauge-wrap">';
+  const gaugeWidth = Math.min(primeCost / 80 * 100, 100);
+  const gaugeColor = primeClass === 'green' ? '#34d399' : primeClass === 'yellow' ? '#fbbf24' : '#f87171';
+  html += `<div class="gauge"><div class="gauge-fill" style="width:${gaugeWidth}%;background:${gaugeColor}"></div><div class="gauge-mark" style="left:60%"><div class="gauge-label">60%</div></div><div class="gauge-mark" style="left:75%"><div class="gauge-label">75%</div></div></div>`;
+  html += `<div style="font-size:28px;font-weight:800;color:${gaugeColor}">${round1(primeCost)}%</div>`;
+  html += '</div>';
+  html += `<div style="font-size:13px;color:#8892a4">שכר: ${d.labor_pct}% + מזון: ${d.food_cost_pct}% = ${round1(primeCost)}% | יעד: ≤60% (ירוק)</div>`;
+  html += '</div>';
+
+  document.getElementById(key + '-content').innerHTML = html;
+}
+
+function round1(n) {
+  return Math.round(n * 10) / 10;
+}
+
+function switchTab(key) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.month-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('panel-' + key).classList.add('active');
+}
+
+// Render both months
+renderMonth('jul');
+renderMonth('aug');
 </script>
+
 </body>
 </html>
