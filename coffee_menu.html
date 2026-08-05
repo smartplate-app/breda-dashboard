@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Breda Coffee Shop — Menu Engineering | SmartPlate</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #f0f2f5; color: #1f2937; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; }
@@ -45,6 +47,9 @@ tr.flash td { animation: flash 1.2s; }
 .tip { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; font-size: 12px; color: #92400e; }
 .reset-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; font-size: 12px; font-weight: 600; color: #6b7280; }
 .reset-btn:hover { background: #f9fafb; }
+.pdf-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #2563eb; background: #2563eb; cursor: pointer; font-size: 12px; font-weight: 600; color: #fff; transition: all 0.15s; }
+.pdf-btn:hover { background: #1d4ed8; }
+.pdf-btn:disabled { opacity: 0.5; cursor: wait; }
 .tag-select { padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; border: 1px solid transparent; }
 .tag-select.star { background: #dbeafe; color: #1e40af; }
 .tag-select.plowhorse { background: #d1fae5; color: #065f46; }
@@ -69,11 +74,12 @@ tr.flash td { animation: flash 1.2s; }
   </div>
   <div style="display:flex;align-items:center;gap:12px">
     <span class="save-badge" id="saveBadge">✓ נשמר</span>
+    <button class="pdf-btn" id="pdfBtn" onclick="generatePDF()">📄 הורד PDF</button>
     <button class="reset-btn" onclick="resetAll()">↺ אפס שינויים</button>
   </div>
 </div>
 <div class="main">
-  <div class="tip">💡 לחץ על כותרת כדי למיין — <b>% עלות מזון</b> הוא החשוב ביותר. שנה מחיר, כמות או תג — הכל נשמר אוטומטית גם אחרי רענון.</div>
+  <div class="tip">💡 לחץ על כותרת כדי למיין — <b>% עלות מזון</b> הוא החשוב ביותר. שנה מחיר, כמות או תג — הכל נשמר אוטומטית. לחץ "הורד PDF" לדוח מלא בעברית.</div>
   <div class="kpi-grid" id="kpis"></div>
   <div class="toolbar">
     <div class="toolbar-left">
@@ -117,15 +123,12 @@ var ORIGINAL = [{"name": "קפה קר", "qty": 3568, "vat_price": 17.23, "recipe
 var ITEMS = JSON.parse(JSON.stringify(ORIGINAL));
 var sortCol = 'fc_pct';
 var sortDir = 'desc';
+var changedPrices = {};
+var changedQtys = {};
+var manualTags = {};
 
-// ---- localStorage persistence ----
 function saveState() {
-  var state = {
-    prices: {},
-    qtys: {},
-    tags: {},
-    sort: { col: sortCol, dir: sortDir }
-  };
+  var state = { prices: {}, qtys: {}, tags: {}, sort: { col: sortCol, dir: sortDir } };
   ITEMS.forEach(function(i) {
     var orig = ORIGINAL.find(function(o) { return o.name === i.name; });
     if (orig) {
@@ -133,10 +136,8 @@ function saveState() {
       if (i.qty !== orig.qty) state.qtys[i.name] = i.qty;
     }
   });
-  // manual tags
-  Object.keys(manualTags || {}).forEach(function(k) { state.tags[k] = manualTags[k]; });
+  Object.keys(manualTags).forEach(function(k) { state.tags[k] = manualTags[k]; });
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
-  // Flash save badge
   var badge = document.getElementById('saveBadge');
   badge.classList.add('show');
   setTimeout(function() { badge.classList.remove('show'); }, 1200);
@@ -147,36 +148,19 @@ function loadState() {
     var raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     var state = JSON.parse(raw);
-    // Restore prices
-    if (state.prices) {
-      Object.keys(state.prices).forEach(function(name) {
-        var item = ITEMS.find(function(i) { return i.name === name; });
-        if (item) { item.vat_price = state.prices[name]; changedPrices[name] = true; }
-      });
-    }
-    // Restore quantities
-    if (state.qtys) {
-      Object.keys(state.qtys).forEach(function(name) {
-        var item = ITEMS.find(function(i) { return i.name === name; });
-        if (item) { item.qty = state.qtys[name]; changedQtys[name] = true; }
-      });
-    }
-    // Restore manual tags
-    if (state.tags) {
-      Object.keys(state.tags).forEach(function(name) {
-        manualTags[name] = state.tags[name];
-      });
-    }
-    // Restore sort
+    if (state.prices) Object.keys(state.prices).forEach(function(name) {
+      var item = ITEMS.find(function(i) { return i.name === name; });
+      if (item) { item.vat_price = state.prices[name]; changedPrices[name] = true; }
+    });
+    if (state.qtys) Object.keys(state.qtys).forEach(function(name) {
+      var item = ITEMS.find(function(i) { return i.name === name; });
+      if (item) { item.qty = state.qtys[name]; changedQtys[name] = true; }
+    });
+    if (state.tags) Object.keys(state.tags).forEach(function(name) { manualTags[name] = state.tags[name]; });
     if (state.sort) { sortCol = state.sort.col; sortDir = state.sort.dir; }
   } catch(e) {}
 }
 
-var changedPrices = {};
-var changedQtys = {};
-var manualTags = {};
-
-// Load saved state before first render
 loadState();
 
 function calcMedians() {
@@ -214,6 +198,7 @@ function fcClass(pct) {
 }
 
 var quadOrder = {star:0, plowhorse:1, puzzle:2, dog:3};
+var quadLabel = {star:'⭐ Star', plowhorse:'🐴 Plowhorse', puzzle:'🧩 Puzzle', dog:'🐕 Dog'};
 
 ITEMS.forEach(function(i) { recalcItem(i); });
 classifyAll();
@@ -239,8 +224,7 @@ function renderKPIs() {
 function safeId(name) { return name.replace(/[^א-תa-zA-Z0-9]/g,'_'); }
 
 function updateArrows() {
-  var ths = document.querySelectorAll('#thead-row th');
-  ths.forEach(function(th) {
+  document.querySelectorAll('#thead-row th').forEach(function(th) {
     var col = th.dataset.col;
     if (!col || col === 'rank') return;
     var existing = th.querySelector('.arrow');
@@ -266,9 +250,7 @@ function render() {
     else { va = a[sortCol]; vb = b[sortCol]; }
     return sortDir === 'desc' ? (vb - va) : (va - vb);
   });
-  var filtered = sorted.filter(function(i) {
-    return !search || i.name.toLowerCase().indexOf(search) >= 0;
-  });
+  var filtered = sorted.filter(function(i) { return !search || i.name.toLowerCase().indexOf(search) >= 0; });
   var h = '';
   filtered.forEach(function(item, idx) {
     var sid = safeId(item.name);
@@ -304,8 +286,7 @@ document.querySelectorAll('#thead-row th').forEach(function(th) {
   th.addEventListener('click', function() {
     var col = th.dataset.col;
     if (!col || col === 'rank') return;
-    if (sortCol === col) { sortDir = sortDir === 'desc' ? 'asc' : 'desc'; }
-    else { sortCol = col; sortDir = 'desc'; }
+    if (sortCol === col) { sortDir = sortDir === 'desc' ? 'asc' : 'desc'; } else { sortCol = col; sortDir = 'desc'; }
     saveState();
     render();
   });
@@ -314,64 +295,172 @@ document.querySelectorAll('#thead-row th').forEach(function(th) {
 function onTagChange(select, name) {
   var val = select.value;
   if (val === 'auto') delete manualTags[name]; else manualTags[name] = val;
-  classifyAll();
-  renderKPIs();
-  render();
-  saveState();
-  flashRow(name);
+  classifyAll(); renderKPIs(); render(); saveState(); flashRow(name);
 }
-
 function onPriceChange(input, name) {
-  var v = parseFloat(input.value);
-  if (isNaN(v) || v < 0) return;
-  var item = ITEMS.find(function(i) { return i.name === name; });
-  if (!item) return;
+  var v = parseFloat(input.value); if (isNaN(v) || v < 0) return;
+  var item = ITEMS.find(function(i) { return i.name === name; }); if (!item) return;
   var orig = ORIGINAL.find(function(i) { return i.name === name; });
   if (orig && Math.abs(v - orig.vat_price) > 0.01) changedPrices[name] = true; else delete changedPrices[name];
-  item.vat_price = v;
-  recalcItem(item);
-  classifyAll();
-  renderKPIs();
-  render();
-  saveState();
-  flashRow(name);
+  item.vat_price = v; recalcItem(item); classifyAll(); renderKPIs(); render(); saveState(); flashRow(name);
 }
-
 function onQtyChange(input, name) {
-  var v = parseInt(input.value);
-  if (isNaN(v) || v < 0) return;
-  var item = ITEMS.find(function(i) { return i.name === name; });
-  if (!item) return;
+  var v = parseInt(input.value); if (isNaN(v) || v < 0) return;
+  var item = ITEMS.find(function(i) { return i.name === name; }); if (!item) return;
   var orig = ORIGINAL.find(function(i) { return i.name === name; });
   if (orig && v !== orig.qty) changedQtys[name] = true; else delete changedQtys[name];
-  item.qty = v;
-  recalcItem(item);
-  classifyAll();
-  renderKPIs();
-  render();
-  saveState();
-  flashRow(name);
+  item.qty = v; recalcItem(item); classifyAll(); renderKPIs(); render(); saveState(); flashRow(name);
 }
-
 function flashRow(name) {
-  setTimeout(function() {
-    var row = document.getElementById('row-'+safeId(name));
-    if (row) row.classList.add('flash');
-  }, 30);
+  setTimeout(function() { var row = document.getElementById('row-'+safeId(name)); if (row) row.classList.add('flash'); }, 30);
 }
-
 function resetAll() {
   ITEMS = JSON.parse(JSON.stringify(ORIGINAL));
-  changedPrices = {};
-  changedQtys = {};
-  manualTags = {};
-  sortCol = 'fc_pct';
-  sortDir = 'desc';
+  changedPrices = {}; changedQtys = {}; manualTags = {};
+  sortCol = 'fc_pct'; sortDir = 'desc';
   localStorage.removeItem(STORAGE_KEY);
-  ITEMS.forEach(function(i) { recalcItem(i); });
-  classifyAll();
-  renderKPIs();
-  render();
+  ITEMS.forEach(function(i) { recalcItem(i); }); classifyAll(); renderKPIs(); render();
+}
+
+// ---- PDF Generation ----
+function generatePDF() {
+  var btn = document.getElementById('pdfBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ מכין PDF...';
+
+  var ts = ITEMS.reduce(function(s,i){return s+i.sales_net;},0);
+  var tfc = ITEMS.reduce(function(s,i){return s+i.recipe_cost*i.qty;},0);
+  var tp = ITEMS.reduce(function(s,i){return s+i.profit;},0);
+  var st = ITEMS.filter(function(i){return i.q==='star';}).length;
+  var pl = ITEMS.filter(function(i){return i.q==='plowhorse';}).length;
+  var pu = ITEMS.filter(function(i){return i.q==='puzzle';}).length;
+  var dg = ITEMS.filter(function(i){return i.q==='dog';}).length;
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('he-IL') + ' ' + now.toLocaleTimeString('he-IL', {hour:'2-digit',minute:'2-digit'});
+
+  // Build a hidden RTL container for PDF capture
+  var container = document.createElement('div');
+  container.style.cssText = 'position:fixed;right:0;top:0;width:1100px;background:#fff;padding:40px;direction:rtl;font-family:Arial,sans-serif;z-index:-1;';
+
+  // Title
+  container.innerHTML =
+    '<div style="text-align:center;margin-bottom:8px;">'+
+      '<div style="font-size:28px;font-weight:800;color:#111827;">Breda Coffee Shop</div>'+
+      '<div style="font-size:14px;color:#6b7280;margin-top:4px;">Menu Engineering — דוח רווחיות מנות</div>'+
+      '<div style="font-size:11px;color:#9ca3af;margin-top:6px;">תאריך יצירה: '+dateStr+'</div>'+
+    '</div>'+
+    // KPIs
+    '<div style="display:flex;gap:12px;flex-wrap:wrap;margin:20px 0;">'+
+      '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;flex:1;min-width:140px;text-align:center;">'+
+        '<div style="font-size:10px;color:#9ca3af;text-transform:uppercase;">מכירות נטו</div>'+
+        '<div style="font-size:20px;font-weight:800;margin-top:4px;">'+fmt(ts)+'</div></div>'+
+      '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;flex:1;min-width:140px;text-align:center;">'+
+        '<div style="font-size:10px;color:#9ca3af;text-transform:uppercase;">עלות מזון</div>'+
+        '<div style="font-size:20px;font-weight:800;color:#ea580c;margin-top:4px;">'+fmt(tfc)+'</div>'+
+        '<div style="font-size:11px;color:#6b7280;">'+(tfc/ts*100).toFixed(1)+'% מנטו</div></div>'+
+      '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;flex:1;min-width:140px;text-align:center;">'+
+        '<div style="font-size:10px;color:#9ca3af;text-transform:uppercase;">סה"כ רווח</div>'+
+        '<div style="font-size:20px;font-weight:800;color:#059669;margin-top:4px;">'+fmt(tp)+'</div>'+
+        '<div style="font-size:11px;color:#6b7280;">'+(tp/ts*100).toFixed(1)+'% רווחיות</div></div>'+
+      '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;flex:1;min-width:100px;text-align:center;">'+
+        '<div style="font-size:10px;color:#9ca3af;text-transform:uppercase;">Stars</div>'+
+        '<div style="font-size:20px;font-weight:800;color:#2563eb;margin-top:4px;">'+st+'</div></div>'+
+      '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;flex:1;min-width:100px;text-align:center;">'+
+        '<div style="font-size:10px;color:#9ca3af;text-transform:uppercase;">Plowhorses</div>'+
+        '<div style="font-size:20px;font-weight:800;color:#7c3aed;margin-top:4px;">'+pl+'</div></div>'+
+      '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;flex:1;min-width:100px;text-align:center;">'+
+        '<div style="font-size:10px;color:#9ca3af;text-transform:uppercase;">Puzzles</div>'+
+        '<div style="font-size:20px;font-weight:800;margin-top:4px;">'+pu+'</div></div>'+
+      '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;flex:1;min-width:100px;text-align:center;">'+
+        '<div style="font-size:10px;color:#9ca3af;text-transform:uppercase;">Dogs</div>'+
+        '<div style="font-size:20px;font-weight:800;color:#dc2626;margin-top:4px;">'+dg+'</div></div>'+
+    '</div>';
+
+  // Build table HTML
+  var search = document.getElementById('search').value.toLowerCase();
+  var sorted = ITEMS.slice().sort(function(a,b) {
+    var va, vb;
+    if (sortCol === 'q') { va = quadOrder[a.q]; vb = quadOrder[b.q]; }
+    else if (sortCol === 'name') { return sortDir === 'desc' ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name); }
+    else { va = a[sortCol]; vb = b[sortCol]; }
+    return sortDir === 'desc' ? (vb - va) : (va - vb);
+  });
+  var filtered = sorted.filter(function(i) { return !search || i.name.toLowerCase().indexOf(search) >= 0; });
+
+  var tableHTML = '<table style="width:100%;border-collapse:collapse;font-size:12px;">';
+  tableHTML += '<thead><tr style="background:#f9fafb;">';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">#</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">פריט</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">תג</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">כמות</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">מחיר כולל מע"מ</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">מחיר נטו</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">עלות/יח</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">% עלות מזון</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">רווח/יח</th>';
+  tableHTML += '<th style="padding:8px;border:1px solid #e5e7eb;text-align:right;font-size:11px;">רווח כולל</th>';
+  tableHTML += '</tr></thead><tbody>';
+
+  var tagColors = {star:'#dbeafe',plowhorse:'#d1fae5',puzzle:'#fef3c7',dog:'#fee2e2'};
+  var tagTextColors = {star:'#1e40af',plowhorse:'#065f46',puzzle:'#92400e',dog:'#991b1b'};
+
+  filtered.forEach(function(item, idx) {
+    var pc = item.profit_per < 0 ? '#dc2626' : '#059669';
+    var fcp = item.fc_pct;
+    var fcCol = fcp <= 25 ? '#059669' : fcp <= 40 ? '#d97706' : '#dc2626';
+    tableHTML += '<tr>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;color:#9ca3af;">'+(idx+1)+'</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;font-weight:600;">'+item.name+'</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;">'+quadLabel[item.q]+'</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;text-align:center;">'+item.qty.toLocaleString('he-IL')+'</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;text-align:center;">'+fmt2(item.vat_price)+'</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;text-align:center;color:#6b7280;">'+fmt2(item.net_price)+'</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;text-align:center;">'+fmt2(item.recipe_cost)+'</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;text-align:center;color:'+fcCol+';font-weight:700;">'+item.fc_pct.toFixed(1)+'%</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;text-align:center;color:'+pc+';font-weight:600;">'+fmt2(item.profit_per)+'</td>';
+    tableHTML += '<td style="padding:6px 8px;border:1px solid #f3f4f6;text-align:center;font-weight:700;color:'+pc+';">'+fmt(item.profit)+'</td>';
+    tableHTML += '</tr>';
+  });
+  tableHTML += '</tbody></table>';
+
+  container.innerHTML += tableHTML;
+  // Footer
+  container.innerHTML += '<div style="text-align:center;margin-top:20px;font-size:10px;color:#9ca3af;">SmartPlate | Breda Coffee Shop Menu Engineering | נוצר אוטומטית — '+dateStr+'</div>';
+
+  document.body.appendChild(container);
+
+  html2canvas(container, {scale:2, backgroundColor:'#ffffff'}).then(function(canvas) {
+    document.body.removeChild(container);
+    var { jsPDF } = window.jspdf;
+    var pdf = new jsPDF('p', 'mm', 'a4');
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var imgWidth = pageWidth;
+    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    var heightLeft = imgHeight;
+    var position = 0;
+
+    pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+      position -= pageHeight;
+      pdf.addPage();
+      pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    pdf.save('Breda_Coffee_Shop_Menu_Engineering.pdf');
+    btn.disabled = false;
+    btn.textContent = '📄 הורד PDF';
+  }).catch(function(e) {
+    console.error('PDF error:', e);
+    if (document.body.contains(container)) document.body.removeChild(container);
+    btn.disabled = false;
+    btn.textContent = '📄 הורד PDF';
+    alert('שגיאה ביצירת PDF. נסה שוב.');
+  });
 }
 
 renderKPIs();
