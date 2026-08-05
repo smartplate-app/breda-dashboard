@@ -33,17 +33,15 @@ th { font-size: 11px; color: #9ca3af; text-transform: uppercase; letter-spacing:
 td { padding: 9px 10px; font-size: 13px; border-bottom: 1px solid #f3f4f6; color: #374151; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #f9fafb; }
-.fc-bar { display: inline-block; width: 40px; height: 6px; background: #e5e7eb; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
-.fc-bar-fill { height: 100%; border-radius: 3px; }
 </style>
 </head>
 <body>
 <div class="header">
   <div>
     <div class="logo">Breda <span>HaNamal</span></div>
-    <div class="sub-logo">Smart Plate | Menu Engineering — Coffee Shop — דוח רווחיות מנות | אוגוסט 2026 MTD</div>
+    <div class="sub-logo">Smart Plate | Menu Engineering — דוח רווחיות מנות (Sales Items pastry) | אוגוסט 2026 MTD</div>
   </div>
-  <div style="font-size:12px;color:#9ca3af">70 פריטים פעילים | עודכן: 05.08.2026</div>
+  <div style="font-size:12px;color:#9ca3af">40 פריטים | עודכן: 05.08.2026</div>
 </div>
 <div class="main" id="content"></div>
 <script>
@@ -51,83 +49,53 @@ function fmt(n){return '₪'+Math.round(n).toLocaleString('he-IL');}
 function fmt2(n){return '₪'+n.toFixed(2);}
 
 var ALL_ITEMS = [
-{"name":"ג'בטה רגילה","qty":1577,"sales":6308,"fc_per":0.41,"fc_total":654,"profit":5654,"profit_per":3.59,"q":"plowhorse"},
-{"name":"לחמניה פרעצל","qty":1968,"sales":6132,"fc_per":0.34,"fc_total":677,"profit":5455,"profit_per":2.77,"q":"plowhorse"},
-{"name":"לחם כוסמין","qty":157,"sales":2688,"fc_per":2.49,"fc_total":391,"profit":2297,"profit_per":14.63,"q":"star"},
-{"name":"לחם כפרי בלי תוספות","qty":168,"sales":2374,"fc_per":1.78,"fc_total":300,"profit":2074,"profit_per":12.34,"q":"star"},
-{"name":"לחם חיטה מלאה","qty":120,"sales":2005,"fc_per":2.52,"fc_total":303,"profit":1702,"profit_per":14.18,"q":"star"},
-{"name":"לחם שיפון פרג אגוזים","qty":131,"sales":1911,"fc_per":2.51,"fc_total":329,"profit":1582,"profit_per":12.08,"q":"star"},
-{"name":"מגש פוקאצ'יה","qty":68,"sales":1798,"fc_per":5.12,"fc_total":349,"profit":1449,"profit_per":21.32,"q":"star"},
 {"name":"קרואסון חמאה","qty":245,"sales":1621,"fc_per":1.55,"fc_total":381,"profit":1240,"profit_per":5.06,"q":"plowhorse"},
 {"name":"קרואסון שקדים","qty":194,"sales":1884,"fc_per":3.44,"fc_total":668,"profit":1216,"profit_per":6.27,"q":"plowhorse"},
 {"name":"אריזה עוגיות שוקולד צ'יפס","qty":40,"sales":1440,"fc_per":6.59,"fc_total":264,"profit":1176,"profit_per":29.41,"q":"puzzle"},
 {"name":"סינבון","qty":187,"sales":1488,"fc_per":1.80,"fc_total":337,"profit":1151,"profit_per":6.15,"q":"plowhorse"},
-{"name":"לחמניה בורגר דלעת","qty":540,"sales":1350,"fc_per":0.50,"fc_total":274,"profit":1076,"profit_per":1.99,"q":"plowhorse"},
 {"name":"בריוש הל","qty":89,"sales":1008,"fc_per":0.74,"fc_total":66,"profit":942,"profit_per":10.58,"q":"star"},
-{"name":"בגט","qty":95,"sales":1069,"fc_per":1.49,"fc_total":142,"profit":927,"profit_per":9.76,"q":"star"},
 {"name":"קרואסון שוקולד","qty":170,"sales":1299,"fc_per":2.27,"fc_total":387,"profit":912,"profit_per":5.36,"q":"plowhorse"},
-{"name":"לחם כפרי זעתר","qty":70,"sales":1058,"fc_per":2.36,"fc_total":165,"profit":892,"profit_per":12.74,"q":"star"},
-{"name":"לחם בריוש 840גם","qty":77,"sales":1219,"fc_per":4.31,"fc_total":332,"profit":887,"profit_per":11.52,"q":"star"},
 {"name":"קרואסון פטל","qty":152,"sales":1166,"fc_per":2.07,"fc_total":315,"profit":852,"profit_per":5.60,"q":"plowhorse"},
-{"name":"לחם שיפון בלי תוספות","qty":72,"sales":953,"fc_per":1.76,"fc_total":127,"profit":826,"profit_per":11.47,"q":"star"},
 {"name":"גבינה מתוקה אפויה קטן","qty":75,"sales":996,"fc_per":2.43,"fc_total":182,"profit":814,"profit_per":10.85,"q":"star"},
-{"name":"לחם שיפון זיתים","qty":74,"sales":1026,"fc_per":3.01,"fc_total":223,"profit":804,"profit_per":10.86,"q":"star"},
-{"name":"קרואסון פיסטוק שוקולד","qty":113,"sales":1114,"fc_per":3.17,"fc_total":359,"profit":755,"profit_per":6.68,"q":"plowhorse"},
-{"name":"לחם כפרי בצל","qty":54,"sales":810,"fc_per":2.50,"fc_total":135,"profit":675,"profit_per":12.50,"q":"puzzle"},
-{"name":"לחם של פעם","qty":40,"sales":800,"fc_per":3.57,"fc_total":143,"profit":657,"profit_per":16.43,"q":"puzzle"},
-{"name":"לחם כפרי זיתים","qty":67,"sales":962,"fc_per":5.09,"fc_total":341,"profit":620,"profit_per":9.26,"q":"star"},
+{"name":"קרואסון פיסטוק שוקולד","qty":113,"sales":1114,"fc_per":3.17,"fc_total":359,"profit":755,"profit_per":6.68,"q":"star"},
 {"name":"בורקס","qty":98,"sales":742,"fc_per":2.08,"fc_total":204,"profit":538,"profit_per":5.49,"q":"plowhorse"},
-{"name":"פניני","qty":142,"sales":568,"fc_per":0.41,"fc_total":59,"profit":509,"profit_per":3.59,"q":"plowhorse"},
 {"name":"פאן סוויס","qty":34,"sales":578,"fc_per":2.43,"fc_total":83,"profit":495,"profit_per":14.56,"q":"puzzle"},
-{"name":"לחמניה ביס כוסמין","qty":218,"sales":654,"fc_per":0.74,"fc_total":162,"profit":492,"profit_per":2.26,"q":"plowhorse"},
 {"name":"עוגיה שוקולד צ'יפס","qty":137,"sales":655,"fc_per":1.19,"fc_total":164,"profit":490,"profit_per":3.58,"q":"plowhorse"},
 {"name":"גבינה תרד בצק עלים","qty":86,"sales":646,"fc_per":1.84,"fc_total":158,"profit":488,"profit_per":5.68,"q":"plowhorse"},
 {"name":"עוגה בבקה","qty":15,"sales":612,"fc_per":9.98,"fc_total":150,"profit":462,"profit_per":30.82,"q":"puzzle"},
-{"name":"לחם כפרי גערינים","qty":38,"sales":563,"fc_per":2.79,"fc_total":106,"profit":457,"profit_per":12.03,"q":"puzzle"},
 {"name":"קרואסון שום","qty":39,"sales":531,"fc_per":2.85,"fc_total":111,"profit":420,"profit_per":10.76,"q":"puzzle"},
-{"name":"קרואסון שוקולד שקדים","qty":58,"sales":655,"fc_per":4.16,"fc_total":242,"profit":413,"profit_per":7.13,"q":"dog"},
-{"name":"לחם כפרי צימוקים ואגוזים","qty":36,"sales":522,"fc_per":3.10,"fc_total":112,"profit":410,"profit_per":11.40,"q":"puzzle"},
+{"name":"קרואסון שוקולד שקדים","qty":58,"sales":655,"fc_per":4.16,"fc_total":242,"profit":413,"profit_per":7.13,"q":"star"},
 {"name":"קרואסון פיסטוק","qty":59,"sales":546,"fc_per":2.70,"fc_total":159,"profit":387,"profit_per":6.55,"q":"plowhorse"},
 {"name":"מיני קרואסון חמאה","qty":124,"sales":458,"fc_per":0.70,"fc_total":87,"profit":370,"profit_per":2.99,"q":"plowhorse"},
 {"name":"גבינית קראמבל","qty":40,"sales":396,"fc_per":1.18,"fc_total":47,"profit":349,"profit_per":8.72,"q":"puzzle"},
 {"name":"עוגה גזר","qty":13,"sales":531,"fc_per":14.64,"fc_total":190,"profit":341,"profit_per":26.20,"q":"puzzle"},
-{"name":"בגט שומשום","qty":40,"sales":403,"fc_per":1.60,"fc_total":64,"profit":339,"profit_per":8.47,"q":"dog"},
 {"name":"קרואסון פתוח","qty":72,"sales":448,"fc_per":1.59,"fc_total":115,"profit":333,"profit_per":4.63,"q":"plowhorse"},
-{"name":"ג'בטה כוסמין","qty":120,"sales":480,"fc_per":1.27,"fc_total":152,"profit":328,"profit_per":2.73,"q":"plowhorse"},
 {"name":"קרואסון פס לבנה זעתר","qty":36,"sales":398,"fc_per":2.32,"fc_total":84,"profit":315,"profit_per":8.74,"q":"puzzle"},
-{"name":"לחמניה בריוש 80 גם","qty":122,"sales":366,"fc_per":0.50,"fc_total":62,"profit":304,"profit_per":2.50,"q":"plowhorse"},
 {"name":"עוגיה פקאן","qty":81,"sales":391,"fc_per":1.09,"fc_total":89,"profit":302,"profit_per":3.72,"q":"plowhorse"},
 {"name":"מארז עוגיות פקאן","qty":10,"sales":360,"fc_per":6.18,"fc_total":62,"profit":298,"profit_per":29.81,"q":"puzzle"},
-{"name":"בננה מאפין","qty":48,"sales":316,"fc_per":0.78,"fc_total":38,"profit":279,"profit_per":5.81,"q":"dog"},
+{"name":"בננה מאפין","qty":48,"sales":316,"fc_per":0.78,"fc_total":38,"profit":279,"profit_per":5.81,"q":"plowhorse"},
 {"name":"מיני קרואסון שוקולד","qty":80,"sales":380,"fc_per":1.27,"fc_total":102,"profit":278,"profit_per":3.48,"q":"plowhorse"},
-{"name":"קרואסון מרובע","qty":54,"sales":343,"fc_per":1.20,"fc_total":65,"profit":278,"profit_per":5.14,"q":"dog"},
-{"name":"מאפין קיפודים","qty":34,"sales":304,"fc_per":1.31,"fc_total":45,"profit":259,"profit_per":7.63,"q":"dog"},
-{"name":"לחם עגבניות מיובשות","qty":20,"sales":301,"fc_per":2.64,"fc_total":53,"profit":248,"profit_per":12.40,"q":"puzzle"},
-{"name":"קרואסון רול צ'דר חריף","qty":30,"sales":322,"fc_per":2.86,"fc_total":86,"profit":236,"profit_per":7.86,"q":"dog"},
-{"name":"כפרי מלא גרינים","qty":25,"sales":262,"fc_per":1.54,"fc_total":39,"profit":223,"profit_per":8.92,"q":"puzzle"},
+{"name":"קרואסון מרובע","qty":54,"sales":343,"fc_per":1.20,"fc_total":65,"profit":278,"profit_per":5.14,"q":"plowhorse"},
+{"name":"מאפין קיפודים","qty":34,"sales":304,"fc_per":1.31,"fc_total":45,"profit":259,"profit_per":7.63,"q":"puzzle"},
+{"name":"קרואסון רול צ'דר חריף","qty":30,"sales":322,"fc_per":2.86,"fc_total":86,"profit":236,"profit_per":7.86,"q":"puzzle"},
 {"name":"עוגיה מאצ'יה","qty":63,"sales":297,"fc_per":1.29,"fc_total":82,"profit":215,"profit_per":3.42,"q":"plowhorse"},
 {"name":"קרואסון עגול צ'יזקייק","qty":14,"sales":248,"fc_per":2.72,"fc_total":38,"profit":210,"profit_per":14.99,"q":"puzzle"},
-{"name":"כפרי מלא אגוזים","qty":23,"sales":240,"fc_per":1.96,"fc_total":45,"profit":195,"profit_per":8.46,"q":"dog"},
 {"name":"קרואסון לימון עגול","qty":28,"sales":250,"fc_per":2.35,"fc_total":66,"profit":184,"profit_per":6.57,"q":"dog"},
 {"name":"עוגה תפוז","qty":4,"sales":162,"fc_per":8.88,"fc_total":36,"profit":126,"profit_per":31.61,"q":"puzzle"},
-{"name":"לחמניה טיבוני","qty":50,"sales":125,"fc_per":0.28,"fc_total":14,"profit":111,"profit_per":2.21,"q":"dog"},
 {"name":"עוגת פרג לימון","qty":4,"sales":162,"fc_per":13.87,"fc_total":55,"profit":107,"profit_per":26.63,"q":"puzzle"},
-{"name":"לחם שיפון ארוך 690 גם","qty":12,"sales":120,"fc_per":1.40,"fc_total":17,"profit":103,"profit_per":8.59,"q":"puzzle"},
 {"name":"עוגיה פיסטוק","qty":30,"sales":132,"fc_per":1.40,"fc_total":42,"profit":90,"profit_per":3.00,"q":"dog"},
-{"name":"כפרי רגיל בלי תוספות 2","qty":6,"sales":96,"fc_per":1.78,"fc_total":11,"profit":85,"profit_per":14.21,"q":"puzzle"},
-{"name":"מאפין טבעוני","qty":8,"sales":80,"fc_per":0.67,"fc_total":5,"profit":75,"profit_per":9.33,"q":"dog"},
-{"name":"ג'בטה קטנה","qty":23,"sales":58,"fc_per":0.25,"fc_total":6,"profit":52,"profit_per":2.24,"q":"dog"},
-{"name":"עוגה טארט תפוחים","qty":4,"sales":81,"fc_per":8.22,"fc_total":33,"profit":48,"profit_per":12.03,"q":"dog"},
-{"name":"שקית פטיסייר 1 ליטר","qty":5,"sales":90,"fc_per":8.72,"fc_total":44,"profit":46,"profit_per":9.27,"q":"dog"},
+{"name":"מאפין טבעוני","qty":8,"sales":80,"fc_per":0.67,"fc_total":5,"profit":75,"profit_per":9.33,"q":"puzzle"},
+{"name":"עוגה טארט תפוחים","qty":4,"sales":81,"fc_per":8.22,"fc_total":33,"profit":48,"profit_per":12.03,"q":"puzzle"},
+{"name":"שקית פטיסייר 1 ליטר","qty":5,"sales":90,"fc_per":8.72,"fc_total":44,"profit":46,"profit_per":9.27,"q":"puzzle"},
 {"name":"שקית פטיסייר לברדא 1 ליטר","qty":3,"sales":23,"fc_per":8.72,"fc_total":26,"profit":-4,"profit_per":-1.17,"q":"dog"},
 {"name":"שקית גבינה מתוקה לברדא 1 קג","qty":3,"sales":64,"fc_per":24.48,"fc_total":73,"profit":-10,"profit_per":-3.27,"q":"dog"}
 ];
 
 var QUADS = {
-  star: { name: "Stars ⭐", desc: "רווח גבוה + כמות גבוהה — השאר כמו שהם", color: "#1e40af", items: [] },
-  plowhorse: { name: "Plowhorses 🐴", desc: "רווח נמוך + כמות גבוהה — העלה מחיר או הורד עלות", color: "#065f46", items: [] },
-  puzzle: { name: "Puzzles 🧩", desc: "רווח גבוה + כמות נמוכה — קדם יותר", color: "#92400e", items: [] },
-  dog: { name: "Dogs 🐕", desc: "רווח נמוך + כמות נמוכה — שקול להסיר", color: "#991b1b", items: [] }
+  star: { name: "Stars ⭐", desc: "רווח גבוה + כמות גבוהה — השאר כמו שהם", items: [] },
+  plowhorse: { name: "Plowhorses 🐴", desc: "רווח נמוך + כמות גבוהה — העלה מחיר או הורד עלות", items: [] },
+  puzzle: { name: "Puzzles 🧩", desc: "רווח גבוה + כמות נמוכה — קדם יותר", items: [] },
+  dog: { name: "Dogs 🐕", desc: "רווח נמוך + כמות נמוכה — שקול להסיר", items: [] }
 };
 
 ALL_ITEMS.forEach(function(i) { QUADS[i.q].items.push(i); });
@@ -137,23 +105,19 @@ var totalFC = ALL_ITEMS.reduce(function(s,i){return s+i.fc_total;},0);
 var totalProfit = ALL_ITEMS.reduce(function(s,i){return s+i.profit;},0);
 
 var h = '';
-
-// KPIs
 h += '<div class="kpi-grid">';
-h += '<div class="kpi"><div class="kpi-label">סה"כ מכירות (נטו)</div><div class="kpi-value">'+fmt(totalSales)+'</div><div class="kpi-sub">70 פריטים פעילים</div></div>';
+h += '<div class="kpi"><div class="kpi-label">סה"כ מכירות</div><div class="kpi-value">'+fmt(totalSales)+'</div><div class="kpi-sub">40 פריטי פטיסרי</div></div>';
 h += '<div class="kpi orange"><div class="kpi-label">עלות מזון</div><div class="kpi-value">'+fmt(totalFC)+'</div><div class="kpi-sub">'+(totalFC/totalSales*100).toFixed(1)+'% ממכירות</div></div>';
 h += '<div class="kpi green"><div class="kpi-label">סה"כ רווח</div><div class="kpi-value">'+fmt(totalProfit)+'</div><div class="kpi-sub">'+(totalProfit/totalSales*100).toFixed(1)+'% רווחיות</div></div>';
 h += '<div class="kpi blue"><div class="kpi-label">Stars</div><div class="kpi-value">'+QUADS.star.items.length+'</div><div class="kpi-sub">פריטים מצטיינים</div></div>';
-h += '<div class="kpi purple"><div class="kpi-label">פריטים שמניעים 80% רווח</div><div class="kpi-value">30</div><div class="kpi-sub">מתוך 70 פריטים</div></div>';
-h += '<div class="kpi"><div class="kpi-label">פריטים מתחת 1% רווח</div><div class="kpi-value">9</div><div class="kpi-sub">שקול הסרה</div></div>';
+h += '<div class="kpi purple"><div class="kpi-label">Plowhorses</div><div class="kpi-value">'+QUADS.plowhorse.items.length+'</div><div class="kpi-sub">כמות גבוהה, רווח נמוך</div></div>';
+h += '<div class="kpi"><div class="kpi-label">Dogs</div><div class="kpi-value">'+QUADS.dog.items.length+'</div><div class="kpi-sub">שקול הסרה</div></div>';
 h += '</div>';
 
-// Quadrant sections
 ['star','plowhorse','puzzle','dog'].forEach(function(qkey) {
   var q = QUADS[qkey];
   var items = q.items;
   items.sort(function(a,b){return b.profit - a.profit;});
-  
   h += '<div class="section"><div class="section-title"><span class="badge '+qkey+'">'+q.name+'</span> <span style="font-size:13px;color:#6b7280">'+q.desc+'</span> <span style="font-size:12px;color:#9ca3af;margin-right:auto">'+items.length+' פריטים</span></div>';
   h += '<table><thead><tr><th>#</th><th>פריט</th><th>כמות</th><th>רווח/יחידה</th><th>רווח כולל</th><th>עלות מזון/יח</th></tr></thead><tbody>';
   items.forEach(function(item,i) {
